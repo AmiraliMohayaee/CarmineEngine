@@ -1,0 +1,7 @@
+#Setting for the Application on startup
+AppTitle=OpenGL Rendering Project
+ScreenWidth=800
+ScreenHeight=600
+FullScreen=0
+OpenGLMode=Compatible
+OpenGLVersion=4.6
