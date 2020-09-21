@@ -12,7 +12,8 @@ Screen::Screen()
 bool Screen::InitScreen()
 {
 	// temporary variables to contain variables from
-	// file
+	// file. tempString will hold the entirety of the 
+	// file's contents
 	std::string tempString;
 	std::string appName;
 	std::string glMode;
@@ -77,6 +78,7 @@ bool Screen::InitScreen()
 		{
 			pos = tempString.find("=");
 			oglMajorVersion = std::stoi(tempString.substr(pos + 1, tempString.length()));
+			pos = tempString.find(".");
 			oglMinorVersion = std::stoi(tempString.substr(pos + 1, tempString.length()));
 		}
 
@@ -117,17 +119,25 @@ bool Screen::InitScreen()
 	// Setting up the back and front buffers
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	//set a core OpenGL context (does not accept legacy functionality)
-	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	//set a compatibility OpenGL context
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+
+	if (glMode == "Core")
+	{
+		//set a core OpenGL context (does not accept legacy functionality)
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	}
+	else if (glMode == "Compatible")
+	{
+		//set a compatibility OpenGL context
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+	}
+
 
 	// Setting up OGL to version 4.6
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, oglMajorVersion);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, oglMinorVersion);
 
 	// Creating the window
-	window = SDL_CreateWindow("The First Window",
+	window = SDL_CreateWindow(appName.c_str(),
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
 		resolutionW, resolutionH,
@@ -158,42 +168,21 @@ bool Screen::InitScreen()
 	}
 
 
-	// To-Do:
-	// * Read Values from File
-	// * Open GL version
-	// * Fullscreen Flag
-	// * Resolution
-	// * Mode (Core/Compatibility mode)
-
-
-
 	return true;
 }
 
+
 void Screen::Draw()
 {
+
 }
 
 
-struct Position
-{
-	float x = 0.0f;
-	float y = 0.0f;
-	float z = 0.0f;
-};
-
-struct Color
-{
-	float r = 0.0f;
-	float g = 0.0f;
-	float b = 0.0f;
-};
-
-Color color;
-Position position;
-
 void Screen::Update()
 {
+	Color color;
+	Position position;
+
 	while (1)
 	{
 		color.r += 0.1f;
@@ -205,43 +194,43 @@ void Screen::Update()
 
 		glBegin(GL_QUADS);
 
-		glBegin(GL_QUADS);
-		//top left color and vertex of quad
-		glColor3f(1, 0, 0);
-		glVertex3f(-0.5f, 0.5f, 0.0f);
+			glBegin(GL_QUADS);
+				//top left color and vertex of quad
+				glColor3f(1, 0, 0);
+				glVertex3f(-0.5f, 0.5f, 0.0f);
 
-		//top right color and vertex of quad
-		glColor3f(0, 1, 0);
-		glVertex3f(0.5f, 0.5f, 0.0f);
+				//top right color and vertex of quad
+				glColor3f(0, 1, 0);
+				glVertex3f(0.5f, 0.5f, 0.0f);
 
-		//bottom right color and vertex of quad
-		glColor3f(0, 0, 1);
-		glVertex3f(0.5f, -0.5f, 0.0f);
+				//bottom right color and vertex of quad
+				glColor3f(0, 0, 1);
+				glVertex3f(0.5f, -0.5f, 0.0f);
 
-		//bottom left color and vertex of quad
-		glColor3f(0, 0, 1);
-		glVertex3f(-0.5f, -0.5f, 0.0f);
-		glEnd();
+				//bottom left color and vertex of quad
+				glColor3f(0, 0, 1);
+				glVertex3f(-0.5f, -0.5f, 0.0f);
+			glEnd();
 
-		//glTranslatef(position.x + 0.01f, position.y, position.z);
+			//glTranslatef(position.x + 0.01f, position.y, position.z);
 
-		if (position.x == 0.5f)
-		{
-			glTranslatef(position.x + 0.01f, position.y + 0.0f, position.z + 0.0f);
-		}
+			if (position.x == 0.5f)
+			{
+				glTranslatef(position.x + 0.01f, position.y + 0.0f, position.z + 0.0f);
+			}
 
-		if (position.x > 1.0f)
-		{
-			//position.x -= 0.1f;
-			//glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
-			glTranslatef(position.x - 0.01f, position.y + 0.0f, position.z + 0.0f);
-		}
-		else if (position.x < -1.0f)
-		{
-			//position.x += 0.1f;
-			//glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
-			glTranslatef(position.x + 0.01f, position.y + 0.0f, position.z + 0.0f);
-		}
+			if (position.x > 1.0f)
+			{
+				//position.x -= 0.1f;
+				//glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
+				glTranslatef(position.x - 0.01f, position.y + 0.0f, position.z + 0.0f);
+			}
+			else if (position.x < -1.0f)
+			{
+				//position.x += 0.1f;
+				//glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
+				glTranslatef(position.x + 0.01f, position.y + 0.0f, position.z + 0.0f);
+			}
 
 		glEnd();
 
@@ -265,21 +254,21 @@ void Screen::Update()
 
 		//glBegin(GL_QUADS);
 
-		//	//top left color and vertex of quad
-		//	glColor3f(1, 0, 0);
-		//	glVertex3f(-0.5f, 0.5f, 0.0f);
+			//	//top left color and vertex of quad
+			//	glColor3f(1, 0, 0);
+			//	glVertex3f(-0.5f, 0.5f, 0.0f);
 
-		//	//top right color and vertex of quad
-		//	glColor3f(0, 1, 0);
-		//	glVertex3f(0.5f, 0.5f, 0.0f);
+			//	//top right color and vertex of quad
+			//	glColor3f(0, 1, 0);
+			//	glVertex3f(0.5f, 0.5f, 0.0f);
 
-		//	//bottom right color and vertex of quad
-		//	glColor3f(0, 0, 1);
-		//	glVertex3f(0.5f, -0.5f, 0.0f);
+			//	//bottom right color and vertex of quad
+			//	glColor3f(0, 0, 1);
+			//	glVertex3f(0.5f, -0.5f, 0.0f);
 
-		//	//bottom left color and vertex of quad
-		//	glColor3f(0, 0, 1);
-		//	glVertex3f(-0.5f, -0.5f, 0.0f);
+			//	//bottom left color and vertex of quad
+			//	glColor3f(0, 0, 1);
+			//	glVertex3f(-0.5f, -0.5f, 0.0f);
 
 		//glEnd();
 

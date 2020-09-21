@@ -6,6 +6,21 @@
 #include <iostream>
 
 
+struct Position
+{
+	float x = 0.0f;
+	float y = 0.0f;
+	float z = 0.0f;
+};
+
+struct Color
+{
+	float r = 0.0f;
+	float g = 0.0f;
+	float b = 0.0f;
+};
+
+
 class Screen
 {
 public:
