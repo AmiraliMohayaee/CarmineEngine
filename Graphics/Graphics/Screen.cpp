@@ -9,6 +9,13 @@ Screen::Screen()
 	context = nullptr;
 }
 
+Screen* Screen::Instance()
+{
+	static Screen* screenInstance = new Screen();
+
+	return screenInstance;
+}
+
 bool Screen::InitScreen()
 {
 	// temporary variables to contain variables from
@@ -167,116 +174,24 @@ bool Screen::InitScreen()
 		std::cout << "OpenGL context successfully set to SDL window" << std::endl;
 	}
 
+	gladLoadGL();
 
 	return true;
 }
 
 
-void Screen::Draw()
+void Screen::ClearBuffer()
 {
-
+	// Clears the frame buffer
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-
-void Screen::Update()
+void Screen::SwapBuffer()
 {
-	Color color;
-	Position position;
-
-	while (1)
-	{
-		color.r += 0.1f;
-		color.g += 0.1f;
-		color.b += 0.1f;
-
-		// Clears the frame buffer
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glBegin(GL_QUADS);
-
-			glBegin(GL_QUADS);
-				//top left color and vertex of quad
-				glColor3f(1, 0, 0);
-				glVertex3f(-0.5f, 0.5f, 0.0f);
-
-				//top right color and vertex of quad
-				glColor3f(0, 1, 0);
-				glVertex3f(0.5f, 0.5f, 0.0f);
-
-				//bottom right color and vertex of quad
-				glColor3f(0, 0, 1);
-				glVertex3f(0.5f, -0.5f, 0.0f);
-
-				//bottom left color and vertex of quad
-				glColor3f(0, 0, 1);
-				glVertex3f(-0.5f, -0.5f, 0.0f);
-			glEnd();
-
-			//glTranslatef(position.x + 0.01f, position.y, position.z);
-
-			if (position.x == 0.5f)
-			{
-				glTranslatef(position.x + 0.01f, position.y + 0.0f, position.z + 0.0f);
-			}
-
-			if (position.x > 1.0f)
-			{
-				//position.x -= 0.1f;
-				//glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
-				glTranslatef(position.x - 0.01f, position.y + 0.0f, position.z + 0.0f);
-			}
-			else if (position.x < -1.0f)
-			{
-				//position.x += 0.1f;
-				//glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
-				glTranslatef(position.x + 0.01f, position.y + 0.0f, position.z + 0.0f);
-			}
-
-		glEnd();
-
-
-		//// Second Tri
-		//glBegin(GL_TRIANGLES);
-
-		//	glColor3f(1, 0, 0);
-		//	glVertex3f(0.0f, 0.5f, 0.0f);
-
-		//	glColor3f(0, 1, 0);
-		//	glVertex3f(0.5f, -0.5f, 0.5f);
-
-		//	glColor3f(0, 0, 1);
-		//	glVertex3f(-0.5f, -0.5f, 0.0f);
-
-		//glEnd();
-
-
-
-
-		//glBegin(GL_QUADS);
-
-			//	//top left color and vertex of quad
-			//	glColor3f(1, 0, 0);
-			//	glVertex3f(-0.5f, 0.5f, 0.0f);
-
-			//	//top right color and vertex of quad
-			//	glColor3f(0, 1, 0);
-			//	glVertex3f(0.5f, 0.5f, 0.0f);
-
-			//	//bottom right color and vertex of quad
-			//	glColor3f(0, 0, 1);
-			//	glVertex3f(0.5f, -0.5f, 0.0f);
-
-			//	//bottom left color and vertex of quad
-			//	glColor3f(0, 0, 1);
-			//	glVertex3f(-0.5f, -0.5f, 0.0f);
-
-		//glEnd();
-
-
-		// swapping buffer each frame
-		SDL_GL_SwapWindow(window);
-	}
+	// swapping buffer each frame
+	SDL_GL_SwapWindow(window);
 }
+
 
 void Screen::Shutdown()
 {

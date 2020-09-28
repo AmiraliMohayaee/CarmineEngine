@@ -1,7 +1,6 @@
 #pragma once
 
-#include <Windows.h>
-#include <gl/GL.h>
+#include "glad.h"
 #include <SDL.h>
 #include <iostream>
 
@@ -24,13 +23,20 @@ struct Color
 class Screen
 {
 public:
-	Screen();
+
+	static Screen* Instance();
+
 	bool InitScreen();
 
-	void Draw();
-	void Update();
+	void ClearBuffer();
+	void SwapBuffer();
 	void Shutdown();
 
+
+private:
+	Screen();
+	Screen(const Screen&);
+	Screen& operator=(const Screen&);
 
 private:
 	// Variables needed to create a window and link 
