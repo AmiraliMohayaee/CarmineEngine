@@ -13,6 +13,14 @@ int main(int argc, char* args[])
 		std::cout << "Failed to Initialize a screen. Check your settings file." << std::endl;
 	}
 
+	// Posting initial print of graphics driver details
+	//display the manufacturer of the graphics hardware
+	std::cout << (const char*)(glGetString(GL_VENDOR)) << std::endl;
+	//display the make and model of the graphics card
+	std::cout << (const char*)(glGetString(GL_RENDERER)) << std::endl;
+	//display the current OpenGL version and mode set
+	std::cout << (const char*)(glGetString(GL_VERSION)) << std::endl;
+
 	
 	Color color;
 	Position position;
@@ -36,32 +44,32 @@ int main(int argc, char* args[])
 		glMatrixMode(GL_MODELVIEW);
 
 
-		//char key = 
-
-		//if (SDL_GetScancodeFromKey(SDL_SCANCODE_W))
-		//{
-		//	std::cout << "W was pressed on the keyboard!" << std::endl;
-		//}
+		Input::Instance()->PassKeyboardMsgDown();
+		
+		if (SDL_GetScancodeFromKey(SDL_SCANCODE_W))
+		{
+			std::cout << "W was pressed on the keyboard!" << std::endl;
+		}
 
 		glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
 
 		glBegin(GL_QUADS);
 		//top left color and vertex of quad
 
-		glColor3f(color.r, color.g, color.b);
-		glVertex3f(-0.5f, 0.5f, 0.0f);
+			glColor3f(color.r, color.g, color.b);
+			glVertex3f(-0.5f, 0.5f, 0.0f);
 
-		//top right color and vertex of quad
-		glColor3f(0, 1, 0);
-		glVertex3f(0.5f, 0.5f, 0.0f);
+			//top right color and vertex of quad
+			glColor3f(0, 1, 0);
+			glVertex3f(0.5f, 0.5f, 0.0f);
 
-		//bottom right color and vertex of quad
-		glColor3f(0, 0, 1);
-		glVertex3f(0.5f, -0.5f, 0.0f);
+			//bottom right color and vertex of quad
+			glColor3f(0, 0, 1);
+			glVertex3f(0.5f, -0.5f, 0.0f);
 
-		//bottom left color and vertex of quad
-		glColor3f(0, 0, 1);
-		glVertex3f(-0.5f, -0.5f, 0.0f);
+			//bottom left color and vertex of quad
+			glColor3f(0, 0, 1);
+			glVertex3f(-0.5f, -0.5f, 0.0f);
 
 
 		glEnd();

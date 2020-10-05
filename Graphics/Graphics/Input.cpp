@@ -8,10 +8,32 @@ Input* Input::Instance()
 	return inputInstance;
 }
 
-char Input::GetKeyCode()
+std::string Input::GetKeyCode(std::string command)
 {
 	
-	return ;
+	return m_inputMessage;
+}
+
+void Input::PassKeyboardMsgDown(SDL_Event key)
+{
+	// Debug Checking of inputs
+	std::cout << "Key Pressed!" << std::endl;
+	SDL_GetScancodeFromKey(key.key.keysym.scancode);
+	std::cout << "Key scancode press is: "
+		<< SDL_GetScancodeName(key.key.keysym.scancode)
+		<< " with the scan name of "
+		<< SDL_GetKeyName(key.key.keysym.sym)
+		<< std::endl;
+
+	if (key.key.keysym.scancode == 'Q')
+	{
+		std::cout << "Seems liek you wanna use a Queue, heh?" << std::endl;
+	}
+}
+
+void Input::PassKeyboardMsgUp(SDL_Event key)
+{
+
 }
 
 void Input::Update()
@@ -31,13 +53,7 @@ void Input::Update()
 
 			case SDL_KEYDOWN:
 			{
-				std::cout << "Key Pressed!" << std::endl;
-				SDL_GetScancodeFromKey(events.key.keysym.scancode);
-				std::cout << "Key scancode press is: " 
-					<< SDL_GetScancodeName(events.key.keysym.scancode)
-					<< " with the scan name of " 
-					<< SDL_GetKeyName(events.key.keysym.sym) 
-					<< std::endl;
+				PassKeyboardMsgDown(events);
 				break;
 			}
 
