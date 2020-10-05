@@ -19,6 +19,15 @@
     <Filter Include="Source Files\Core">
       <UniqueIdentifier>{17584bf9-9ff9-4fce-a1c7-aca9acd7921d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{dcb18c1f-693a-4fa8-a871-e018e3276fba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{4761fa47-710c-46c5-98d6-b8615c52d97e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{463cf756-6c7d-4b9e-aa50-6b790c6ea6f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -36,6 +45,12 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -47,5 +62,19 @@
     <ClInclude Include="Input.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\main.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\mian.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

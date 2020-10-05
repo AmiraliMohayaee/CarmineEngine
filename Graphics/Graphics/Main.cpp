@@ -1,5 +1,7 @@
 #include "Screen.h"
+#include "Shader.h"
 #include "Input.h"
+#include "Debug.h"
 #include <iostream>
 
 
@@ -13,6 +15,28 @@ int main(int argc, char* args[])
 		std::cout << "Failed to Initialize a screen. Check your settings file." << std::endl;
 	}
 
+	if (!Shader::Instance()->CreateProgram())
+	{
+		return 0;
+	}
+
+	if (!Shader::Instance()->CreateShaders())
+	{
+		return 0;
+	}
+
+	if (!Shader::Instance()->CompileShaders())
+	{
+		return 0;
+	}
+
+	Shader::Instance()->AttachShaders();
+
+	if (!Shader::Instance()->LinkProgram())
+	{
+		return 0;
+	}
+
 	// Posting initial print of graphics driver details
 	//display the manufacturer of the graphics hardware
 	std::cout << (const char*)(glGetString(GL_VENDOR)) << std::endl;
@@ -21,7 +45,6 @@ int main(int argc, char* args[])
 	//display the current OpenGL version and mode set
 	std::cout << (const char*)(glGetString(GL_VERSION)) << std::endl;
 
-	
 	Color color;
 	Position position;
 
@@ -44,7 +67,7 @@ int main(int argc, char* args[])
 		glMatrixMode(GL_MODELVIEW);
 
 
-		Input::Instance()->PassKeyboardMsgDown();
+		//Input::Instance()->PassKeyboardMsgDown();
 		
 		if (SDL_GetScancodeFromKey(SDL_SCANCODE_W))
 		{
@@ -113,6 +136,10 @@ int main(int argc, char* args[])
 		Screen::Instance()->SwapBuffer();
 	}
 
+
+	Shader::Instance()->DetachShaders();
+	Shader::Instance()->DestroyShaders();
+	Shader::Instance()->DestroyProgram();
 	Screen::Instance()->Shutdown();
 
 	return 0;

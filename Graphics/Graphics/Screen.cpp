@@ -18,9 +18,9 @@ Screen* Screen::Instance()
 
 bool Screen::InitScreen()
 {
-	// temporary variables to contain variables from
-	// file. tempString will hold the entirety of the 
-	// file's contents
+	/////////////////////////////////////////////////////////
+	// Temporary File Variables
+	/////////////////////////////////////////////////////////
 	std::string tempString;
 	std::string appName;
 	std::string glMode;
@@ -30,9 +30,10 @@ bool Screen::InitScreen()
 	int oglMinorVersion = 0;
 	int isFullScreen = 0;
 
-
-	// Setting up the settings file which will include initialization 
-	// parameters
+	/////////////////////////////////////////////////////////
+	// Setting up the settings file which will include  
+	// initialization parameters
+	/////////////////////////////////////////////////////////
 	std::ifstream settingsFile;
 	settingsFile.open("Assets/Scripts/settings.txt", std::ios_base::in);
 	
