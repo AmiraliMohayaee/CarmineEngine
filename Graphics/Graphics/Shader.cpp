@@ -33,36 +33,39 @@ bool Shader::CreateShaders()
 
 	if (!m_vertexShaderID)
 	{
-		// Vertex Shader Failed
+		Debug::Log("Failed to create the Vertex Shader.");
 		// Add a system pause
 		return false;
 	}
 
 	if (!m_fragmentShaderID)
 	{
-		// Fragment Shader Failed
+		Debug::Log("Failed to create the Fragment Shader.");
 		// Add a system pause
 		return false;
 	}
-
 
 	return true;
 }
 
 bool Shader::CompileShaders()
 {
+	//=====================================================
+	//	Loading and Compiling Fragment Shader Details
+	//=====================================================
+
 	std::string line;
 	std::string source;
 	std::fstream file("Assets/Shaders/main.vert");
 
 	if (!file)
 	{
-		// something went wrong
+		Debug::Log("Failed to open the vertex shader file.");
 		// add a system pause
 		return false;
 	}
 
-	while (file.eof())
+	while (!file.eof())
 	{
 		std::getline(file, line);
 		source += line + '\n';
@@ -92,7 +95,7 @@ bool Shader::CompileShaders()
 
 	if (compileResult == GL_TRUE)
 	{
-		// output a message that the shader compilation was successful
+		Debug::Log("Vertex Shader compilation successful.");
 	}
 	else
 	{
@@ -101,11 +104,65 @@ bool Shader::CompileShaders()
 
 		glGetShaderInfoLog(m_vertexShaderID, bufferSize, &bufferSize, errorMessage);
 
-		// cout the error message
+		Debug::Log(errorMessage);
 	}
 
+	//=====================================================
+	//	Loading and Compiling Fragment Shader Details
+	//=====================================================
+
+	std::string line2;
+	std::string source2;
+	std::fstream file2("Assets/Shaders/main.frag");
+
+	if (!file2)
+	{
+		Debug::Log("Failed to open the fragment shader file.");
+		// add a system pause
+		return false;
+	}
+
+	while (!file2.eof())
+	{
+		std::getline(file2, line2);
+		source2 += line2 + '\n';
+	}
+
+	file2.close();
+
+	// Converting the file string read from file
+	// to simple c-string
+	const GLchar* glSource2 = static_cast<const GLchar*>(source2.c_str());
+
+	// bing the source to a vertex shader object
+	glShaderSource(m_fragmentShaderID, 1, &glSource2, nullptr);
+
+	// compile vertex shader code
+	glCompileShader(m_fragmentShaderID);
+
+
+	///////////////////////////////////////////
+	//	Error catching/trapping code
 	///////////////////////////////////////////
 
+	// For storing the error code
+	GLint compileResult2 = 0;
+
+	glGetShaderiv(m_fragmentShaderID, GL_COMPILE_STATUS, &compileResult2);
+
+	if (compileResult2 == GL_TRUE)
+	{
+		Debug::Log("Fragment shader compilation successful.");
+	}
+	else
+	{
+		GLchar errorMessage[1000];
+		GLsizei bufferSize = 1000;
+
+		glGetShaderInfoLog(m_fragmentShaderID, bufferSize, &bufferSize, errorMessage);
+
+		Debug::Log(errorMessage);
+	}
 
 
 	return true;
@@ -122,6 +179,31 @@ bool Shader::CompileShader(std::string filename)
 		Debug::Log("Failed to read file");
 	}
 
+	// Check for file format
+	if (filename.find("."))
+	{
+		std::string format;
+
+		format = filename.substr(filename.find("."), 4);
+
+		if (format == "vert")
+		{
+			// make vertex shader
+		}
+		else if (format == "frag")
+		{
+			// make fragment shader
+		}
+	}
+
+	// Add the newly found shader type to the map container of shaders 
+
+
+	while (!file.eof())
+	{
+		std::getline(file, line);
+		source += line + '\n';
+	}
 
 
 	return true;
@@ -135,6 +217,7 @@ void Shader::AttachShaders()
 
 bool Shader::LinkProgram()
 {
+	//=====================================================================================
 	// link shader program and enable it for use
 	glLinkProgram(m_shaderProgramID);
 	glUseProgram(m_shaderProgramID);
@@ -147,7 +230,7 @@ bool Shader::LinkProgram()
 
 	if (linkResult == GL_TRUE)
 	{
-		// output a message that the shader compilation was successful
+		Debug::Log("Shader Program linked successfully");
 	}
 	else
 	{
@@ -156,10 +239,9 @@ bool Shader::LinkProgram()
 
 		glGetProgramInfoLog(m_shaderProgramID, bufferSize, &bufferSize, errorMessage);
 
-		// cout the error message
+		Debug::Log(errorMessage);
 	}
-
-	///////////////////////////////////////////
+	//=====================================================================================
 
 
 	return true;

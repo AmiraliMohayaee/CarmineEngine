@@ -160,8 +160,8 @@
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Shaders\main.frag" />
     <None Include="Assets\Shaders\main.vert" />
-    <None Include="Assets\Shaders\mian.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

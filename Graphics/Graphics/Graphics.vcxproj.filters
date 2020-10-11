@@ -73,7 +73,7 @@
     <None Include="Assets\Shaders\main.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Assets\Shaders\mian.frag">
+    <None Include="Assets\Shaders\main.frag">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

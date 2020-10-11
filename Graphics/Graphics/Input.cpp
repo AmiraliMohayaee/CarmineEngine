@@ -1,5 +1,5 @@
 #include "Input.h"
-#include <iostream>
+#include "Debug.h"
 
 Input* Input::Instance()
 {
@@ -17,7 +17,7 @@ std::string Input::GetKeyCode(std::string command)
 void Input::PassKeyboardMsgDown(SDL_KeyboardEvent* key)
 {
 	// Debug Checking of inputs
-	std::cout << "Key Pressed!" << std::endl;
+	Debug::Log("Key Pressed!");
 	SDL_GetScancodeFromKey(key->keysym.scancode);
 	std::cout << "Key scancode press is: "
 		<< SDL_GetScancodeName(key->keysym.scancode)
@@ -27,7 +27,7 @@ void Input::PassKeyboardMsgDown(SDL_KeyboardEvent* key)
 
 	if (key->keysym.scancode == 'Q')
 	{
-		std::cout << "Seems liek you wanna use a Queue, heh?" << std::endl;
+		Debug::Log("Seems liek you wanna use a Queue, heh?");
 	}
 }
 

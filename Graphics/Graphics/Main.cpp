@@ -12,21 +12,24 @@ int main(int argc, char* args[])
 	if (!Screen::Instance()->InitScreen())
 	{
 		return false;
-		std::cout << "Failed to Initialize a screen. Check your settings file." << std::endl;
+		Debug::Log("Failed to Initialize a screen. Check your settings file.");
 	}
 
 	if (!Shader::Instance()->CreateProgram())
 	{
+		Debug::Log("Failed to create shader program.");
 		return 0;
 	}
 
 	if (!Shader::Instance()->CreateShaders())
 	{
+		Debug::Log("Failed to create shaders.");
 		return 0;
 	}
 
 	if (!Shader::Instance()->CompileShaders())
 	{
+		Debug::Log("Failed to compile shaders.");
 		return 0;
 	}
 
@@ -34,6 +37,7 @@ int main(int argc, char* args[])
 
 	if (!Shader::Instance()->LinkProgram())
 	{
+		Debug::Log("Failed to link the shader program.");
 		return 0;
 	}
 

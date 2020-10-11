@@ -2,12 +2,13 @@
 
 #include "glad.h"
 #include <string>
+#include <map>
 
 
 class Shader
 {
 public:
-
+	
 	static Shader* Instance();
 
 public:
@@ -24,6 +25,7 @@ public:
 	void DestroyShaders();
 	void DestroyProgram();
 
+
 private:
 	Shader();
 	Shader(const Shader&);
@@ -35,5 +37,6 @@ private:
 	GLuint m_vertexShaderID;
 	GLuint m_fragmentShaderID;
 
+	std::map<int, char*> m_shaderColection;
 };
 
