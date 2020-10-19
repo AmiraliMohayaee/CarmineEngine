@@ -175,7 +175,26 @@ bool Screen::InitScreen()
 		std::cout << "OpenGL context successfully set to SDL window" << std::endl;
 	}
 
-	gladLoadGL();
+	if (!gladLoadGL())
+	{
+		std::cout << "Failed To Load Glad Library module." << std::endl;
+	}
+
+	// Setting up Imgui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	(void)io;
+
+	std::string version = (std::to_string(oglMajorVersion) +
+		std::to_string(oglMinorVersion));
+	const char* glsl_ver = version.c_str();
+
+
+	ImGui::StyleColorsDark();
+	
+	ImGui_ImplSDL2_InitForOpenGL(window, context);
+	ImGui_ImplOpenGL3_Init(glsl_ver);
 
 	return true;
 }
@@ -196,6 +215,10 @@ void Screen::SwapBuffer()
 
 void Screen::Shutdown()
 {
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	//free OpenGL context
 	SDL_GL_DeleteContext(context);
 	//free game screen and window

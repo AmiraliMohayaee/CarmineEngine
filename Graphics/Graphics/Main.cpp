@@ -52,6 +52,9 @@ int main(int argc, char* args[])
 	Color color;
 	Position position;
 
+
+
+	// This loop is 
 	while (isProgramRunning)
 	{
 		color.r += 5.5f;
@@ -68,73 +71,24 @@ int main(int argc, char* args[])
 			isProgramRunning = false;
 		}
 
-		glMatrixMode(GL_MODELVIEW);
 
-
-		//Input::Instance()->PassKeyboardMsgDown();
-		
-		if (SDL_GetScancodeFromKey(SDL_SCANCODE_W))
+		float pos[6] =
 		{
-			std::cout << "W was pressed on the keyboard!" << std::endl;
-		}
+			-0.5f, -0.5f,
+			0.0f, 0.5f,
+			0.5f, -0.5f
+		};
 
-		glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
+		// Setting up a buffer for the vertex shader
+		unsigned int buffer;
+		glGenBuffers(1, &buffer);
+		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), pos, GL_STATIC_DRAW);
 
-		glBegin(GL_QUADS);
-		//top left color and vertex of quad
-
-			glColor3f(color.r, color.g, color.b);
-			glVertex3f(-0.5f, 0.5f, 0.0f);
-
-			//top right color and vertex of quad
-			glColor3f(0, 1, 0);
-			glVertex3f(0.5f, 0.5f, 0.0f);
-
-			//bottom right color and vertex of quad
-			glColor3f(0, 0, 1);
-			glVertex3f(0.5f, -0.5f, 0.0f);
-
-			//bottom left color and vertex of quad
-			glColor3f(0, 0, 1);
-			glVertex3f(-0.5f, -0.5f, 0.0f);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
 
 
-		glEnd();
-
-		//glTranslatef(position.x + 0.01f, position.y, position.z);
-
-		if (position.x == 0.5f)
-		{
-			glTranslatef(position.x + 0.01f, position.y + 0.0f, position.z + 0.0f);
-		}
-
-		if (position.x > 1.0f)
-		{
-			//position.x -= 0.1f;
-			//glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
-			glTranslatef(position.x - 0.01f, position.y + 0.0f, position.z + 0.0f);
-		}
-		else if (position.x < -1.0f)
-		{
-			//position.x += 0.1f;
-			//glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
-			glTranslatef(position.x + 0.01f, position.y + 0.0f, position.z + 0.0f);
-		}
-
-
-		//// Second Tri
-		glBegin(GL_TRIANGLES);
-
-		glColor3f(1, 0, 0);
-		glVertex3f(0.0f, 0.5f, 0.0f);
-
-		glColor3f(0, 1, 0);
-		glVertex3f(0.5f, -0.5f, 0.5f);
-
-		glColor3f(0, 0, 1);
-		glVertex3f(-0.5f, -0.5f, 0.0f);
-
-		glEnd();
 
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();

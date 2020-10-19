@@ -1,14 +1,8 @@
-#version 460
+#version 460 core
 
-//float vertices = {    
-//       // positions         // colors
-//     0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-//    -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-//     0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
-//     }
-
+layout(location = 0) in vec4 position;
 
 void main() 
 {
-    
+    gl_Position = position; 
 }
