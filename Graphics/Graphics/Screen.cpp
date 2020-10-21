@@ -179,22 +179,29 @@ bool Screen::InitScreen()
 	{
 		std::cout << "Failed To Load Glad Library module." << std::endl;
 	}
+	else
+	{
+		gladLoadGL();
+	}
 
 	// Setting up Imgui context
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();
-	(void)io;
+	//IMGUI_CHECKVERSION();
+	//ImGui::CreateContext();
+	//ImGuiIO& io = ImGui::GetIO();
+	//(void)io;
 
-	std::string version = (std::to_string(oglMajorVersion) +
-		std::to_string(oglMinorVersion));
-	const char* glsl_ver = version.c_str();
+	//std::string version = (std::to_string(oglMajorVersion) +
+	//	std::to_string(oglMinorVersion));
+	//const char* glsl_ver = version.c_str();
 
 
-	ImGui::StyleColorsDark();
-	
-	ImGui_ImplSDL2_InitForOpenGL(window, context);
-	ImGui_ImplOpenGL3_Init(glsl_ver);
+	//ImGui::StyleColorsDark();
+	//
+	//ImGui_ImplSDL2_InitForOpenGL(window, context);
+	//if (!ImGui_ImplOpenGL3_Init(glsl_ver))
+	//{
+	//	std::cout << "ImGui failed to get correct Ogl version" << std::endl;
+	//}
 
 	return true;
 }
@@ -215,9 +222,9 @@ void Screen::SwapBuffer()
 
 void Screen::Shutdown()
 {
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
+	//ImGui_ImplOpenGL3_Shutdown();
+	//ImGui_ImplSDL2_Shutdown();
+	//ImGui::DestroyContext();
 
 	//free OpenGL context
 	SDL_GL_DeleteContext(context);

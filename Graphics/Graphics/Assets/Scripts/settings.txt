@@ -4,4 +4,4 @@ ScreenWidth=800
 ScreenHeight=600
 FullScreen=0
 OpenGLMode=Compatible
-OpenGLVersion=4.6
+OpenGLVersion=4.3

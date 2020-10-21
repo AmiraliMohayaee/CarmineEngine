@@ -34,15 +34,18 @@
     <Filter Include="Source Files\imgui">
       <UniqueIdentifier>{51fdddbc-08d8-4409-a4b8-5b7af77b70fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\glad">
+      <UniqueIdentifier>{e0a3ae9c-66cb-43b4-8e63-4610b305f949}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\glad">
+      <UniqueIdentifier>{8f89a964-ddfa-4bf1-a2d1-d85f448b4d00}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="Screen.cpp">
-      <Filter>Source Files\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="glad.c">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Source Files\glad</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -111,7 +117,10 @@
       <Filter>Header Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="glad.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\glad</Filter>
+    </ClInclude>
+    <ClInclude Include="khrplatform.h">
+      <Filter>Header Files\glad</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
