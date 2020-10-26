@@ -28,12 +28,6 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{463cf756-6c7d-4b9e-aa50-6b790c6ea6f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\imgui">
-      <UniqueIdentifier>{fd79ceec-a2f5-4999-9238-0ce10f4910b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\imgui">
-      <UniqueIdentifier>{51fdddbc-08d8-4409-a4b8-5b7af77b70fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\glad">
       <UniqueIdentifier>{e0a3ae9c-66cb-43b4-8e63-4610b305f949}</UniqueIdentifier>
     </Filter>
@@ -57,24 +51,6 @@
     <ClCompile Include="Debug.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="imgui\imgui.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_demo.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_draw.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_impl_sdl.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\imgui_widgets.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>Source Files\glad</Filter>
     </ClCompile>
@@ -91,30 +67,6 @@
     </ClInclude>
     <ClInclude Include="Debug.h">
       <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imconfig.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui_impl_opengl3.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui_impl_sdl.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui_internal.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imstb_rectpack.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imstb_textedit.h">
-      <Filter>Header Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imstb_truetype.h">
-      <Filter>Header Files\imgui</Filter>
     </ClInclude>
     <ClInclude Include="glad.h">
       <Filter>Header Files\glad</Filter>
