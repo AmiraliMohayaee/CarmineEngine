@@ -247,6 +247,11 @@ bool Shader::LinkProgram()
 	return true;
 }
 
+const GLuint Shader::GetShaderProgramID()
+{
+	return m_shaderProgramID;
+}
+
 void Shader::DetachShaders()
 {
 	glDetachShader(m_shaderProgramID, m_vertexShaderID);

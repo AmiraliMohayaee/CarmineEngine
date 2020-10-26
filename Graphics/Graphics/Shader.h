@@ -20,6 +20,7 @@ public:
 	bool CompileShader(std::string filename);
 	void AttachShaders();
 	bool LinkProgram();
+	const GLuint GetShaderProgramID();
 
 	void DetachShaders();
 	void DestroyShaders();

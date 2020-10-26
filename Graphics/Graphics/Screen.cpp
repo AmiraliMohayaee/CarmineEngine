@@ -139,7 +139,6 @@ bool Screen::InitScreen()
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
 	}
 
-
 	// Setting up OGL to version 4.6
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, oglMajorVersion);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, oglMinorVersion);
@@ -151,6 +150,7 @@ bool Screen::InitScreen()
 		resolutionW, resolutionH,
 		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
+	
 
 	if (!window)
 	{
@@ -184,24 +184,8 @@ bool Screen::InitScreen()
 		gladLoadGL();
 	}
 
-	// Setting up Imgui context
-	//IMGUI_CHECKVERSION();
-	//ImGui::CreateContext();
-	//ImGuiIO& io = ImGui::GetIO();
-	//(void)io;
-
-	//std::string version = (std::to_string(oglMajorVersion) +
-	//	std::to_string(oglMinorVersion));
-	//const char* glsl_ver = version.c_str();
-
-
-	//ImGui::StyleColorsDark();
-	//
-	//ImGui_ImplSDL2_InitForOpenGL(window, context);
-	//if (!ImGui_ImplOpenGL3_Init(glsl_ver))
-	//{
-	//	std::cout << "ImGui failed to get correct Ogl version" << std::endl;
-	//}
+	// Codify this
+	glClearColor(0.0f, 1.0f, 1.0f, 0.0f);
 
 	return true;
 }
@@ -222,10 +206,6 @@ void Screen::SwapBuffer()
 
 void Screen::Shutdown()
 {
-	//ImGui_ImplOpenGL3_Shutdown();
-	//ImGui_ImplSDL2_Shutdown();
-	//ImGui::DestroyContext();
-
 	//free OpenGL context
 	SDL_GL_DeleteContext(context);
 	//free game screen and window

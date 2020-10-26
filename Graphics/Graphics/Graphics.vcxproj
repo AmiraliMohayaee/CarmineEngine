@@ -144,7 +144,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="File.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -152,7 +154,9 @@
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Buffer.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="File.h" />
     <ClInclude Include="glad.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="khrplatform.h" />
