@@ -1,6 +1,7 @@
 #include "Shader.h"
 #include <fstream>
 #include "Debug.h"
+#include <Windows.h>
 
 
 Shader* Shader::Instance()
@@ -34,14 +35,14 @@ bool Shader::CreateShaders()
 	if (!m_vertexShaderID)
 	{
 		Debug::Log("Failed to create the Vertex Shader.");
-		// Add a system pause
+		system("pause");
 		return false;
 	}
 
 	if (!m_fragmentShaderID)
 	{
 		Debug::Log("Failed to create the Fragment Shader.");
-		// Add a system pause
+		system("pause");
 		return false;
 	}
 
@@ -226,7 +227,7 @@ bool Shader::LinkProgram()
 	GLint linkResult = 0;
 
 	// checking its compilation status
-	glGetProgramiv(m_shaderProgramID, GL_COMPILE_STATUS, &linkResult);
+	glGetProgramiv(m_shaderProgramID, GL_LINK_STATUS, &linkResult);
 
 	if (linkResult == GL_TRUE)
 	{
@@ -250,6 +251,60 @@ bool Shader::LinkProgram()
 const GLuint Shader::GetShaderProgramID()
 {
 	return m_shaderProgramID;
+}
+
+//===========================================
+//	Looks up the attribute container and
+//	returns the appropriate element
+//===========================================
+const GLuint Shader::GetAttributeID(std::string attribute)
+{
+	std::map<char, GLuint>::iterator it;
+	
+	GLuint attributeElement = 0;
+
+	// Look up map for the appropriate element
+	it = m_shaderValues.find(attribute.c_str);
+	if (it != m_shaderValues.end())
+	{
+		m_shaderValues.erase(it);
+	}
+
+	attributeElement = m_shaderValues.find(attribute.c_str)->second;
+
+	if (attributeElement == -1)
+	{
+		Debug::Log("Serach for shader attribute returned invalid: ", attribute);
+	}
+
+	return attributeElement;
+}
+
+const GLuint Shader::BindAttribute(std::string attribute)
+{
+	GLuint attributeValue = glGetAttribLocation(m_shaderProgramID, attribute.c_str());
+
+	// Add value to map container
+
+
+	if (attributeValue == -1)
+	{
+		Debug::Log("Attribute value inserted returning a negative value:", attribute);
+	}
+
+	return attributeValue;
+}
+
+const GLuint Shader::BingUniform(std::string uniform)
+{
+	GLuint uniformValue = glad_glGetUniformLocation(m_shaderProgramID, uniform.c_str());
+
+	if (uniformValue == -1)
+	{
+		Debug::Log("Uniform value inserted returning a negative value:", uniform);
+	}
+
+	return uniformValue;
 }
 
 void Shader::DetachShaders()

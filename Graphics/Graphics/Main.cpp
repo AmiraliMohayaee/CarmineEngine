@@ -49,18 +49,72 @@ int main(int argc, char* args[])
 	//display the current OpenGL version and mode set
 	std::cout << (const char*)(glGetString(GL_VERSION)) << std::endl;
 
-	Color color;
-	Position position;
+
+	//============================================================================
+	//	Rendering
+	//============================================================================
+	// Seperate vertex data buffer object
+	GLfloat vertices[] = { -0.5f,  0.5f, 0.0f,
+							0.5f,  0.5f, 0.0f,
+							0.5f, -0.5f, 0.0f,
+							-0.5f, -0.5f, 0.0f
+	};
+
+	// Passing in color data
+	GLfloat colors[] = { 1.0f, 0.0f, 0.0f,
+						0.0f, 0.0f, 1.0f,
+						0.0f, 1.0f, 0.0f,
+						0.0f, 1.0f, 1.0f
+	};
+
+	// EBO indecies shared between the two triangles
+	GLuint indicies[] = { 0, 1, 3,
+		3, 1, 2 
+	};
 
 
+	// Attributes send into shader 
+	GLuint vertexAttributeID = Shader::Instance()->BindAttribute("vertexIn");
+	GLuint colorAttributeID = Shader::Instance()->BindAttribute("colorIn");
+
+	glEnableVertexAttribArray(vertexAttributeID);
+	glEnableVertexAttribArray(colorAttributeID);
+
+	// Creating buffer and setting up the size
+	GLuint VAO = 0;
+	GLuint vertexVBO = 0;
+	GLuint colorsVBO = 0;
+	GLuint EBO = 0;
+
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &vertexVBO);
+	glGenBuffers(1, &colorsVBO);
+	glGenBuffers(1, &EBO);
+
+
+	glBindVertexArray(VAO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glVertexAttribPointer(vertexAttributeID, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(vertexAttributeID);
+
+		glBindBuffer(GL_ARRAY_BUFFER, colorsVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+		glVertexAttribPointer(colorAttributeID, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		glEnableVertexAttribArray(colorAttributeID);
+
+		// Setting up the EBO buffer elements, which is differentiated from the regular
+		// array elements
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
+
+
+	glBindVertexArray(0);
 
 	// This loop is 
 	while (isProgramRunning)
 	{
-		color.r += 5.5f;
-		color.g += 0.0f;
-		color.b += 0.0f;
-
 		// Clearing the buffer
 		Screen::Instance()->ClearBuffer();
 
@@ -71,51 +125,25 @@ int main(int argc, char* args[])
 			isProgramRunning = false;
 		}
 
-
-		float pos[6] =
-		{
-			-0.5f, -0.5f,
-			0.0f, 0.5f,
-			0.5f, -0.5f
-		};
-
-		// Alternative setting for send 
-		// Setting up a uniform ID handle to be used in the shader program
-		GLint uniformID = glGetUniformLocation(Shader::Instance()->GetShaderProgramID(), 
-			"myUniform");
-
-		if (uniformID == -1)
-		{
-			Debug::Log("Error getting uniform ID handle of shader program.");
-		}
-
-		//send 4x4 matrix
-		GLfloat matrix[] = { -0.5f,  0.5f, -1.0f, -8.5f,
-			2.3f, -5.3f,  2.1f,  7.4f,
-			1.2f,  5.6f,  0.2f, -0.9f,
-			0.0f,  9.8f,  2.1f, -4.2f };
+		glBindVertexArray(VAO); 
 		
-		glUniformMatrix4fv(uniformID, 1, GL_FALSE, matrix);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); 
 		
-
-
-
-
-		// Setting up a buffer for the vertex shader
-		unsigned int buffer;
-		glGenBuffers(1, &buffer);
-		glBindBuffer(GL_ARRAY_BUFFER, buffer);
-		glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), pos, GL_STATIC_DRAW);
-
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
-
-		
+		glBindVertexArray(0);
 
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();
 	}
 
+	// When we don't need the vert and color attributes
+	// Ideal for use in a dtor
+	glDisableVertexAttribArray(colorAttributeID);
+	glDisableVertexAttribArray(vertexAttributeID);
+
+	glDeleteBuffers(1, &vertexVBO);
+	glDeleteBuffers(1, &colorsVBO);
+	glDeleteBuffers(1, &EBO);
+	glDeleteVertexArrays(1, &VAO);
 
 	Shader::Instance()->DetachShaders();
 	Shader::Instance()->DestroyShaders();

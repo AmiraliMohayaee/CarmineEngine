@@ -179,13 +179,7 @@ bool Screen::InitScreen()
 	{
 		std::cout << "Failed To Load Glad Library module." << std::endl;
 	}
-	else
-	{
-		gladLoadGL();
-	}
 
-	// Codify this
-	glClearColor(0.0f, 1.0f, 1.0f, 0.0f);
 
 	return true;
 }

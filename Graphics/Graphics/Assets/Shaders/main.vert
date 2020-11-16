@@ -1,10 +1,15 @@
-#version 460 core
+#version 460
 
-layout(location = 0) in vec4 position;
 
-uniform vec3 myUniform;
+in vec3 vertexIn;
+in vec3 colorIn;
+out vec3 colorOut;
 
-void main() 
+
+void main(void)
 {
-    gl_Position = position; 
+    // Outputting the same color as 
+    colorOut = colorIn;
+
+    gl_Position = vec4(vertexIn, 1.0);
 }

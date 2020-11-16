@@ -1,8 +1,11 @@
-#version 460 core
+#version 460
 
-layout(location = 0) out vec4 color;
 
-void main() 
+in vec3 colorOut;
+out vec4 pixelColor;
+
+
+void main(void) 
 {
-	color = vec4(1.0, 0.0, 0.0, 1.0);
+	pixelColor = vec4(colorOut, 1.0);
 }

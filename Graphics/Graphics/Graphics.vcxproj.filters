@@ -34,6 +34,12 @@
     <Filter Include="Source Files\glad">
       <UniqueIdentifier>{8f89a964-ddfa-4bf1-a2d1-d85f448b4d00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Shapes">
+      <UniqueIdentifier>{b71c72c9-3670-41ac-a497-1b922e744922}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shapes">
+      <UniqueIdentifier>{fa26c6c0-c163-4081-8348-200e60fedb9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">

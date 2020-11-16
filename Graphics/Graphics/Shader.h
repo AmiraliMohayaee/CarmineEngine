@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glad.h"
+#include <glm.hpp>
 #include <string>
 #include <map>
 
@@ -20,7 +21,13 @@ public:
 	bool CompileShader(std::string filename);
 	void AttachShaders();
 	bool LinkProgram();
+
 	const GLuint GetShaderProgramID();
+
+	const GLuint GetAttributeID(std::string attribute);
+
+	const GLuint BindAttribute(std::string attribute);
+	const GLuint BingUniform(std::string uniform);
 
 	void DetachShaders();
 	void DestroyShaders();
@@ -38,6 +45,6 @@ private:
 	GLuint m_vertexShaderID;
 	GLuint m_fragmentShaderID;
 
-	std::map<int, char*> m_shaderColection;
+	// Container storing the ID and attributes of shader elements
+	std::map<char, GLuint> m_shaderValues;
 };
-

@@ -10,3 +10,8 @@ void Debug::Log(int x, int y, int z, std::string line)
 {
 	std::cout << line << " " << x << ", " << y << ", " << z << std::endl;
 }
+
+void Debug::Log(std::string line, std::string value)
+{
+	std::cout << line << value << std::endl;
+}

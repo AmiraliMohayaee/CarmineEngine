@@ -22,11 +22,13 @@ void Input::PassKeyboardMsgDown(SDL_KeyboardEvent* key)
 
 	// This is not working yet
 	// Why is that?
-	if (key->keysym.scancode == 'Q')
+	if (key->keysym.sym == 'Q')
 	{
 		Debug::Log("Seems liek you wanna use a Queue, heh?");
 	}
 }
+
+
 
 void Input::CheckKeyboardScancode(SDL_Scancode* scanCode)
 {
@@ -64,6 +66,19 @@ void Input::Update()
 			case SDL_MOUSEMOTION:
 			{
 				std::cout << "Mouse motion in progress!" << std::endl;
+				break;
+			}
+
+
+			case SDL_MOUSEBUTTONDOWN:
+			{
+				Debug::Log("Mouse Button Down event detected.");
+				break;
+			}
+
+			case SDL_MOUSEBUTTONUP:
+			{
+				Debug::Log("Mouse Button is up");
 				break;
 			}
 		}
