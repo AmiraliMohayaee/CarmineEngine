@@ -15,3 +15,9 @@ void Debug::Log(std::string line, std::string value)
 {
 	std::cout << line << value << std::endl;
 }
+
+void Debug::Log(std::string line, std::string value, GLuint ID)
+{
+	std::cout << line << value << ": " << ID << std::endl;
+}
+

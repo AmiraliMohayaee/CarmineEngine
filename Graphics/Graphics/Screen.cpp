@@ -7,6 +7,14 @@ Screen::Screen()
 {
 	window = nullptr;
 	context = nullptr;
+
+	m_applicationName = "";
+	m_glMode = "";
+	m_resolutionWidth = 0;
+	m_resolutionHeight = 0;
+	m_oGLMajorVersion = 0;
+	m_oGLMinorVersion = 0;
+	m_isFullScreen = 0;
 }
 
 Screen* Screen::Instance()
@@ -22,13 +30,7 @@ bool Screen::InitScreen()
 	// Temporary File Variables
 	/////////////////////////////////////////////////////////
 	std::string tempString;
-	std::string appName;
-	std::string glMode;
-	int resolutionW = 0;
-	int resolutionH = 0;
-	int oglMajorVersion = 0;
-	int oglMinorVersion = 0;
-	int isFullScreen = 0;
+
 
 	/////////////////////////////////////////////////////////
 	// Setting up the settings file which will include  
@@ -54,40 +56,40 @@ bool Screen::InitScreen()
 		if (tempString.find("AppTitle") < tempString.length())
 		{
 			pos = tempString.find("=");
-			appName = tempString.substr(pos + 1, tempString.length());
+			m_applicationName = tempString.substr(pos + 1, tempString.length());
 		}
 
 		if (tempString.find("ScreenWidth") < tempString.length())
 		{
 			pos = tempString.find("=");
 			std::string tempwidth = tempString.substr(pos + 1, tempString.length());
-			resolutionW = std::stoi(tempwidth);
+			m_resolutionWidth = std::stoi(tempwidth);
 		}
 
 		if (tempString.find("ScreenHeight") < tempString.length())
 		{
 			pos = tempString.find("=");
-			resolutionH = std::stoi(tempString.substr(pos + 1, tempString.length()));
+			m_resolutionHeight = std::stoi(tempString.substr(pos + 1, tempString.length()));
 		}
 
 		if (tempString.find("Fullscreen") < tempString.length())
 		{
 			pos = tempString.find("=");
-			isFullScreen = std::stoi(tempString.substr(pos + 1, tempString.length()));
+			m_isFullScreen = std::stoi(tempString.substr(pos + 1, tempString.length()));
 		}
 
 		if (tempString.find("OpenGLMode") < tempString.length())
 		{
 			pos = tempString.find("=");
-			glMode = tempString.substr(pos + 1, tempString.length());
+			m_glMode = tempString.substr(pos + 1, tempString.length());
 		}
 
 		if (tempString.find("OpenGLVersion") < tempString.length())
 		{
 			pos = tempString.find("=");
-			oglMajorVersion = std::stoi(tempString.substr(pos + 1, tempString.length()));
+			m_oGLMajorVersion = std::stoi(tempString.substr(pos + 1, tempString.length()));
 			pos = tempString.find(".");
-			oglMinorVersion = std::stoi(tempString.substr(pos + 1, tempString.length()));
+			m_oGLMinorVersion = std::stoi(tempString.substr(pos + 1, tempString.length()));
 		}
 
 	}
@@ -128,26 +130,26 @@ bool Screen::InitScreen()
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 
-	if (glMode == "Core")
+	if (m_glMode == "Core")
 	{
 		//set a core OpenGL context (does not accept legacy functionality)
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	}
-	else if (glMode == "Compatible")
+	else if (m_glMode == "Compatible")
 	{
 		//set a compatibility OpenGL context
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
 	}
 
 	// Setting up OGL to version 4.6
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, oglMajorVersion);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, oglMinorVersion);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, m_oGLMajorVersion);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, m_oGLMinorVersion);
 
 	// Creating the window
-	window = SDL_CreateWindow(appName.c_str(),
+	window = SDL_CreateWindow(m_applicationName.c_str(),
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		resolutionW, resolutionH,
+		m_resolutionWidth, m_resolutionHeight,
 		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 	

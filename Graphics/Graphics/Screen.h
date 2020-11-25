@@ -46,5 +46,13 @@ private:
 	// OGL and SDL together
 	SDL_Window* window;
 	SDL_GLContext context;
+
+	std::string m_applicationName;
+	std::string m_glMode;
+	int m_resolutionWidth;
+	int m_resolutionHeight;
+	int m_oGLMajorVersion;
+	int m_oGLMinorVersion;
+	int m_isFullScreen;
 };
 

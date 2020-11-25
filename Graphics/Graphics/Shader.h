@@ -1,7 +1,14 @@
+//=============================================
+//	Shader Manager used for managing Shader-
+//	related functionalities including creating
+//	and/or reading shaders
+//
+//	by Amirali Mohayaee
+//=============================================
 #pragma once
 
 #include "glad.h"
-#include <glm.hpp>
+#include <../include/glm.hpp>
 #include <string>
 #include <map>
 
@@ -25,9 +32,19 @@ public:
 	const GLuint GetShaderProgramID();
 
 	const GLuint GetAttributeID(std::string attribute);
+	const GLuint GetUniformID(std::string variable);
 
-	const GLuint BindAttribute(std::string attribute);
-	const GLuint BingUniform(std::string uniform);
+	void BindAttribute(std::string attribute);
+	void BindUniform(std::string uniform);
+
+	void SendUniformData(const std::string& uniform, GLint intData);
+	void SendUniformData(const std::string& uniform, GLuint uintData); 
+	void SendUniformData(const std::string& uniform, GLfloat floatData); 
+
+	void SendUniformData(const std::string& uniform, GLfloat x, GLfloat y); 
+	void SendUniformData(const std::string& uniform, GLfloat x, GLfloat y, GLfloat z); 
+	void SendUniformData(const std::string& uniform, GLfloat x, GLfloat y, GLfloat z, GLfloat w); 
+	void SendUniformData(const std::string& uniform, glm::mat4& mat);
 
 	void DetachShaders();
 	void DestroyShaders();
@@ -46,5 +63,6 @@ private:
 	GLuint m_fragmentShaderID;
 
 	// Container storing the ID and attributes of shader elements
-	std::map<char, GLuint> m_shaderValues;
+	std::map<std::string, unsigned int> m_shaderAttributes;
+	std::map<std::string, unsigned int> m_shaderUniforms;
 };
