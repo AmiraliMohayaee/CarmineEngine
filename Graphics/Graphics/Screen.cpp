@@ -72,7 +72,7 @@ bool Screen::InitScreen()
 			m_resolutionHeight = std::stoi(tempString.substr(pos + 1, tempString.length()));
 		}
 
-		if (tempString.find("Fullscreen") < tempString.length())
+		if (tempString.find("FullScreen") < tempString.length())
 		{
 			pos = tempString.find("=");
 			m_isFullScreen = std::stoi(tempString.substr(pos + 1, tempString.length()));

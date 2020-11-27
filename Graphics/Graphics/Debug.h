@@ -2,8 +2,7 @@
 
 #include <iostream>
 #include <string>
-#include "glad.h"
-
+#include "Shader.h"
 
 namespace Debug
 {

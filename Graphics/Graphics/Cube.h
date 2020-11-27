@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\DevLibs\GLM\include\gtc\matrix_transform.hpp"
+//#include "..\DevLibs\GLM\include\gtc\matrix_transform.hpp"
 #include "Shader.h"
 
 
@@ -25,11 +25,11 @@ private:
 	GLuint m_modelUniformID;
 	GLuint m_viewUniformID;
 
-	glm::vec3 m_cameraPos;
-	glm::vec3 m_cameraUp;
-	glm::vec3 m_cameraForward;
+	//glm::vec3 m_cameraPos;
+	//glm::vec3 m_cameraUp;
+	//glm::vec3 m_cameraForward;
 
-	glm::mat4 m_modelMatrix;
-	glm::mat4 m_viewMatrix;
+	//glm::mat4 m_modelMatrix;
+	//glm::mat4 m_viewMatrix;
 
 };

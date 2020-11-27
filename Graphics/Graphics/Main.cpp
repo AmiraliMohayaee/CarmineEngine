@@ -2,7 +2,6 @@
 #include "Shader.h"
 #include "Input.h"
 #include "Debug.h"
-//#include "Cube.h"
 #include <iostream>
 
 
@@ -10,9 +9,6 @@ bool isProgramRunning = true;
 
 int main(int argc, char* args[])
 {
-	//============================================================================
-	//	Initializing shader program and accosiated shaders
-	//============================================================================
 	if (!Screen::Instance()->InitScreen())
 	{
 		return false;
@@ -57,67 +53,69 @@ int main(int argc, char* args[])
 	//============================================================================
 	//	Rendering
 	//============================================================================
-	// Attributes send into shader (once!)
-	Shader::Instance()->BindAttribute("vertexIn");
-	Shader::Instance()->BindAttribute("colorIn");
-	Shader::Instance()->BindUniform("model");
-	Shader::Instance()->BindUniform("view");
-
-
 	// Seperate vertex data buffer object
-	GLfloat vertices[] = { -0.5f,  0.5f, 0.0f, 0.5f,  0.5f, 0.0f,0.5f, -0.5f, 0.0f,-0.5f, -0.5f, 0.0f
+	GLfloat vertices[] = { -0.5f,  0.5f, 0.0f,
+							0.5f,  0.5f, 0.0f,
+							0.5f, -0.5f, 0.0f,
+							-0.5f, -0.5f, 0.0f
 	};
 
 	// Passing in color data
-	GLfloat colors[] = { 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,0.0f, 1.0f, 0.0f,0.0f, 1.0f, 1.0f
+	GLfloat colors[] = { 1.0f, 0.0f, 0.0f,
+						0.0f, 0.0f, 1.0f,
+						0.0f, 1.0f, 0.0f,
+						0.0f, 1.0f, 1.0f
 	};
 
 	// EBO indecies shared between the two triangles
-	GLfloat indicies[] = { 0, 1, 3, 3, 1, 2
+	GLuint indicies[] = { 0, 1, 3,
+		3, 1, 2
 	};
 
 
-	//Cube* cubeObj = new Cube();
-	//cubeObj->CreateBuffers();
-	GLuint m_vertexAttributeID = Shader::Instance()->GetAttributeID("vertexIn");
-	GLuint m_colorAttributeID = Shader::Instance()->GetAttributeID("colorIn");
-	GLuint m_modelUniformID = Shader::Instance()->GetUniformID("model");
-	GLuint m_viewUniformID = Shader::Instance()->GetUniformID("view");
+	// Attributes send into shader 
+	Shader::Instance()->BindAttribute("vertexIn");
+	Shader::Instance()->BindAttribute("colorIn");
 
-	GLuint m_VAO = 0;
-	GLuint m_vertexVBO = 0;
-	GLuint m_colorsVBO = 0;
-	GLuint m_EBO = 0;
+	GLuint vertexAttributeID = Shader::Instance()->GetAttributeID("vectexIn");
+	GLuint colorAttributeID = Shader::Instance()->GetAttributeID("colorIn");
 
-	glGenVertexArrays(1, &m_VAO);
-	glGenBuffers(1, &m_vertexVBO);
-	glGenBuffers(1, &m_colorsVBO);
-	glGenBuffers(1, &m_EBO);
+	glEnableVertexAttribArray(vertexAttributeID);
+	glEnableVertexAttribArray(colorAttributeID);
 
-	glBindVertexArray(m_VAO);
+	// Creating buffer and setting up the size
+	GLuint VAO = 0;
+	GLuint vertexVBO = 0;
+	GLuint colorsVBO = 0;
+	GLuint EBO = 0;
 
-		glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		glVertexAttribPointer(m_vertexAttributeID, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		glEnableVertexAttribArray(m_vertexAttributeID);
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &vertexVBO);
+	glGenBuffers(1, &colorsVBO);
+	glGenBuffers(1, &EBO);
 
-		glBindBuffer(GL_ARRAY_BUFFER, m_colorsVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-		glVertexAttribPointer(m_colorAttributeID, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		glEnableVertexAttribArray(m_colorAttributeID);
 
-		// Setting up the EBO buffer elements, which is differentiated from the regular
-		// array elements
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
+	glBindVertexArray(VAO);
 
-	//Shader::Instance()->SendUniformData("view", m_viewMatrix);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(vertexAttributeID, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(vertexAttributeID);
+
+	glBindBuffer(GL_ARRAY_BUFFER, colorsVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+	glVertexAttribPointer(colorAttributeID, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(colorAttributeID);
+
+	// Setting up the EBO buffer elements, which is differentiated from the regular
+	// array elements
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
+
 
 	glBindVertexArray(0);
 
-
-	// This loop runs until the application is 
-	// terminated via the window
+	// This loop is 
 	while (isProgramRunning)
 	{
 		// Clearing the buffer
@@ -130,23 +128,25 @@ int main(int argc, char* args[])
 			isProgramRunning = false;
 		}
 
-		glBindVertexArray(m_VAO);
+		glBindVertexArray(VAO);
 
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-			//Shader::Instance()->SendUniformData("model", m_modelMatrix);
-			//Shader::Instance()->SendUniformData("view", m_viewMatrix);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		glBindVertexArray(0);
-
-		//cubeObj->Draw();
-		//cubeObj->Update();
 
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();
 	}
 
-	/*delete cubeObj;*/
+	// When we don't need the vert and color attributes
+	// Ideal for use in a dtor
+	glDisableVertexAttribArray(colorAttributeID);
+	glDisableVertexAttribArray(vertexAttributeID);
 
+	glDeleteBuffers(1, &vertexVBO);
+	glDeleteBuffers(1, &colorsVBO);
+	glDeleteBuffers(1, &EBO);
+	glDeleteVertexArrays(1, &VAO);
 
 	Shader::Instance()->DetachShaders();
 	Shader::Instance()->DestroyShaders();

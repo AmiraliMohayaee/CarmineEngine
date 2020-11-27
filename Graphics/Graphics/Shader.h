@@ -7,10 +7,10 @@
 //=============================================
 #pragma once
 
-#include "glad.h"
-#include <../include/glm.hpp>
+//#include <../include/glm.hpp>
 #include <string>
 #include <map>
+#include "glad.h"
 
 
 class Shader
@@ -44,7 +44,7 @@ public:
 	void SendUniformData(const std::string& uniform, GLfloat x, GLfloat y); 
 	void SendUniformData(const std::string& uniform, GLfloat x, GLfloat y, GLfloat z); 
 	void SendUniformData(const std::string& uniform, GLfloat x, GLfloat y, GLfloat z, GLfloat w); 
-	void SendUniformData(const std::string& uniform, glm::mat4& mat);
+	//void SendUniformData(const std::string& uniform, glm::mat4& mat);
 
 	void DetachShaders();
 	void DestroyShaders();
