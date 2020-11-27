@@ -182,7 +182,6 @@ bool Screen::InitScreen()
 		std::cout << "Failed To Load Glad Library module." << std::endl;
 	}
 
-
 	return true;
 }
 

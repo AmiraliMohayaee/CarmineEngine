@@ -72,12 +72,11 @@ int main(int argc, char* args[])
 		3, 1, 2
 	};
 
-
-	// Attributes send into shader 
 	Shader::Instance()->BindAttribute("vertexIn");
 	Shader::Instance()->BindAttribute("colorIn");
 
-	GLuint vertexAttributeID = Shader::Instance()->GetAttributeID("vectexIn");
+	// Attributes send into shader 
+	GLuint vertexAttributeID = Shader::Instance()->GetAttributeID("vertexIn");
 	GLuint colorAttributeID = Shader::Instance()->GetAttributeID("colorIn");
 
 	glEnableVertexAttribArray(vertexAttributeID);
@@ -152,6 +151,7 @@ int main(int argc, char* args[])
 	Shader::Instance()->DestroyShaders();
 	Shader::Instance()->DestroyProgram();
 	Screen::Instance()->Shutdown();
+
 
 	return 0;
 }
