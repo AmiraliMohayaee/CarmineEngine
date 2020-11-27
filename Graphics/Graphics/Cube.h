@@ -31,4 +31,5 @@ private:
 
 	glm::mat4 m_modelMatrix;
 	glm::mat4 m_viewMatrix;
+
 };

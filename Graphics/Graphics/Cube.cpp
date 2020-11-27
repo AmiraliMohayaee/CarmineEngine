@@ -16,8 +16,14 @@ Cube::Cube()
 	m_modelMatrix = glm::mat4(1.0f);
 	//m_modelMatrix = glm::rotate(m_modelMatrix, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
+	m_cameraPos = glm::vec3(0, 0, 0);
+	m_cameraUp = glm::vec3(0, 0, -1);
+	m_cameraForward = glm::vec3(0, 1, 0);
+
 	m_viewMatrix = glm::mat4(1.0f);
-	m_viewMatrix = glm::lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
+	m_viewMatrix = glm::lookAt(m_cameraPos, m_cameraUp, m_cameraForward);
+
+	//m_cameraPos + glm::vec3(0.0f, 0.0f, -1.0f);
 }
 
 Cube::~Cube()
@@ -81,6 +87,8 @@ void Cube::CreateBuffers()
 		// array elements
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
+
+		Shader::Instance()->SendUniformData("view", m_viewMatrix);
 
 	glBindVertexArray(0);
 

@@ -5,13 +5,13 @@ in vec3 vertexIn;
 in vec3 colorIn;
 out vec3 colorOut;
 
-uniform mat4 model;
-uniform mat4 view;
+//uniform mat4 model;
+//uniform mat4 view;
 
 void main(void)
 {
     // Outputting the same color as 
     colorOut = colorIn;
 
-    gl_Position = view * model * vec4(vertexIn, 1.0);
+    gl_Position = vec4(vertexIn, 1.0);
 }
