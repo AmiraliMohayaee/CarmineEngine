@@ -208,3 +208,13 @@ void Screen::Shutdown()
 	//shut down all SDL sub-systems
 	SDL_Quit();
 }
+
+const int Screen::GetScreenWidth()
+{
+	return m_resolutionWidth;
+}
+
+const int Screen::GetScreenHeight()
+{
+	return m_resolutionHeight;
+}

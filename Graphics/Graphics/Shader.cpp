@@ -272,6 +272,8 @@ const GLuint Shader::GetAttributeID(std::string attribute)
 				return -1;
 			}
 
+			Debug::Log("Following shader attribute ruturned a valid ID", attribute, iterator->second);
+
 			return iterator->second;
 		}
 	}
@@ -291,10 +293,12 @@ const GLuint Shader::GetUniformID(std::string variable)
 		{
 			if (iterator->second == -1)
 			{
-				Debug::Log("Serach for shader attribute returned invalid: ", variable);
+				Debug::Log("Serach for shader uniform returned invalid: ", variable);
 
 				return -1;
 			}
+
+			Debug::Log("Following shader uniform ruturned a valid ID", variable, iterator->second);
 
 			return iterator->second;
 		}
@@ -316,6 +320,8 @@ void Shader::BindAttribute(std::string attribute)
 		{
 			// If the value already exists, then
 			// we do nothing
+			Debug::Log("Following Shader Attribute already exists: ", attribute);
+
 			return;
 		}
 	}
@@ -400,13 +406,13 @@ void Shader::SendUniformData(const std::string& uniform, GLfloat x, GLfloat y, G
 
 	glUniform4f(UniformLocation, x, y, z, w);
 }
-//
-//void Shader::SendUniformData(const std::string& uniform, glm::mat4& mat)
-//{
-//	GLint UniformLocation = Shader::Instance()->GetUniformID(uniform);
-//
-//	glUniformMatrix4fv(UniformLocation, 1, GL_FALSE, &mat[0][0]);
-//}
+
+void Shader::SendUniformData(const std::string& uniform, glm::mat4& mat)
+{
+	GLint UniformLocation = Shader::Instance()->GetUniformID(uniform);
+
+	glUniformMatrix4fv(UniformLocation, 1, GL_FALSE, &mat[0][0]);
+}
 
 void Shader::DetachShaders()
 {

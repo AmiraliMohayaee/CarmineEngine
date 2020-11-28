@@ -1,6 +1,6 @@
 #include "Cube.h"
 #include "Debug.h"
-
+#include "Screen.h"
 
 
 Cube::Cube()
@@ -13,23 +13,17 @@ Cube::Cube()
 	m_vertexAttributeID = 0;
 	m_colorAttributeID = 0;
 
-	//m_modelMatrix = glm::mat4(1.0f);
-	////m_modelMatrix = glm::rotate(m_modelMatrix, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	m_modelUniformID = 0;
 
-	//m_cameraPos = glm::vec3(0, 0, 0);
-	//m_cameraUp = glm::vec3(0, 0, -1);
-	//m_cameraForward = glm::vec3(0, 1, 0);
-
-	//m_viewMatrix = glm::mat4(1.0f);
-	//m_viewMatrix = glm::lookAt(m_cameraPos, m_cameraUp, m_cameraForward);
-
-	//m_cameraPos + glm::vec3(0.0f, 0.0f, -1.0f);
+	m_modelMatrix = glm::mat4(1.0f);
+	//m_modelMatrix = glm::rotate(m_modelMatrix, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 Cube::~Cube()
 {
 	glDisableVertexAttribArray(m_colorAttributeID);
 	glDisableVertexAttribArray(m_vertexAttributeID);
+	glDisableVertexAttribArray(m_modelUniformID);
 
 	glDeleteBuffers(1, &m_vertexVBO);
 	glDeleteBuffers(1, &m_colorsVBO);
@@ -54,7 +48,7 @@ void Cube::CreateBuffers()
 	};
 
 	// EBO indecies shared between the two triangles
-	GLfloat indicies[] = { 0, 1, 3,
+	GLuint indicies[] = { 0, 1, 3,
 		3, 1, 2
 	};
 
@@ -63,7 +57,11 @@ void Cube::CreateBuffers()
 	m_vertexAttributeID = Shader::Instance()->GetAttributeID("vertexIn");
 	m_colorAttributeID = Shader::Instance()->GetAttributeID("colorIn");
 	m_modelUniformID = Shader::Instance()->GetUniformID("model");
-	m_viewUniformID = Shader::Instance()->GetUniformID("view");
+
+
+	glEnableVertexAttribArray(m_vertexAttributeID);
+	glEnableVertexAttribArray(m_colorAttributeID);
+	glEnableVertexAttribArray(m_modelUniformID);
 
 	
 	glGenVertexArrays(1, &m_VAO);
@@ -92,6 +90,8 @@ void Cube::CreateBuffers()
 
 	glBindVertexArray(0);
 
+
+
 }
 
 void Cube::Draw()
@@ -99,8 +99,7 @@ void Cube::Draw()
 	glBindVertexArray(m_VAO);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		//Shader::Instance()->SendUniformData("model", m_modelMatrix);
-		//Shader::Instance()->SendUniformData("view", m_viewMatrix);
+		Shader::Instance()->SendUniformData("model", m_modelMatrix);
 
 	glBindVertexArray(0);
 }

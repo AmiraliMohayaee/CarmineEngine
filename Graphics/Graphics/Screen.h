@@ -35,6 +35,9 @@ public:
 	void SwapBuffer();
 	void Shutdown();
 
+	const int GetScreenWidth();
+	const int GetScreenHeight();
+
 
 private:
 	Screen();

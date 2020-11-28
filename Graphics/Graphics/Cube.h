@@ -1,7 +1,7 @@
 #pragma once
 
-//#include "..\DevLibs\GLM\include\gtc\matrix_transform.hpp"
 #include "Shader.h"
+#include "..\DevLibs\GLM\include\gtc\matrix_transform.hpp"
 
 
 class Cube
@@ -22,14 +22,8 @@ private:
 
 	GLuint m_vertexAttributeID;
 	GLuint m_colorAttributeID;
+
+	glm::mat4 m_modelMatrix;
+
 	GLuint m_modelUniformID;
-	GLuint m_viewUniformID;
-
-	//glm::vec3 m_cameraPos;
-	//glm::vec3 m_cameraUp;
-	//glm::vec3 m_cameraForward;
-
-	//glm::mat4 m_modelMatrix;
-	//glm::mat4 m_viewMatrix;
-
 };
