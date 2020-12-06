@@ -13,27 +13,45 @@ void Input::PassKeyboardMsgDown(SDL_KeyboardEvent* key)
 {
 	// Debug Checking of inputs
 	Debug::Log("Key Pressed!");
+
+	m_keyPressed = key->keysym.scancode;
+
 	SDL_GetScancodeFromKey(key->keysym.scancode);
 	std::cout << "Key scancode press is: "
 		<< SDL_GetScancodeName(key->keysym.scancode)
 		<< " with the scan name of "
 		<< SDL_GetKeyName(key->keysym.sym)
+		<< "with an ascii code of " << ReturnKey()
 		<< std::endl;
 
 	// This is not working yet
 	// Why is that?
-	if (key->keysym.sym == 'Q')
+	if (key->keysym.sym == SDLK_q)
 	{
 		Debug::Log("Seems liek you wanna use a Queue, heh?");
 	}
+
+	if (key->keysym.scancode == SDL_SCANCODE_S)
+	{
+		Debug::Log("So, you wanna go back?");
+	}
 }
 
-
-
-void Input::CheckKeyboardScancode(SDL_Scancode* scanCode)
+const int Input::ReturnKey()
 {
-	
+	return m_keyPressed;
 }
+
+bool Input::KeyPressed()
+{
+	return m_isKeyPressed;
+}
+
+bool Input::KeyReleased()
+{
+	return m_isKeyPressed;
+}
+
 
 void Input::Update()
 {
@@ -53,13 +71,15 @@ void Input::Update()
 			case SDL_KEYDOWN:
 			{
 				PassKeyboardMsgDown(&events.key);
+				m_isKeyPressed = true;
+				
 				break;
 			}
 
-
 			case SDL_KEYUP:
 			{
-				std::cout << "Key Released!" << std::endl;
+				m_isKeyPressed = false;
+
 				break;
 			}
 
@@ -68,7 +88,6 @@ void Input::Update()
 				std::cout << "Mouse motion in progress!" << std::endl;
 				break;
 			}
-
 
 			case SDL_MOUSEBUTTONDOWN:
 			{
@@ -82,8 +101,6 @@ void Input::Update()
 				break;
 			}
 		}
-
-
 	}
 }
 

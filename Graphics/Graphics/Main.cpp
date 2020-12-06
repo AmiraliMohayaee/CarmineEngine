@@ -4,7 +4,9 @@
 #include "Debug.h"
 #include "Cube.h"
 #include "Camera.h"
+#include "GLError.h"
 #include <iostream>
+
 
 
 bool isProgramRunning = true;
@@ -13,13 +15,13 @@ int main(int argc, char* args[])
 {
 	if (!Screen::Instance()->InitScreen())
 	{
-		return false;
 		Debug::Log("Failed to Initialize a screen. Check your settings file.");
+		return 0;
 	}
 
 	if (!Shader::Instance()->CreateProgram())
 	{
-		Debug::Log("Failed to create shader program.");
+		Debug::Log("Shader Program return a false result. Possile wrong linking.");
 		return 0;
 	}
 
@@ -62,11 +64,16 @@ int main(int argc, char* args[])
 	Shader::Instance()->BindUniform("projection");
 
 	Camera camera;
-	camera.InitCamera(0.0f, 0.0f, 3.0f, 60.0f, 0.1f, 1000.0f);
+	camera.InitCamera(0.0f, 0.0f, 4.0f, 60.0f, 0.1f, 1000.0f);
 
 	Cube* cube = new Cube();
 	cube->CreateBuffers();
 
+	glEnable(GL_DEBUG_OUTPUT); 
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); 
+	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, 0, GL_TRUE);
+
+	glDebugMessageCallback(&GLError::GetGLErrorCallback, nullptr);
 
 	// This loop is 
 	while (isProgramRunning)
@@ -84,7 +91,8 @@ int main(int argc, char* args[])
 		cube->Draw();
 		cube->Update();
 		camera.UpdateCamera();
-		
+
+
 
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();

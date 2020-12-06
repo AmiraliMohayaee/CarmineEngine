@@ -9,7 +9,14 @@ class Buffer
 public:
 	Buffer();
 
-	bool CreateBuffer();
+	void GenerateBuffer(GLuint target, GLint size);
+	void GenerateVertexArray(GLuint target, GLint size);
+
+	void BindVertexArray(GLfloat* data, GLuint attributeData);
+	void CloseVertexArray();
+
+	void PopulateBuffer(GLfloat *data, GLuint attributeData);
+
 
 
 private:

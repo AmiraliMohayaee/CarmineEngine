@@ -34,26 +34,42 @@ Cube::~Cube()
 void Cube::CreateBuffers()
 {
 	// Seperate vertex data buffer object
-	GLfloat vertices[] = { -0.5f,  0.5f, 0.0f,
-							0.5f,  0.5f, 0.0f,
-							0.5f, -0.5f, 0.0f,
-							-0.5f, -0.5f, 0.0f
+	GLfloat vertices[] = { -0.5f,  0.5f,  0.5f,       //front vertices
+		0.5f,  0.5f,  0.5f,       //front vertices
+		0.5f, -0.5f,  0.5f,       //front vertices
+		-0.5f, -0.5f,  0.5f,       //front vertices
+		
+						 -0.5f,  0.5f,  -0.5f,       //front vertices
+		0.5f,  0.5f,  -0.5f,       //front vertices
+		0.5f, -0.5f,  -0.5f,       //front vertices
+		-0.5f, -0.5f,  -0.5f,       //front vertices
+
+								   
+								   
+								   //-0.5f,  0.5f, -0.5f,       //back vertices
+		//0.5f,  0.5f, -0.5f,       //back vertices
+		//0.5f, -0.5f, -0.5f,       //back vertices
+		//-0.5f, -0.5f, -0.5f };     //back vertices
 	};
 
 	// Passing in color data
-	GLfloat colors[] = { 1.0f, 0.0f, 0.0f,
-						0.0f, 0.0f, 1.0f,
-						0.0f, 1.0f, 0.0f,
-						0.0f, 1.0f, 1.0f
+	GLfloat colors[] = { 1.0f, 0.0f, 0.0f,            //red front face
+		0.0f, 1.0f, 0.0f,            //green back face
+		0.0f, 0.0f, 1.0f,            //blue left face
+		0.0f, 1.0f, 1.0f,            //cyan right face
+		//1.0f, 1.0f, 0.0f,            //yellow top face
+		//1.0f, 0.0f, 1.0f };          //purple bottom face
 	};
 
 	// EBO indecies shared between the two triangles
-	GLuint indicies[] = { 0, 1, 3,
-		3, 1, 2
+	GLuint indicies[] = { 0,  1,  3,  3,  1,  2,      //front face
+		//4,  5,  7,  7,  5,  6,      //back face
+		//4,  0,  7,  7,  0,  3,      //left face
+		//1,  5,  2,  2,  5,  6,      //right face
+		//5,  1,  4,  4,  1,  0,      //top face
+		//6,  2,  7,  7,  2,  3  };   //bottom face
 	};
-
-	//Shader::BindAttribute()
-
+	
 	m_vertexAttributeID = Shader::Instance()->GetAttributeID("vertexIn");
 	m_colorAttributeID = Shader::Instance()->GetAttributeID("colorIn");
 	m_modelUniformID = Shader::Instance()->GetUniformID("model");
@@ -96,28 +112,17 @@ void Cube::CreateBuffers()
 
 void Cube::Draw()
 {
+	Shader::Instance()->SendUniformData("model", m_modelMatrix);
+	
 	glBindVertexArray(m_VAO);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		Shader::Instance()->SendUniformData("model", m_modelMatrix);
 
 	glBindVertexArray(0);
 }
 
 void Cube::Update()
 {
-	//=============================================================
-	//	Checking values of shader elements
-	//=============================================================
-	Debug::Log("This uniform ID check return this attribute: ",
-		"Vertex ID",
-		Shader::Instance()->GetAttributeID("vertexIn"));
 
-	Debug::Log("This uniform ID check return this attribute: ",
-		"Color ID",
-		Shader::Instance()->GetAttributeID("colorIn"));
 
-	Debug::Log("This uniform ID check return this: ", 
-		"Model Matrix ID", 
-		Shader::Instance()->GetUniformID("model"));
 }

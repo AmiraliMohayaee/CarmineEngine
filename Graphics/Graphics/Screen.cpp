@@ -182,6 +182,9 @@ bool Screen::InitScreen()
 		std::cout << "Failed To Load Glad Library module." << std::endl;
 	}
 
+	// Allowing the use of depth buffer
+	glEnable(GL_DEPTH_TEST);
+
 	return true;
 }
 
@@ -189,7 +192,7 @@ bool Screen::InitScreen()
 void Screen::ClearBuffer()
 {
 	// Clears the frame buffer
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Screen::SwapBuffer()

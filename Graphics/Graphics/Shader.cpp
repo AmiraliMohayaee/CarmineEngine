@@ -18,9 +18,6 @@ bool Shader::CreateProgram()
 
 	if (!m_shaderProgramID)
 	{
-		// Shader Program Failed
-		Debug::Log("Failed to create shader program.");
-		// Add a system pause
 		return false;
 	}
 
@@ -244,7 +241,6 @@ bool Shader::LinkProgram()
 	}
 	//=====================================================================================
 
-
 	return true;
 }
 
@@ -272,7 +268,7 @@ const GLuint Shader::GetAttributeID(std::string attribute)
 				return -1;
 			}
 
-			Debug::Log("Following shader attribute ruturned a valid ID", attribute, iterator->second);
+			//Debug::Log("Following shader attribute ruturned a valid ID", attribute, iterator->second);
 
 			return iterator->second;
 		}
@@ -298,7 +294,7 @@ const GLuint Shader::GetUniformID(std::string variable)
 				return -1;
 			}
 
-			Debug::Log("Following shader uniform ruturned a valid ID", variable, iterator->second);
+			//Debug::Log("Following shader uniform ruturned a valid ID", variable, iterator->second);
 
 			return iterator->second;
 		}
