@@ -29,6 +29,11 @@ public:
 	void AttachShaders();
 	bool LinkProgram();
 
+	void DetachShaders();
+	void DestroyShaders();
+	void DestroyProgram();
+
+
 	const GLuint GetShaderProgramID();
 
 	const GLuint GetAttributeID(std::string attribute);
@@ -36,6 +41,7 @@ public:
 
 	void BindAttribute(std::string attribute);
 	void BindUniform(std::string uniform);
+	void EnableVertexAttributeArray(GLuint attribute);
 
 	void SendUniformData(const std::string& uniform, GLint intData);
 	void SendUniformData(const std::string& uniform, GLuint uintData); 
@@ -45,10 +51,6 @@ public:
 	void SendUniformData(const std::string& uniform, GLfloat x, GLfloat y, GLfloat z); 
 	void SendUniformData(const std::string& uniform, GLfloat x, GLfloat y, GLfloat z, GLfloat w); 
 	void SendUniformData(const std::string& uniform, glm::mat4& mat);
-
-	void DetachShaders();
-	void DestroyShaders();
-	void DestroyProgram();
 
 
 private:

@@ -410,6 +410,11 @@ void Shader::SendUniformData(const std::string& uniform, glm::mat4& mat)
 	glUniformMatrix4fv(UniformLocation, 1, GL_FALSE, &mat[0][0]);
 }
 
+void Shader::EnableVertexAttributeArray(GLuint attribute)
+{
+	glEnableVertexAttribArray(attribute);
+}
+
 void Shader::DetachShaders()
 {
 	glDetachShader(m_shaderProgramID, m_vertexShaderID);

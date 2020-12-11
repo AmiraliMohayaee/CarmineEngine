@@ -93,7 +93,6 @@ int main(int argc, char* args[])
 		camera.UpdateCamera();
 
 
-
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();
 	}

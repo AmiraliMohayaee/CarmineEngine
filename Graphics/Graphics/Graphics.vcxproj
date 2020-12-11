@@ -164,6 +164,7 @@
     <ClInclude Include="File.h" />
     <ClInclude Include="glad.h" />
     <ClInclude Include="GLError.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="Screen.h" />

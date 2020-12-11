@@ -59,3 +59,4 @@ void Camera::UpdateCamera()
 	m_viewMatrix = glm::lookAt(m_cameraPos, m_cameraPos + m_cameraForward, m_cameraUp);
 	SetViewAndProJ();
 }
+
