@@ -25,6 +25,7 @@ public:
 	
 	// Checks the 
 	void PassKeyboardMsgDown(SDL_KeyboardEvent *key);
+	void CheckCameraControls();
 
 	const int ReturnKey();
 	bool KeyPressed();

@@ -24,6 +24,14 @@ void Buffer::BindVertexArray(GLuint vertexArray)
 	glBindVertexArray(vertexArray);
 }
 
+void Buffer::CreateEmptyVBO(GLuint& bufferObj, const int size, GLuint attributeData)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, bufferObj);
+	glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_STATIC_DRAW);
+	glVertexAttribPointer(attributeData, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(attributeData);
+}
+
 void Buffer::BindVertices(GLuint& bufferObj, std::vector<GLfloat> data,
 	GLuint attributeData)
 {
@@ -33,6 +41,12 @@ void Buffer::BindVertices(GLuint& bufferObj, std::vector<GLfloat> data,
 	glEnableVertexAttribArray(attributeData);
 }
 
+void Buffer::BindVerticesWithSubdata(GLuint& bufferObj, std::vector<GLfloat> data, GLuint offset)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, bufferObj); 
+	glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(GLfloat) * data.size(), &data[0]);
+}
+
 void Buffer::BindColors(GLuint& bufferObj, std::vector<float> data, 
 	GLuint attributeData)
 {
@@ -40,6 +54,12 @@ void Buffer::BindColors(GLuint& bufferObj, std::vector<float> data,
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * data.size(), &data[0], GL_STATIC_DRAW);
 	glVertexAttribPointer(attributeData, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(attributeData);
+}
+
+void Buffer::BindColorsWithSubData(GLuint& bufferObj, std::vector<GLfloat> data, GLuint offset)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, bufferObj);
+	glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(GLfloat) * data.size(), &data[0]);
 }
 
 void Buffer::BindEBOArray(GLuint& bufferObj, std::vector<GLuint> data)
@@ -65,12 +85,12 @@ void Buffer::DisableVertexAttribute(GLuint attribute)
 	glDisableVertexAttribArray(attribute);
 }
 
-void Buffer::DeleteBuffer(GLuint buffer)
+void Buffer::DeleteBuffer(GLuint& buffer)
 {
 	glDeleteBuffers(1, &buffer);
 }
 
-void Buffer::DeleteVertexArray(GLuint vertexArray)
+void Buffer::DeleteVertexArray(GLuint& vertexArray)
 {
 	glDeleteVertexArrays(1, &vertexArray);
 }

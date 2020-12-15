@@ -81,6 +81,12 @@
     <ClCompile Include="GLError.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Screen.h">
@@ -117,7 +123,10 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="App.h">
+      <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

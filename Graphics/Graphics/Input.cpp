@@ -37,6 +37,11 @@ void Input::PassKeyboardMsgDown(SDL_KeyboardEvent* key)
 	}
 }
 
+void Input::CheckCameraControls()
+{
+
+}
+
 const int Input::ReturnKey()
 {
 	return m_keyPressed;
@@ -71,6 +76,8 @@ void Input::Update()
 			case SDL_KEYDOWN:
 			{
 				PassKeyboardMsgDown(&events.key);
+
+
 				m_isKeyPressed = true;
 				
 				break;

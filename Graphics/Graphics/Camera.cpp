@@ -45,18 +45,26 @@ bool Camera::InitCamera(float x, float y, float z, float fov, float close, float
 		close,
 		far);
 
+	Shader::Instance()->SendUniformData("projection", m_projectionMatrix);
+	Shader::Instance()->SendUniformData("view", m_viewMatrix);
+
 	return true;
 }
 
 void Camera::SetViewAndProJ()
 {
 	Shader::Instance()->SendUniformData("view", m_viewMatrix);
-	Shader::Instance()->SendUniformData("projection", m_projectionMatrix);
+	//Shader::Instance()->SendUniformData("projection", m_projectionMatrix);
 }
 
 void Camera::UpdateCamera()
 {
+	// Camera Controls
+
+
+	// Sending the view matrix every frame 
 	m_viewMatrix = glm::lookAt(m_cameraPos, m_cameraPos + m_cameraForward, m_cameraUp);
 	SetViewAndProJ();
+
 }
 

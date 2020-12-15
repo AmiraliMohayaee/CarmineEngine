@@ -3,5 +3,5 @@ AppTitle=OpenGL Rendering Project
 ScreenWidth=800
 ScreenHeight=600
 FullScreen=0
-OpenGLMode=Compatible
+OpenGLMode=Core
 OpenGLVersion=4.6
