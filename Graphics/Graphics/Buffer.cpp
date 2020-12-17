@@ -43,7 +43,7 @@ void Buffer::BindVertices(GLuint& bufferObj, std::vector<GLfloat> data,
 
 void Buffer::BindVerticesWithSubdata(GLuint& bufferObj, std::vector<GLfloat> data, GLuint offset)
 {
-	glBindBuffer(GL_ARRAY_BUFFER, bufferObj); 
+	glBindBuffer(GL_ARRAY_BUFFER, bufferObj);
 	glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(GLfloat) * data.size(), &data[0]);
 }
 
@@ -60,6 +60,15 @@ void Buffer::BindColorsWithSubData(GLuint& bufferObj, std::vector<GLfloat> data,
 {
 	glBindBuffer(GL_ARRAY_BUFFER, bufferObj);
 	glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(GLfloat) * data.size(), &data[0]);
+}
+
+void Buffer::BindBufferWithDynamicDraw(GLuint& bufferObj, const int size,
+	GLuint attributeData)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, bufferObj);
+	glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+	glVertexAttribPointer(attributeData, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(attributeData);
 }
 
 void Buffer::BindEBOArray(GLuint& bufferObj, std::vector<GLuint> data)

@@ -2,6 +2,8 @@
 
 #include <SDL.h>
 #include <string>
+#include "..\DevLibs\GLM\include\gtc\matrix_transform.hpp"
+
 
 enum Keys { 
 	Key_A = 4, 
@@ -9,8 +11,27 @@ enum Keys {
 	Key_C = 6, 
 	Key_D = 7, 
 	Key_E = 8, 
-	Key_F = 9
-
+	Key_F = 9,
+	Key_G = 10,
+	Key_H = 11,
+	Key_I = 12,
+	Key_J = 13,
+	Key_K = 14,
+	Key_L = 15,
+	Key_M = 16,
+	Key_N = 17,
+	Key_O = 18,
+	Key_P = 19, 
+	Key_Q = 20,
+	Key_R = 21,
+	Key_S = 22,
+	Key_T = 23,
+	Key_U = 24,
+	Key_V = 25,
+	Key_W = 26,
+	Key_X = 27,
+	Key_Y = 28,
+	Key_Z = 29
 };
 
 
@@ -25,9 +46,13 @@ public:
 	
 	// Checks the 
 	void PassKeyboardMsgDown(SDL_KeyboardEvent *key);
-	void CheckCameraControls();
 
-	const int ReturnKey();
+	glm::vec2 GetMouseMotion();
+	glm::vec2 GetMousePosition();
+	
+	Uint8* ReturnKeyState();
+	int GetKeyPressed();
+	
 	bool KeyPressed();
 	bool KeyReleased();
 
@@ -39,12 +64,19 @@ private:
 	Input& operator=(const Input&);
 
 private:
-
+	
 	bool m_isExiting;
 	std::string m_inputMessage;
 
+	// Return the keycode pressed according
+	// to its code in the Keys enumeration
 	int m_keyPressed;
-	bool m_isKeyPressed;
 
+	// Key Press Falg
+	bool m_isKeyPressed;
+	bool m_isMousePressed;
+
+	glm::vec2 m_mouseMotion;
+	glm::vec2 m_mousePos;
 };
 

@@ -1,5 +1,7 @@
 #include "Camera.h"
 #include "Screen.h"
+#include "Input.h"
+#include "Debug.h"
 
 
 Camera::Camera()
@@ -9,14 +11,15 @@ Camera::Camera()
 	m_projUniformID = 0;
 
 	m_cameraPos = glm::vec3(0, 0, 0);
-	m_cameraRight = glm::vec3(1, 0, 0);
-
 	m_cameraUp = glm::vec3(0, 1, 0);
 	m_cameraForward = glm::vec3(0, 0, -1);
 
 	m_viewMatrix = glm::mat4(1.0f);
 
 	m_projectionMatrix = glm::mat4(1.0f);
+
+	m_pitch = 0.0f;
+	m_yaw = -90.0f;
 }
 
 Camera::~Camera()
@@ -51,20 +54,96 @@ bool Camera::InitCamera(float x, float y, float z, float fov, float close, float
 	return true;
 }
 
+void Camera::CameraMouseMovement(float mouseSensitivity)
+{
+	// Saving the last pos temporarily for calculating offsets
+	// between last and current frame
+	float mouseLastPosX = static_cast<float>(Screen::Instance()->GetScreenWidth() / 2);
+	float mouseLastPosY = static_cast<float>(Screen::Instance()->GetScreenHeight() / 2);
+
+	Debug::Log("Mouse X Last Position is: ", mouseLastPosX);
+	Debug::Log("Mouse X Last Position is: ", mouseLastPosY);
+
+	float mouseXOffset = Input::Instance()->GetMousePosition().x - mouseLastPosX;
+	float mouseYOffset = mouseLastPosY - Input::Instance()->GetMousePosition().y;
+	mouseLastPosX = Input::Instance()->GetMousePosition().x;
+	mouseLastPosY = Input::Instance()->GetMousePosition().y;
+
+	//const float mouseSensitivity = 0.1f;
+	mouseXOffset *= mouseSensitivity;
+	mouseYOffset *= mouseSensitivity;
+
+	m_yaw += Input::Instance()->GetMouseMotion().x;
+	m_pitch += Input::Instance()->GetMouseMotion().y;
+
+	// Limiting the view limit to 90 degrees up
+	// and down
+	if (m_pitch > 89.0f)
+		m_pitch = 89.0f;
+	if (m_pitch < -89.0f)
+		m_pitch = -89.0f;
+
+
+	Debug::Log("Yaw value is: ", m_yaw);
+	Debug::Log("Pitch value is: ", m_pitch);
+	
+	glm::vec3 direction;
+	direction.x = glm::cos(glm::radians(m_yaw)) * glm::cos(glm::radians(m_pitch));
+	direction.y = glm::sin(glm::radians(m_pitch));
+	direction.z = glm::sin(glm::radians(m_yaw)) * glm::cos(glm::radians(m_pitch));
+	m_cameraForward = glm::normalize(direction);
+}
+
+void Camera::CameraKeyboardMovement(float camMoveSpeed)
+{
+	//Key press motions for movement
+	if (Input::Instance()->KeyPressed() == true)
+	{
+		if (Input::Instance()->GetKeyPressed() == Key_W)
+		{
+			m_cameraPos += camMoveSpeed * m_cameraForward;
+		}
+		if (Input::Instance()->GetKeyPressed() == Key_A)
+		{
+			m_cameraPos -= (glm::normalize(glm::cross(m_cameraForward, m_cameraUp)) * camMoveSpeed);
+
+		}
+		if (Input::Instance()->GetKeyPressed() == Key_S)
+		{
+			m_cameraPos -= camMoveSpeed * m_cameraForward;
+		}
+		if (Input::Instance()->GetKeyPressed() == Key_D)
+		{
+			m_cameraPos += (glm::normalize(glm::cross(m_cameraForward, m_cameraUp)) * camMoveSpeed);
+		}
+
+		if (Input::Instance()->GetKeyPressed() == Key_Q)
+		{
+			m_cameraPos.y -= camMoveSpeed;
+		}
+		if (Input::Instance()->GetKeyPressed() == Key_E)
+		{
+			m_cameraPos.y += camMoveSpeed;
+		}
+	}
+	else
+	{
+		Input::Instance()->KeyReleased();
+	}
+}
+
 void Camera::SetViewAndProJ()
 {
 	Shader::Instance()->SendUniformData("view", m_viewMatrix);
-	//Shader::Instance()->SendUniformData("projection", m_projectionMatrix);
 }
 
 void Camera::UpdateCamera()
 {
-	// Camera Controls
-
+	CameraKeyboardMovement(0.3f);
+	CameraMouseMovement(0.1f);
 
 	// Sending the view matrix every frame 
 	m_viewMatrix = glm::lookAt(m_cameraPos, m_cameraPos + m_cameraForward, m_cameraUp);
 	SetViewAndProJ();
-
 }
 

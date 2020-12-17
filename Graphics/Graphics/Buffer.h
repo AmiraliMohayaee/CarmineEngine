@@ -30,6 +30,9 @@ public:
 	void BindColorsWithSubData(GLuint& bufferObj, std::vector<GLfloat> data,
 		GLuint offset);
 
+	void BindBufferWithDynamicDraw(GLuint& bufferObj, const int size,
+		GLuint attributeData);
+
 	void BindEBOArray(GLuint& bufferObj, std::vector<GLuint> data);
 	void CloseVertexArray();
 

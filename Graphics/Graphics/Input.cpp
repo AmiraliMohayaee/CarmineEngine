@@ -14,35 +14,35 @@ void Input::PassKeyboardMsgDown(SDL_KeyboardEvent* key)
 	// Debug Checking of inputs
 	Debug::Log("Key Pressed!");
 
-	m_keyPressed = key->keysym.scancode;
+	//m_keyPressed = key->keysym.scancode;
 
 	SDL_GetScancodeFromKey(key->keysym.scancode);
 	std::cout << "Key scancode press is: "
 		<< SDL_GetScancodeName(key->keysym.scancode)
 		<< " with the scan name of "
-		<< SDL_GetKeyName(key->keysym.sym)
-		<< "with an ascii code of " << ReturnKey()
-		<< std::endl;
+		<< SDL_GetKeyName(key->keysym.sym) << std::endl;
 
-	// This is not working yet
-	// Why is that?
-	if (key->keysym.sym == SDLK_q)
+
+
+
+	if (m_keyPressed == Key_W)
 	{
-		Debug::Log("Seems liek you wanna use a Queue, heh?");
+		Debug::Log("Seems liek W, heh?");
 	}
 
-	if (key->keysym.scancode == SDL_SCANCODE_S)
-	{
-		Debug::Log("So, you wanna go back?");
-	}
 }
 
-void Input::CheckCameraControls()
+glm::vec2 Input::GetMouseMotion()
 {
-
+	return m_mouseMotion;
 }
 
-const int Input::ReturnKey()
+glm::vec2 Input::GetMousePosition()
+{
+	return m_mousePos;
+}
+
+int Input::GetKeyPressed()
 {
 	return m_keyPressed;
 }
@@ -60,6 +60,10 @@ bool Input::KeyReleased()
 
 void Input::Update()
 {
+	// Resetting mouse motion perframe
+	m_mouseMotion.x = 0.0f;
+	m_mouseMotion.y = 0.0f;
+
 	// Setting up the event type for polling
 	SDL_Event events;
 
@@ -75,8 +79,10 @@ void Input::Update()
 
 			case SDL_KEYDOWN:
 			{
+				//Debug::Log("Key Pressed!");
 				PassKeyboardMsgDown(&events.key);
-
+				
+				m_keyPressed = events.key.keysym.scancode;
 
 				m_isKeyPressed = true;
 				
@@ -85,6 +91,7 @@ void Input::Update()
 
 			case SDL_KEYUP:
 			{
+				//Debug::Log("Key Released!");
 				m_isKeyPressed = false;
 
 				break;
@@ -93,18 +100,29 @@ void Input::Update()
 			case SDL_MOUSEMOTION:
 			{
 				std::cout << "Mouse motion in progress!" << std::endl;
+
+				m_mouseMotion.x = events.motion.xrel;
+				m_mouseMotion.y = events.motion.yrel;
+				m_mousePos.x = (float)events.motion.x;
+				m_mousePos.y = (float)events.motion.y;
+
+				Debug::Log(m_mouseMotion.x, m_mouseMotion.y, "Mouse Motion X and Y : ");
+				Debug::Log(m_mousePos.x, m_mousePos.y, "Mouse Position on screen X and Y : ");
+
 				break;
 			}
 
 			case SDL_MOUSEBUTTONDOWN:
 			{
 				Debug::Log("Mouse Button Down event detected.");
+
 				break;
 			}
 
 			case SDL_MOUSEBUTTONUP:
 			{
 				Debug::Log("Mouse Button is up");
+
 				break;
 			}
 		}
@@ -121,4 +139,6 @@ bool Input::IsXClicked()
 Input::Input()
 {
 	m_isExiting = false;
+	m_mouseMotion = glm::vec2();
+	m_mousePos = glm::vec2();
 }

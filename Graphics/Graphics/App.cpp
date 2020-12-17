@@ -71,7 +71,7 @@ void App::InitObjects()
 	//////////////////////////////////////////
 	m_camera->InitCamera(0.0f, 0.0f, 5.0f, 75.0f, 0.1f, 1000.0f);
 	m_cube->CreateBuffers();
-	m_grid->CreateBuffer();
+	//m_grid->CreateBuffer();
 	m_grid->SetupGridDimentions(4, 10, 1.0f, 1.0f, 1.0f);
 
 	//////////////////////////////////////////

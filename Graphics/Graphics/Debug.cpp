@@ -11,6 +11,16 @@ void Debug::Log(std::string line, int value)
 	std::cout << line << value << std::endl;
 }
 
+void Debug::Log(std::string line, float value)
+{
+	std::cout << line << value << std::endl;
+}
+
+void Debug::Log(int x, int y, std::string line)
+{
+	std::cout << line << " " << x << ", " << y << std::endl;
+}
+
 void Debug::Log(int x, int y, int z, std::string line)
 {
 	std::cout << line << " " << x << ", " << y << ", " << z << std::endl;
