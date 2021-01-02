@@ -61,8 +61,8 @@ void Camera::CameraMouseMovement(float mouseSensitivity)
 	float mouseLastPosX = static_cast<float>(Screen::Instance()->GetScreenWidth() / 2);
 	float mouseLastPosY = static_cast<float>(Screen::Instance()->GetScreenHeight() / 2);
 
-	Debug::Log("Mouse X Last Position is: ", mouseLastPosX);
-	Debug::Log("Mouse X Last Position is: ", mouseLastPosY);
+	//Debug::Log("Mouse X Last Position is: ", mouseLastPosX);
+	//Debug::Log("Mouse X Last Position is: ", mouseLastPosY);
 
 	float mouseXOffset = Input::Instance()->GetMousePosition().x - mouseLastPosX;
 	float mouseYOffset = mouseLastPosY - Input::Instance()->GetMousePosition().y;
@@ -74,7 +74,7 @@ void Camera::CameraMouseMovement(float mouseSensitivity)
 	mouseYOffset *= mouseSensitivity;
 
 	m_yaw += Input::Instance()->GetMouseMotion().x;
-	m_pitch += Input::Instance()->GetMouseMotion().y;
+	m_pitch -= Input::Instance()->GetMouseMotion().y;
 
 	// Limiting the view limit to 90 degrees up
 	// and down
@@ -84,8 +84,8 @@ void Camera::CameraMouseMovement(float mouseSensitivity)
 		m_pitch = -89.0f;
 
 
-	Debug::Log("Yaw value is: ", m_yaw);
-	Debug::Log("Pitch value is: ", m_pitch);
+	//Debug::Log("Yaw value is: ", m_yaw);
+	//Debug::Log("Pitch value is: ", m_pitch);
 	
 	glm::vec3 direction;
 	direction.x = glm::cos(glm::radians(m_yaw)) * glm::cos(glm::radians(m_pitch));
@@ -146,4 +146,3 @@ void Camera::UpdateCamera()
 	m_viewMatrix = glm::lookAt(m_cameraPos, m_cameraPos + m_cameraForward, m_cameraUp);
 	SetViewAndProJ();
 }
-

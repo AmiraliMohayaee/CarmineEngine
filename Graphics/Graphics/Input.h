@@ -31,7 +31,12 @@ enum Keys {
 	Key_W = 26,
 	Key_X = 27,
 	Key_Y = 28,
-	Key_Z = 29
+	Key_Z = 29,
+	Key_Esc = 41,
+	Key_Spc = 44,
+	Key_LCtrl = 224,
+	Key_LShift = 225,
+	Key_LAlt = 226
 };
 
 
@@ -50,7 +55,6 @@ public:
 	glm::vec2 GetMouseMotion();
 	glm::vec2 GetMousePosition();
 	
-	Uint8* ReturnKeyState();
 	int GetKeyPressed();
 	
 	bool KeyPressed();

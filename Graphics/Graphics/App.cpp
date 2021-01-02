@@ -92,23 +92,26 @@ void App::Draw()
 
 void App::Update()
 {
-	// This loop is is what is is
-	// Therefore it is what it is
 	while (m_isProgramRunning)
 	{
 		// Clearing the buffer
 		Screen::Instance()->ClearBuffer();
 
-		// Checking for input 
+		// Checking for inputs 
 		Input::Instance()->Update();
 		if (Input::Instance()->IsXClicked())
 		{
 			m_isProgramRunning = false;
 		}
-
+		if (Input::Instance()->KeyPressed() == true)
+		{
+			if (Input::Instance()->GetKeyPressed() == Key_Esc)
+			{
+				m_isProgramRunning = false;
+			}
+		}
 		
-
-		// 
+		// Encapsulates draw calls from other game objects
 		Draw();
 		m_camera->UpdateCamera();
 

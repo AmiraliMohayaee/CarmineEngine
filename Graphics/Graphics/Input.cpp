@@ -9,19 +9,21 @@ Input* Input::Instance()
 }
 
 
+// Used for testing inputs and checking both keycodes and
+// scancode recieved from a key press
 void Input::PassKeyboardMsgDown(SDL_KeyboardEvent* key)
 {
 	// Debug Checking of inputs
 	Debug::Log("Key Pressed!");
 
-	//m_keyPressed = key->keysym.scancode;
+	m_keyPressed = key->keysym.scancode;
 
 	SDL_GetScancodeFromKey(key->keysym.scancode);
 	std::cout << "Key scancode press is: "
 		<< SDL_GetScancodeName(key->keysym.scancode)
 		<< " with the scan name of "
-		<< SDL_GetKeyName(key->keysym.sym) << std::endl;
-
+		<< SDL_GetKeyName(key->keysym.sym) << " and " 
+		<< m_keyPressed;
 
 
 
@@ -79,8 +81,7 @@ void Input::Update()
 
 			case SDL_KEYDOWN:
 			{
-				//Debug::Log("Key Pressed!");
-				PassKeyboardMsgDown(&events.key);
+				//PassKeyboardMsgDown(&events.key);
 				
 				m_keyPressed = events.key.keysym.scancode;
 
@@ -99,15 +100,15 @@ void Input::Update()
 
 			case SDL_MOUSEMOTION:
 			{
-				std::cout << "Mouse motion in progress!" << std::endl;
+				//Debug::Log("Mouse motion in progress!");
 
 				m_mouseMotion.x = events.motion.xrel;
 				m_mouseMotion.y = events.motion.yrel;
 				m_mousePos.x = (float)events.motion.x;
 				m_mousePos.y = (float)events.motion.y;
 
-				Debug::Log(m_mouseMotion.x, m_mouseMotion.y, "Mouse Motion X and Y : ");
-				Debug::Log(m_mousePos.x, m_mousePos.y, "Mouse Position on screen X and Y : ");
+				//Debug::Log(m_mouseMotion.x, m_mouseMotion.y, "Mouse Motion X and Y : ");
+				//Debug::Log(m_mousePos.x, m_mousePos.y, "Mouse Position on screen X and Y : ");
 
 				break;
 			}

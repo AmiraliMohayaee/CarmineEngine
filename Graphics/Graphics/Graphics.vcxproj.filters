@@ -46,6 +46,12 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{07d49b05-92e1-42ce-9fae-5bb676c0e1ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{bd80bbf7-e1f2-4ab3-9e30-219ae2fae272}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{bd6c8005-1dfc-444e-8429-7e29004c44db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -87,6 +93,9 @@
     <ClCompile Include="App.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Screen.h">
@@ -127,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="App.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
