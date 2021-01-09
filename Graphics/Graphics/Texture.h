@@ -24,6 +24,8 @@ private:
 	
 	GLuint m_ID;
 
+	std::string m_tag;
+
 	// Global texture container for keeping all available textures
 	static std::map<std::string, Texture>* s_textureMap;
 

@@ -15,6 +15,7 @@ Texture::~Texture()
 	glDeleteTextures(1, &m_ID);
 }
 
+// To-Do
 bool Texture::GetTexture(const std::string& textureID, Texture& texture)
 {
 

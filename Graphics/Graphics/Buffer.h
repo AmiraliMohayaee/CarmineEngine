@@ -30,6 +30,9 @@ public:
 	void BindColorsWithSubData(GLuint& bufferObj, std::vector<GLfloat> data,
 		GLuint offset);
 
+	void BindTextures(GLuint& bufferObj, std::vector<GLfloat> data,
+		GLuint attributeData);
+
 	void BindBufferWithDynamicDraw(GLuint& bufferObj, const int size,
 		GLuint attributeData);
 
