@@ -12,12 +12,15 @@ public:
 	Texture();
 	~Texture();
 
-	static bool GetTexture(const std::string& textureID, Texture& texture);
+	static Texture GetTexture(const std::string& textureID);
+
+	bool Load(const std::string& filename, const std::string textureTag);
 
 	void Bind(); 
-	void Load(const std::string& textureID, const std::string textureTag);
 	void UnBind(); 
+
 	void Unload(SDL_Surface* surface);
+	void UnloadAll();
 
 
 private:

@@ -9,7 +9,7 @@ Cube::Cube()
 	m_VAO = 0;
 	m_vertexVBO = 0;
 	m_colorsVBO = 0;
-	m_textureVBO = 0;
+	//m_textureVBO = 0;
 	m_EBO = 0;
 
 	// Attributes
@@ -131,6 +131,8 @@ void Cube::CreateBuffers()
 	};
 
 	// Contains UV coordinates
+	// Coordinates are flipped upside down as OpenGL
+	// takes in UV coords differently
 	m_uvContainer = {
 		0.0f, 0.0f,
 		1.0f, 0.0f,
@@ -138,30 +140,30 @@ void Cube::CreateBuffers()
 		0.0f, 1.0f
 	};
 
-	m_texture.Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
+	//m_texture.Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
 	
 	m_vertexAttributeID = Shader::Instance()->GetAttributeID("vertexIn");
 	m_colorAttributeID = Shader::Instance()->GetAttributeID("colorIn");
-	m_textureAttributeID = Shader::Instance()->GetAttributeID("textureIn");
+	//m_textureAttributeID = Shader::Instance()->GetAttributeID("textureIn");
 	m_modelUniformID = Shader::Instance()->GetUniformID("model");
 
 	Shader::Instance()->EnableVertexAttributeArray(m_vertexAttributeID);
 	Shader::Instance()->EnableVertexAttributeArray(m_colorAttributeID);
-	Shader::Instance()->EnableVertexAttributeArray(m_textureAttributeID);
+	//Shader::Instance()->EnableVertexAttributeArray(m_textureAttributeID);
 	Shader::Instance()->EnableVertexAttributeArray(m_modelUniformID);
 
 
 	m_buffer.GenerateVertexArray(1, m_VAO);
 	m_buffer.GenerateBuffer(1, m_vertexVBO);
 	m_buffer.GenerateBuffer(1, m_colorsVBO);
-	m_buffer.GenerateBuffer(1, m_textureVBO);
+	//m_buffer.GenerateBuffer(1, m_textureVBO);
 	m_buffer.GenerateBuffer(1, m_EBO);
 
 	m_buffer.BindVertexArray(m_VAO);
 
 		m_buffer.BindVertices(m_vertexVBO, m_vertexContainer, m_vertexAttributeID);
 		m_buffer.BindColors(m_colorsVBO, m_colorContainer, m_colorAttributeID);
-		m_buffer.BindTextures(m_textureVBO, m_uvContainer, m_textureAttributeID);
+		//m_buffer.BindTextures(m_textureVBO, m_uvContainer, m_textureAttributeID);
 		m_buffer.BindEBOArray(m_EBO, m_indiciesContainer);
 
 	m_buffer.CloseVertexArray();
@@ -172,16 +174,16 @@ void Cube::Draw()
 {
 	Shader::Instance()->SendUniformData("model", m_modelMatrix);
 	
-	m_texture.Bind();
+	//m_texture.Bind();
 
 		m_buffer.BindVertexArray(m_VAO);
 
-			glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
-			//glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
+			//glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
+			glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
 
 		m_buffer.CloseVertexArray();
 
-	m_texture.UnBind();
+	//m_texture.UnBind();
 }
 
 void Cube::Update()

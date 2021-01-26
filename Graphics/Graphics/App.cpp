@@ -7,6 +7,7 @@ App::App()
 	m_camera = new Camera();
 	m_cube = new Cube();
 	m_grid = new Grid();
+	m_quad = new Quad();
 }
 
 bool App::InitScreenAndShaders()
@@ -72,6 +73,7 @@ void App::InitObjects()
 	//////////////////////////////////////////
 	m_camera->InitCamera(0.0f, 0.0f, 5.0f, 75.0f, 0.1f, 1000.0f);
 	m_cube->CreateBuffers();
+	m_quad->CreateBuffers();
 	m_grid->SetupGridDimentions(4, 10, 1.0f, 1.0f, 1.0f);
 
 	//////////////////////////////////////////
@@ -86,7 +88,8 @@ void App::InitObjects()
 
 void App::Draw()
 {
-	m_cube->Draw();
+	//m_cube->Draw();
+	m_quad->Draw();
 	m_grid->Draw();
 }
 
@@ -125,6 +128,7 @@ void App::Shutdown()
 	delete m_camera;
 	delete m_cube;
 	delete m_grid;
+	delete m_quad;
 
 	Shader::Instance()->DetachShaders();
 	Shader::Instance()->DestroyShaders();

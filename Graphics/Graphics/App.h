@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Camera.h"
 #include "Cube.h"
+#include "Quad.h"
 #include "Debug.h"
 #include "GLError.h"
 #include "Grid.h"
@@ -27,6 +28,7 @@ private:
 	bool m_isProgramRunning;
 
 	Camera* m_camera;
+	Quad* m_quad;
 	Cube* m_cube;
 	Grid* m_grid;
 

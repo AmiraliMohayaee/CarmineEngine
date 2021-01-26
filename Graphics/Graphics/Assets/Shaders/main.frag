@@ -5,8 +5,8 @@ in vec3 colorOut;
 in vec2 textureOut;
 out vec4 pixelColor;
 
-
 uniform sampler2D textureImage;
+
 
 void main(void) 
 {
