@@ -1,5 +1,7 @@
 #pragma once
 
+
+#include <memory>
 #include "Screen.h"
 #include "Shader.h"
 #include "Input.h"
@@ -27,9 +29,14 @@ public:
 private:
 	bool m_isProgramRunning;
 
-	Camera* m_camera;
-	Quad* m_quad;
-	Cube* m_cube;
-	Grid* m_grid;
+	std::unique_ptr<Camera> m_camera;
+	std::unique_ptr<Camera> m_cube;
+	std::unique_ptr<Camera> m_grid;
+	std::unique_ptr<Camera> m_quad;
+
+	//Camera* m_camera;
+	//Quad* m_quad;
+	//Cube* m_cube;
+	//Grid* m_grid;
 
 };

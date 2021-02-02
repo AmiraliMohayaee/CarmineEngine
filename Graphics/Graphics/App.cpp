@@ -4,10 +4,10 @@ App::App()
 {
 	m_isProgramRunning = true;
 
-	m_camera = new Camera();
-	m_cube = new Cube();
-	m_grid = new Grid();
-	m_quad = new Quad();
+	m_camera = std::make_unique<Camera>();
+	m_cube = std::make_unique<Cube>();
+	m_grid = std::make_unique<Grid>();
+	m_quad = std::make_unique<Quad>();
 }
 
 bool App::InitScreenAndShaders()
@@ -44,6 +44,9 @@ bool App::InitScreenAndShaders()
 		return 0;
 	}
 
+
+	// Abstract This further in its own function
+
 	// Posting initial print of graphics driver details
 	//display the manufacturer of the graphics hardware
 	Debug::Log((const char*)(glGetString(GL_VENDOR)));
@@ -60,7 +63,7 @@ void App::BindElements()
 {
 	Shader::Instance()->BindAttribute("vertexIn");
 	Shader::Instance()->BindAttribute("colorIn");
-	Shader::Instance()->BindAttribute("textureIn");
+	//Shader::Instance()->BindAttribute("textureIn");
 	Shader::Instance()->BindUniform("model");
 	Shader::Instance()->BindUniform("view");
 	Shader::Instance()->BindUniform("projection");
@@ -125,11 +128,6 @@ void App::Update()
 
 void App::Shutdown()
 {
-	delete m_camera;
-	delete m_cube;
-	delete m_grid;
-	delete m_quad;
-
 	Shader::Instance()->DetachShaders();
 	Shader::Instance()->DestroyShaders();
 	Shader::Instance()->DestroyProgram();

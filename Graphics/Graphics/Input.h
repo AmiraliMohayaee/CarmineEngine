@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 #include <string>
-#include "..\DevLibs\GLM\include\gtc\matrix_transform.hpp"
+#include <gtc\matrix_transform.hpp>
 
 
 enum Keys { 

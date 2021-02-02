@@ -8,6 +8,7 @@
 class Buffer
 {
 public:
+
 	Buffer();
 
 	// Generating VAOs and other buffers
@@ -43,4 +44,15 @@ public:
 	void DisableVertexAttribute(GLuint attribute);
 	void DeleteBuffer(GLuint& buffer);
 	void DeleteVertexArray(GLuint& vertexArray);
+
+
+private:
+
+	GLuint m_VAO;
+	GLuint m_EBO;
+	GLuint m_vertexVBO;
+	GLuint m_colorsVBO;
+	GLuint m_textureVBO;
+	GLuint m_normalVBO;
+
 };

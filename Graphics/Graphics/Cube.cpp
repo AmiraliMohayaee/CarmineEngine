@@ -6,79 +6,96 @@
 
 Cube::Cube()
 {
-	m_VAO = 0;
-	m_vertexVBO = 0;
-	m_colorsVBO = 0;
-	//m_textureVBO = 0;
-	m_EBO = 0;
-
 	// Attributes
-	m_vertexAttributeID = 0;
-	m_colorAttributeID = 0;
-	m_textureAttributeID = 0;
+	//m_vertexAttributeID = 0;
+	//m_colorAttributeID = 0;
+	//m_textureAttributeID = 0;
 
 	// Uniforms
 	m_modelUniformID = 0;
-
+	m_dimention = glm::vec3(1.0f);
 	m_modelMatrix = glm::mat4(1.0f);
-	//m_modelMatrix = glm::rotate(m_modelMatrix, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 Cube::~Cube()
 {
-	m_buffer.DisableVertexAttribute(m_colorAttributeID);
-	m_buffer.DisableVertexAttribute(m_vertexAttributeID);
-	m_buffer.DisableVertexAttribute(m_modelUniformID);
-	m_buffer.DisableVertexAttribute(m_textureAttributeID);
+	//m_buffer.DisableVertexAttribute(m_colorAttributeID);
+	//m_buffer.DisableVertexAttribute(m_vertexAttributeID);
+	//m_buffer.DisableVertexAttribute(m_modelUniformID);
+	//m_buffer.DisableVertexAttribute(m_textureAttributeID);
 
-	m_buffer.DeleteBuffer(m_vertexVBO);
-	m_buffer.DeleteBuffer(m_colorsVBO);
-	m_buffer.DeleteBuffer(m_textureVBO);
-	m_buffer.DeleteBuffer(m_EBO);
-	m_buffer.DeleteVertexArray(m_VAO);
+	//m_buffer.DeleteBuffer(m_vertexVBO);
+	//m_buffer.DeleteBuffer(m_colorsVBO);
+	//m_buffer.DeleteBuffer(m_textureVBO);
+	//m_buffer.DeleteBuffer(m_EBO);
+	//m_buffer.DeleteVertexArray(m_VAO);
 }
 
 void Cube::CreateBuffers()
 {
-	// Seperate vertex data buffer object
-	m_vertexContainer = { 
-		-1.0f,-1.0f,-1.0f, // triangle 1 : begin
-		-1.0f,-1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f, // triangle 1 : end
-		1.0f, 1.0f,-1.0f, // triangle 2 : begin
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f,-1.0f, // triangle 2 : end
-		1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f,-1.0f,
-		-1.0f, 1.0f,-1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f
+	glm::vec3 halfDimention = m_dimention * 0.5f;
+
+	float vertices[] = {
+		-halfDimention.x, halfDimention.y, halfDimention.z,
+		halfDimention.x, halfDimention.y, halfDimention.z,
+		halfDimention.x, -halfDimention.y, halfDimention.z,
+		-halfDimention.x, -halfDimention.y, halfDimention.z, // front face 
+
+		halfDimention.x, halfDimention.y, -halfDimention.z,
+		halfDimention.x, halfDimention.y, halfDimention.z,
+		halfDimention.x, -halfDimention.y, halfDimention.z,
+		-halfDimention.x, -halfDimention.y, halfDimention.z,
+
+		-halfDimention.x, halfDimention.y, halfDimention.z,
+		halfDimention.x, halfDimention.y, halfDimention.z,
+		halfDimention.x, halfDimention.y, halfDimention.z,
+		-halfDimention.x, -halfDimention.y, halfDimention.z,
+
+		-halfDimention.x, halfDimention.y, halfDimention.z,
+		halfDimention.x, halfDimention.y, halfDimention.z,
+		halfDimention.x, halfDimention.y, halfDimention.z,
+		-halfDimention.x, -halfDimention.y, halfDimention.z,
 	};
+
+	// Seperate vertex data buffer object
+//	float m_vertexContainer[] = { 
+		//-1.0f,-1.0f,-1.0f, // triangle 1 : begin
+		//-1.0f,-1.0f, 1.0f,
+		//-1.0f, 1.0f, 1.0f, // triangle 1 : end
+		//1.0f, 1.0f,-1.0f, // triangle 2 : begin
+		//-1.0f,-1.0f,-1.0f,
+		//-1.0f, 1.0f,-1.0f, // triangle 2 : end
+		//1.0f,-1.0f, 1.0f,
+		//-1.0f,-1.0f,-1.0f,
+		//1.0f,-1.0f,-1.0f,
+		//1.0f, 1.0f,-1.0f,
+		//1.0f,-1.0f,-1.0f,
+		//-1.0f,-1.0f,-1.0f,
+		//-1.0f,-1.0f,-1.0f,
+		//-1.0f, 1.0f, 1.0f,
+		//-1.0f, 1.0f,-1.0f,
+		//1.0f,-1.0f, 1.0f,
+		//-1.0f,-1.0f, 1.0f,
+		//-1.0f,-1.0f,-1.0f,
+		//-1.0f, 1.0f, 1.0f,
+		//-1.0f,-1.0f, 1.0f,
+		//1.0f,-1.0f, 1.0f,
+		//1.0f, 1.0f, 1.0f,
+		//1.0f,-1.0f,-1.0f,
+		//1.0f, 1.0f,-1.0f,
+		//1.0f,-1.0f,-1.0f,
+		//1.0f, 1.0f, 1.0f,
+		//1.0f,-1.0f, 1.0f,
+		//1.0f, 1.0f, 1.0f,
+		//1.0f, 1.0f,-1.0f,
+		//-1.0f, 1.0f,-1.0f,
+		//1.0f, 1.0f, 1.0f,
+		//-1.0f, 1.0f,-1.0f,
+		//-1.0f, 1.0f, 1.0f,
+		//1.0f, 1.0f, 1.0f,
+		//-1.0f, 1.0f, 1.0f,
+		//1.0f,-1.0f, 1.0f
+//	};
 
 
 	// Passing in color data
