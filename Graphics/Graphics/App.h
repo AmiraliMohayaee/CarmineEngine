@@ -30,13 +30,9 @@ private:
 	bool m_isProgramRunning;
 
 	std::unique_ptr<Camera> m_camera;
-	std::unique_ptr<Camera> m_cube;
-	std::unique_ptr<Camera> m_grid;
-	std::unique_ptr<Camera> m_quad;
-
-	//Camera* m_camera;
-	//Quad* m_quad;
-	//Cube* m_cube;
-	//Grid* m_grid;
+	std::unique_ptr<Cube> m_cube;
+	std::unique_ptr<Grid> m_grid;
+	std::unique_ptr<Quad> m_quad;
+	
 
 };

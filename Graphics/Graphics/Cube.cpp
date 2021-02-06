@@ -41,120 +41,87 @@ void Cube::CreateBuffers()
 		halfDimention.x, -halfDimention.y, halfDimention.z,
 		-halfDimention.x, -halfDimention.y, halfDimention.z, // front face 
 
+		-halfDimention.x, halfDimention.y, -halfDimention.z,
 		halfDimention.x, halfDimention.y, -halfDimention.z,
+		halfDimention.x, -halfDimention.y, -halfDimention.z,
+		-halfDimention.x, -halfDimention.y, -halfDimention.z,	// back face
+
+		-halfDimention.x, halfDimention.y, halfDimention.z,
+		-halfDimention.x, -halfDimention.y, halfDimention.z,
+		-halfDimention.x, -halfDimention.y, -halfDimention.z,
+		-halfDimention.x, halfDimention.y, -halfDimention.z, // left face
+
 		halfDimention.x, halfDimention.y, halfDimention.z,
 		halfDimention.x, -halfDimention.y, halfDimention.z,
-		-halfDimention.x, -halfDimention.y, halfDimention.z,
+		halfDimention.x, -halfDimention.y, -halfDimention.z,
+		halfDimention.x, halfDimention.y, -halfDimention.z, // right face
 
-		-halfDimention.x, halfDimention.y, halfDimention.z,
+		-halfDimention.x, halfDimention.y, -halfDimention.z,
+		halfDimention.x, halfDimention.y, -halfDimention.z,
 		halfDimention.x, halfDimention.y, halfDimention.z,
-		halfDimention.x, halfDimention.y, halfDimention.z,
-		-halfDimention.x, -halfDimention.y, halfDimention.z,
+		-halfDimention.x, halfDimention.y, halfDimention.z, // top face
 
-		-halfDimention.x, halfDimention.y, halfDimention.z,
-		halfDimention.x, halfDimention.y, halfDimention.z,
-		halfDimention.x, halfDimention.y, halfDimention.z,
-		-halfDimention.x, -halfDimention.y, halfDimention.z,
+		-halfDimention.x, -halfDimention.y, -halfDimention.z,
+		halfDimention.x, -halfDimention.y, -halfDimention.z,
+		halfDimention.x, -halfDimention.y, halfDimention.z,
+		-halfDimention.x, -halfDimention.y, halfDimention.z, // bottom face
 	};
 
-	// Seperate vertex data buffer object
-//	float m_vertexContainer[] = { 
-		//-1.0f,-1.0f,-1.0f, // triangle 1 : begin
-		//-1.0f,-1.0f, 1.0f,
-		//-1.0f, 1.0f, 1.0f, // triangle 1 : end
-		//1.0f, 1.0f,-1.0f, // triangle 2 : begin
-		//-1.0f,-1.0f,-1.0f,
-		//-1.0f, 1.0f,-1.0f, // triangle 2 : end
-		//1.0f,-1.0f, 1.0f,
-		//-1.0f,-1.0f,-1.0f,
-		//1.0f,-1.0f,-1.0f,
-		//1.0f, 1.0f,-1.0f,
-		//1.0f,-1.0f,-1.0f,
-		//-1.0f,-1.0f,-1.0f,
-		//-1.0f,-1.0f,-1.0f,
-		//-1.0f, 1.0f, 1.0f,
-		//-1.0f, 1.0f,-1.0f,
-		//1.0f,-1.0f, 1.0f,
-		//-1.0f,-1.0f, 1.0f,
-		//-1.0f,-1.0f,-1.0f,
-		//-1.0f, 1.0f, 1.0f,
-		//-1.0f,-1.0f, 1.0f,
-		//1.0f,-1.0f, 1.0f,
-		//1.0f, 1.0f, 1.0f,
-		//1.0f,-1.0f,-1.0f,
-		//1.0f, 1.0f,-1.0f,
-		//1.0f,-1.0f,-1.0f,
-		//1.0f, 1.0f, 1.0f,
-		//1.0f,-1.0f, 1.0f,
-		//1.0f, 1.0f, 1.0f,
-		//1.0f, 1.0f,-1.0f,
-		//-1.0f, 1.0f,-1.0f,
-		//1.0f, 1.0f, 1.0f,
-		//-1.0f, 1.0f,-1.0f,
-		//-1.0f, 1.0f, 1.0f,
-		//1.0f, 1.0f, 1.0f,
-		//-1.0f, 1.0f, 1.0f,
-		//1.0f,-1.0f, 1.0f
-//	};
+	
 
+	float colors[] = {
+		1.0f, 0.5f, 0.5f,
+		0.5f, 1.0f, 0.0f,
+		0.5f, 1.0f, 0.0f,
+		0.5f, 1.0f, 0.0f,  // front face
 
-	// Passing in color data
-	m_colorContainer = {
-	   0.583f,  0.771f,  0.014f,
-		0.609f,  0.115f,  0.436f,
-		0.327f,  0.483f,  0.844f,
-		0.822f,  0.569f,  0.201f,
-		0.435f,  0.602f,  0.223f,
-		0.310f,  0.747f,  0.185f,
-		0.597f,  0.770f,  0.761f,
-		0.559f,  0.436f,  0.730f,
-		0.359f,  0.583f,  0.152f,
-		0.483f,  0.596f,  0.789f,
-		0.559f,  0.861f,  0.639f,
-		0.195f,  0.548f,  0.859f,
-		0.014f,  0.184f,  0.576f,
-		0.771f,  0.328f,  0.970f,
-		0.406f,  0.615f,  0.116f,
-		0.676f,  0.977f,  0.133f,
-		0.971f,  0.572f,  0.833f,
-		0.140f,  0.616f,  0.489f,
-		0.997f,  0.513f,  0.064f,
-		0.945f,  0.719f,  0.592f,
-		0.543f,  0.021f,  0.978f,
-		0.279f,  0.317f,  0.505f,
-		0.167f,  0.620f,  0.077f,
-		0.347f,  0.857f,  0.137f,
-		0.055f,  0.953f,  0.042f,
-		0.714f,  0.505f,  0.345f,
-		0.783f,  0.290f,  0.734f,
-		0.722f,  0.645f,  0.174f,
-		0.302f,  0.455f,  0.848f,
-		0.225f,  0.587f,  0.040f,
-		0.517f,  0.713f,  0.338f,
-		0.053f,  0.959f,  0.120f,
-		0.393f,  0.621f,  0.362f,
-		0.673f,  0.211f,  0.457f,
-		0.820f,  0.883f,  0.371f,
-		0.982f,  0.099f,  0.879f
+		1.0f, 0.5f, 0.6f,
+		0.6f, 1.0f, 0.0f,
+		0.6f, 1.0f, 0.0f,
+		0.6f, 1.0f, 0.0f,  // back face
+
+		1.0f, 0.7f, 0.7f,
+		0.7f, 1.0f, 0.0f,
+		0.7f, 1.0f, 0.0f,
+		0.7f, 1.0f, 0.0f,  // right face
+
+		1.0f, 0.5f, 0.4f,
+		0.4f, 1.0f, 0.0f,
+		0.4f, 1.0f, 0.0f,
+		0.4f, 1.0f, 0.0f,  // left face
+
+		1.0f, 0.2f, 0.2f,
+		0.2f, 1.0f, 0.0f,
+		0.2f, 1.0f, 0.0f,
+		0.2f, 1.0f, 0.0f,  // top face
+
+		1.0f, 0.5f, 0.8f,
+		0.8f, 1.0f, 0.0f,
+		0.8f, 1.0f, 0.0f,
+		0.8f, 1.0f, 0.0f,  // bottom face
 	};
 
-	// EBO indecies shared between the two triangles
-	m_indiciesContainer = { 0,  1,  3,  3,  1,  2,      //front face
-		4,  5,  7,  7,  5,  6,      //back face
-		4,  0,  7,  7,  0,  3,      //left face
-		1,  5,  2,  2,  5,  6,      //right face
-		5,  1,  4,  4,  1,  0,      //top face
-		6,  2,  7,  7,  2,  3     //bottom face
-	};
 
-	// Contains UV coordinates
-	// Coordinates are flipped upside down as OpenGL
-	// takes in UV coords differently
-	m_uvContainer = {
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f
+
+
+	float indices[] = {
+		0,  1,  3,
+		3,  1,  2,      //front face
+
+		4,  5,  7,
+		7,  5,  6,      //back face
+
+		4,  0,  7,
+		7,  0,  3,      //left face
+
+		1,  5,  2,
+		2,  5,  6,      //right face
+
+		5,  1,  4,
+		4,  1,  0,      //top face
+
+		6,  2,  7,
+		7,  2,  3     //bottom face
 	};
 
 	//m_texture.Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
@@ -164,26 +131,54 @@ void Cube::CreateBuffers()
 	//m_textureAttributeID = Shader::Instance()->GetAttributeID("textureIn");
 	m_modelUniformID = Shader::Instance()->GetUniformID("model");
 
-	Shader::Instance()->EnableVertexAttributeArray(m_vertexAttributeID);
-	Shader::Instance()->EnableVertexAttributeArray(m_colorAttributeID);
-	//Shader::Instance()->EnableVertexAttributeArray(m_textureAttributeID);
-	Shader::Instance()->EnableVertexAttributeArray(m_modelUniformID);
+	//Shader::Instance()->EnableVertexAttributeArray(m_vertexAttributeID);
+	//Shader::Instance()->EnableVertexAttributeArray(m_colorAttributeID);
+	////Shader::Instance()->EnableVertexAttributeArray(m_textureAttributeID);
+	//Shader::Instance()->EnableVertexAttributeArray(m_modelUniformID);
+
+	m_VAO = 0;
+	m_vertexVBO = 0;
+	m_colorsVBO = 0;
+	m_EBO = 0;
+
+	glGenBuffers(1, &m_vertexVBO);
+	glGenBuffers(1, &m_colorsVBO);
+	glGenBuffers(1, &m_EBO);
+
+	//m_buffer.GenerateVertexArray(1, m_VAO);
+	//m_buffer.GenerateBuffer(1, m_vertexVBO);
+	//m_buffer.GenerateBuffer(1, m_colorsVBO);
+	////m_buffer.GenerateBuffer(1, m_textureVBO);
+	//m_buffer.GenerateBuffer(1, m_EBO);
+
+	glGenVertexArrays(1, &m_VAO);
+
+	glBindVertexArray(m_VAO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glVertexAttribPointer(m_vertexAttributeID, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+		glEnableVertexAttribArray(m_vertexAttributeID);
+
+		glBindBuffer(GL_ARRAY_BUFFER, m_colorsVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+		glVertexAttribPointer(m_colorAttributeID, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+		glEnableVertexAttribArray(m_colorAttributeID);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	glBindVertexArray(0);
 
 
-	m_buffer.GenerateVertexArray(1, m_VAO);
-	m_buffer.GenerateBuffer(1, m_vertexVBO);
-	m_buffer.GenerateBuffer(1, m_colorsVBO);
-	//m_buffer.GenerateBuffer(1, m_textureVBO);
-	m_buffer.GenerateBuffer(1, m_EBO);
+	//m_buffer.BindVertexArray(m_VAO);
 
-	m_buffer.BindVertexArray(m_VAO);
+	//	m_buffer.BindVertices(m_vertexVBO, m_vertexContainer, m_vertexAttributeID);
+	//	m_buffer.BindColors(m_colorsVBO, m_colorContainer, m_colorAttributeID);
+	//	//m_buffer.BindTextures(m_textureVBO, m_uvContainer, m_textureAttributeID);
+	//	m_buffer.BindEBOArray(m_EBO, m_indiciesContainer);
 
-		m_buffer.BindVertices(m_vertexVBO, m_vertexContainer, m_vertexAttributeID);
-		m_buffer.BindColors(m_colorsVBO, m_colorContainer, m_colorAttributeID);
-		//m_buffer.BindTextures(m_textureVBO, m_uvContainer, m_textureAttributeID);
-		m_buffer.BindEBOArray(m_EBO, m_indiciesContainer);
-
-	m_buffer.CloseVertexArray();
+	//m_buffer.CloseVertexArray();
 
 }
 
@@ -193,12 +188,18 @@ void Cube::Draw()
 	
 	//m_texture.Bind();
 
-		m_buffer.BindVertexArray(m_VAO);
+		//m_buffer.BindVertexArray(m_VAO);
+
+		glBindVertexArray(m_VAO);
+
 
 			//glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
 			glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
 
-		m_buffer.CloseVertexArray();
+		
+		glBindVertexArray(0);
+
+		//m_buffer.CloseVertexArray();
 
 	//m_texture.UnBind();
 }

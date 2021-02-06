@@ -1,5 +1,6 @@
 #include "App.h"
 
+
 App::App()
 {
 	m_isProgramRunning = true;
@@ -91,8 +92,8 @@ void App::InitObjects()
 
 void App::Draw()
 {
-	//m_cube->Draw();
-	m_quad->Draw();
+	m_cube->Draw();
+	//m_quad->Draw();
 	m_grid->Draw();
 }
 

@@ -9,7 +9,52 @@ class Buffer
 {
 public:
 
+	enum BufferType
+	{
+		VBO = GL_ARRAY_BUFFER,
+		EBO = GL_ELEMENT_ARRAY_BUFFER
+	};
+
+	enum FillType
+	{
+		SINGLE = GL_STATIC_DRAW,
+		MULTIPLE = GL_DYNAMIC_DRAW
+	};
+
+	enum ComponentType
+	{
+		UV = 2,
+		XYZ = 3,
+		RGBA = 4,
+
+	};
+
+
+	enum DataType
+	{
+		INT = GL_INT,
+
+	};
+
+	enum VBOType
+	{
+		VERTEX_BUFFER,
+		COLOR_BUFFER,
+
+	};
+
+	enum DrawType
+	{
+
+	};
+
+
+public:
+
 	Buffer();
+
+
+
 
 	// Generating VAOs and other buffers
 	void GenerateVertexArray(GLsizei size, GLuint& target);
