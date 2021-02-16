@@ -41,3 +41,14 @@ void Debug::Log(std::string line, GLuint ID)
 	std::cout << line << ID << std::endl;
 }
 
+void Debug::PrintGraphicsEngineVersion()
+{
+	// Posting initial print of graphics driver details
+	//display the manufacturer of the graphics hardware
+	Debug::Log((const char*)(glGetString(GL_VENDOR)));
+	//display the make and model of the graphics card
+	Debug::Log((const char*)(glGetString(GL_RENDERER)));
+	//display the current OpenGL version and mode set
+	Debug::Log((const char*)(glGetString(GL_VERSION)));
+}
+

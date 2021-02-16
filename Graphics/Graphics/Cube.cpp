@@ -33,41 +33,40 @@ Cube::~Cube()
 
 void Cube::CreateBuffers()
 {
-	glm::vec3 halfDimention = m_dimention * 0.5f;
+	glm::vec3 halfDimension = m_dimention * 0.5f;
 
 	float vertices[] = {
-		-halfDimention.x, halfDimention.y, halfDimention.z,
-		halfDimention.x, halfDimention.y, halfDimention.z,
-		halfDimention.x, -halfDimention.y, halfDimention.z,
-		-halfDimention.x, -halfDimention.y, halfDimention.z, // front face 
+						-halfDimension.x, halfDimension.y, halfDimension.z,   //0
+						halfDimension.x, halfDimension.y, halfDimension.z,    //1
+						halfDimension.x, -halfDimension.y, halfDimension.z,    //2
+						 -halfDimension.x, -halfDimension.y, halfDimension.z,   //3   //front face
 
-		-halfDimention.x, halfDimention.y, -halfDimention.z,
-		halfDimention.x, halfDimention.y, -halfDimention.z,
-		halfDimention.x, -halfDimention.y, -halfDimention.z,
-		-halfDimention.x, -halfDimention.y, -halfDimention.z,	// back face
+						 -halfDimension.x, halfDimension.y, -halfDimension.z,   //4
+						  halfDimension.x, halfDimension.y, -halfDimension.z,   //5
+						  halfDimension.x, -halfDimension.y, -halfDimension.z,   //6
+						 -halfDimension.x, -halfDimension.y, -halfDimension.z,  //7    //back face
 
-		-halfDimention.x, halfDimention.y, halfDimention.z,
-		-halfDimention.x, -halfDimention.y, halfDimention.z,
-		-halfDimention.x, -halfDimention.y, -halfDimention.z,
-		-halfDimention.x, halfDimention.y, -halfDimention.z, // left face
+						 -halfDimension.x, halfDimension.y, halfDimension.z,
+						 -halfDimension.x, -halfDimension.y, halfDimension.z,
+						 -halfDimension.x, -halfDimension.y, -halfDimension.z,
+						 -halfDimension.x,  halfDimension.y, -halfDimension.z,   //left face
 
-		halfDimention.x, halfDimention.y, halfDimention.z,
-		halfDimention.x, -halfDimention.y, halfDimention.z,
-		halfDimention.x, -halfDimention.y, -halfDimention.z,
-		halfDimention.x, halfDimention.y, -halfDimention.z, // right face
+						  halfDimension.x,  halfDimension.y, halfDimension.z,
+						  halfDimension.x, -halfDimension.y, halfDimension.z,
+						  halfDimension.x, -halfDimension.y, -halfDimension.z,
+						  halfDimension.x,  halfDimension.y, -halfDimension.z,   //right face
 
-		-halfDimention.x, halfDimention.y, -halfDimention.z,
-		halfDimention.x, halfDimention.y, -halfDimention.z,
-		halfDimention.x, halfDimention.y, halfDimention.z,
-		-halfDimention.x, halfDimention.y, halfDimention.z, // top face
+						  -halfDimension.x, halfDimension.y, -halfDimension.z,
+						  halfDimension.x, halfDimension.y, -halfDimension.z,
+						  halfDimension.x, halfDimension.y, halfDimension.z,
+						  -halfDimension.x, halfDimension.y, halfDimension.z,   //top face
 
-		-halfDimention.x, -halfDimention.y, -halfDimention.z,
-		halfDimention.x, -halfDimention.y, -halfDimention.z,
-		halfDimention.x, -halfDimention.y, halfDimention.z,
-		-halfDimention.x, -halfDimention.y, halfDimention.z, // bottom face
+						 -halfDimension.x, -halfDimension.y, -halfDimension.z,
+						  halfDimension.x, -halfDimension.y, -halfDimension.z,
+						  halfDimension.x, -halfDimension.y, halfDimension.z,
+						  -halfDimension.x, -halfDimension.y, halfDimension.z,   //bottom face
 	};
 
-	
 
 	float colors[] = {
 		1.0f, 0.5f, 0.5f,
@@ -105,23 +104,12 @@ void Cube::CreateBuffers()
 
 
 	float indices[] = {
-		0,  1,  3,
-		3,  1,  2,      //front face
-
-		4,  5,  7,
-		7,  5,  6,      //back face
-
-		4,  0,  7,
-		7,  0,  3,      //left face
-
-		1,  5,  2,
-		2,  5,  6,      //right face
-
-		5,  1,  4,
-		4,  1,  0,      //top face
-
-		6,  2,  7,
-		7,  2,  3     //bottom face
+						0,  1,  3,  3,  1,  2,            //front face
+						 4,  5,  7,  7,  5,  6,            //back face
+						 8,  9,  11,  11,  9,  10,         //left face
+						 12,  13,  15,  15,  13,  14,      //right face
+						 16,  17,  19,  19,  17,  18,      //top face
+						 20,  21,  23,  23,  21,  22       //bottom face
 	};
 
 	//m_texture.Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
@@ -137,7 +125,7 @@ void Cube::CreateBuffers()
 	//Shader::Instance()->EnableVertexAttributeArray(m_modelUniformID);
 
 	m_VAO = 0;
-	m_vertexVBO = 0;
+	m_vertexVBO = 0;  
 	m_colorsVBO = 0;
 	m_EBO = 0;
 
@@ -173,10 +161,10 @@ void Cube::CreateBuffers()
 
 	//m_buffer.BindVertexArray(m_VAO);
 
-	//	m_buffer.BindVertices(m_vertexVBO, m_vertexContainer, m_vertexAttributeID);
-	//	m_buffer.BindColors(m_colorsVBO, m_colorContainer, m_colorAttributeID);
-	//	//m_buffer.BindTextures(m_textureVBO, m_uvContainer, m_textureAttributeID);
-	//	m_buffer.BindEBOArray(m_EBO, m_indiciesContainer);
+		//	m_buffer.BindVertices(m_vertexVBO, m_vertexContainer, m_vertexAttributeID);
+		//	m_buffer.BindColors(m_colorsVBO, m_colorContainer, m_colorAttributeID);
+		//	//m_buffer.BindTextures(m_textureVBO, m_uvContainer, m_textureAttributeID);
+		//	m_buffer.BindEBOArray(m_EBO, m_indiciesContainer);
 
 	//m_buffer.CloseVertexArray();
 

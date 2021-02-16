@@ -9,6 +9,12 @@ class Buffer
 {
 public:
 
+	enum FlagType
+	{
+		TRUE = GL_TRUE,
+		FALSE = GL_FALSE
+	};
+
 	enum BufferType
 	{
 		VBO = GL_ARRAY_BUFFER,
@@ -26,25 +32,25 @@ public:
 		UV = 2,
 		XYZ = 3,
 		RGBA = 4,
-
 	};
 
 
 	enum DataType
 	{
 		INT = GL_INT,
-
+		FLOAT = GL_FLOAT,
 	};
 
 	enum VBOType
 	{
 		VERTEX_BUFFER,
 		COLOR_BUFFER,
-
+		TEXTURE_BUFFER,
 	};
 
 	enum DrawType
 	{
+		POINTS = GL_POINTS,
 
 	};
 
@@ -53,8 +59,25 @@ public:
 
 	Buffer();
 
+	////////////////////////////////////////////////////
+	////	New set of functions to streamline the 
+	////	bufer functions
+	////////////////////////////////////////////////////
+
+	// Where we can 
+	void CreateAndGenObjBuffers();
+
+	void PassVertexElements(float vertexElements);
+	void PassColorElements(float colorElements);
+	void PassIndicies(float indicies);
 
 
+	void BeginBindObjArray();
+	void FinishBindObjArray();
+
+
+
+public:
 
 	// Generating VAOs and other buffers
 	void GenerateVertexArray(GLsizei size, GLuint& target);

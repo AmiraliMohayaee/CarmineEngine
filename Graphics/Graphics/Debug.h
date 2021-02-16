@@ -14,4 +14,5 @@ namespace Debug
 	void Log(std::string line, std::string value);
 	void Log(std::string line, std::string value, GLuint ID);
 	void Log(std::string line, GLuint ID);
+	void PrintGraphicsEngineVersion();
 }

@@ -57,3 +57,15 @@ void APIENTRY GLError::GetGLErrorCallback(GLenum source, GLenum type, GLuint id,
 #endif
 
 }
+
+void GLError::GraphicsErrorCatch()
+{
+	//////////////////////////////////////////
+	// Open GL Debugger Message Catching
+	//////////////////////////////////////////
+	glEnable(GL_DEBUG_OUTPUT);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, 0, GL_TRUE);
+
+	glDebugMessageCallback(&GLError::GetGLErrorCallback, nullptr);
+}

@@ -46,15 +46,7 @@ bool App::InitScreenAndShaders()
 	}
 
 
-	// Abstract This further in its own function
-
-	// Posting initial print of graphics driver details
-	//display the manufacturer of the graphics hardware
-	Debug::Log((const char*)(glGetString(GL_VENDOR)));
-	//display the make and model of the graphics card
-	Debug::Log((const char*)(glGetString(GL_RENDERER)));
-	//display the current OpenGL version and mode set
-	Debug::Log((const char*)(glGetString(GL_VERSION)));
+	Debug::PrintGraphicsEngineVersion();
 
 	return true;
 }
@@ -80,14 +72,8 @@ void App::InitObjects()
 	m_quad->CreateBuffers();
 	m_grid->SetupGridDimentions(4, 10, 1.0f, 1.0f, 1.0f);
 
-	//////////////////////////////////////////
-	// Open GL Debugger Message Catching
-	//////////////////////////////////////////
-	glEnable(GL_DEBUG_OUTPUT);
-	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, 0, GL_TRUE);
-
-	glDebugMessageCallback(&GLError::GetGLErrorCallback, nullptr);
+	// Error Catching Code
+	GLError::GraphicsErrorCatch();
 }
 
 void App::Draw()

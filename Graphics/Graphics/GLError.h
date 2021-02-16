@@ -12,4 +12,6 @@ namespace GLError
         GLsizei length,
         const GLchar* message,
         const void* userParam);
+
+    void GraphicsErrorCatch();
 }
