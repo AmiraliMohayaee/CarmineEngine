@@ -6,11 +6,6 @@
 
 Cube::Cube()
 {
-	// Attributes
-	//m_vertexAttributeID = 0;
-	//m_colorAttributeID = 0;
-	//m_textureAttributeID = 0;
-
 	// Uniforms
 	m_modelUniformID = 0;
 	m_dimention = glm::vec3(1.0f);
@@ -19,16 +14,7 @@ Cube::Cube()
 
 Cube::~Cube()
 {
-	//m_buffer.DisableVertexAttribute(m_colorAttributeID);
-	//m_buffer.DisableVertexAttribute(m_vertexAttributeID);
-	//m_buffer.DisableVertexAttribute(m_modelUniformID);
-	//m_buffer.DisableVertexAttribute(m_textureAttributeID);
-
-	//m_buffer.DeleteBuffer(m_vertexVBO);
-	//m_buffer.DeleteBuffer(m_colorsVBO);
-	//m_buffer.DeleteBuffer(m_textureVBO);
-	//m_buffer.DeleteBuffer(m_EBO);
-	//m_buffer.DeleteVertexArray(m_VAO);
+	m_buffer.Destroy();
 }
 
 void Cube::CreateBuffers()
@@ -37,9 +23,9 @@ void Cube::CreateBuffers()
 
 	float vertices[] = {
 						-halfDimension.x, halfDimension.y, halfDimension.z,   //0
-						halfDimension.x, halfDimension.y, halfDimension.z,    //1
-						halfDimension.x, -halfDimension.y, halfDimension.z,    //2
-						 -halfDimension.x, -halfDimension.y, halfDimension.z,   //3   //front face
+							halfDimension.x, halfDimension.y, halfDimension.z,    //1
+							halfDimension.x, -halfDimension.y, halfDimension.z,    //2
+						   -halfDimension.x, -halfDimension.y, halfDimension.z,   //3   //front face
 
 						 -halfDimension.x, halfDimension.y, -halfDimension.z,   //4
 						  halfDimension.x, halfDimension.y, -halfDimension.z,   //5
@@ -69,35 +55,35 @@ void Cube::CreateBuffers()
 
 
 	float colors[] = {
-		1.0f, 0.5f, 0.5f,
-		0.5f, 1.0f, 0.0f,
-		0.5f, 1.0f, 0.0f,
-		0.5f, 1.0f, 0.0f,  // front face
+						1.0f, 1.0f, 1.0f,
+					   1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,    //front face
 
-		1.0f, 0.5f, 0.6f,
-		0.6f, 1.0f, 0.0f,
-		0.6f, 1.0f, 0.0f,
-		0.6f, 1.0f, 0.0f,  // back face
+						0.8f, 0.8f, 0.8f,
+						0.8f, 0.8f, 0.8f,
+						0.8f, 0.8f, 0.8f,
+						0.8f, 0.8f, 0.8f,   //back face
 
-		1.0f, 0.7f, 0.7f,
-		0.7f, 1.0f, 0.0f,
-		0.7f, 1.0f, 0.0f,
-		0.7f, 1.0f, 0.0f,  // right face
+						0.6f, 0.6f, 0.6f,
+						0.6f, 0.6f, 0.6f,
+						0.6f, 0.6f, 0.6f,
+						0.6f, 0.6f, 0.6f,  //left face
 
-		1.0f, 0.5f, 0.4f,
-		0.4f, 1.0f, 0.0f,
-		0.4f, 1.0f, 0.0f,
-		0.4f, 1.0f, 0.0f,  // left face
+						0.4f, 0.4f, 0.4f,
+						0.4f, 0.4f, 0.4f,
+						0.4f, 0.4f, 0.4f,
+						0.4f, 0.4f, 0.4f,  //right face
 
-		1.0f, 0.2f, 0.2f,
-		0.2f, 1.0f, 0.0f,
-		0.2f, 1.0f, 0.0f,
-		0.2f, 1.0f, 0.0f,  // top face
+						0.2f, 0.2f, 0.2f,
+						0.2f, 0.2f, 0.2f,
+						0.2f, 0.2f, 0.2f,
+						0.2f, 0.2f, 0.2f,  //top face
 
-		1.0f, 0.5f, 0.8f,
-		0.8f, 1.0f, 0.0f,
-		0.8f, 1.0f, 0.0f,
-		0.8f, 1.0f, 0.0f,  // bottom face
+						0.1f, 0.1f, 0.1f,
+						0.1f, 0.1f, 0.1f,
+						0.1f, 0.1f, 0.1f,
+						0.1f, 0.1f, 0.1f   //bottom face
 	};
 
 
@@ -114,82 +100,52 @@ void Cube::CreateBuffers()
 
 	//m_texture.Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
 	
-	m_vertexAttributeID = Shader::Instance()->GetAttributeID("vertexIn");
-	m_colorAttributeID = Shader::Instance()->GetAttributeID("colorIn");
-	//m_textureAttributeID = Shader::Instance()->GetAttributeID("textureIn");
-	m_modelUniformID = Shader::Instance()->GetUniformID("model");
-
-	//Shader::Instance()->EnableVertexAttributeArray(m_vertexAttributeID);
-	//Shader::Instance()->EnableVertexAttributeArray(m_colorAttributeID);
-	////Shader::Instance()->EnableVertexAttributeArray(m_textureAttributeID);
-	//Shader::Instance()->EnableVertexAttributeArray(m_modelUniformID);
-
-	m_VAO = 0;
-	m_vertexVBO = 0;  
-	m_colorsVBO = 0;
-	m_EBO = 0;
-
-	glGenBuffers(1, &m_vertexVBO);
-	glGenBuffers(1, &m_colorsVBO);
-	glGenBuffers(1, &m_EBO);
-
-	//m_buffer.GenerateVertexArray(1, m_VAO);
-	//m_buffer.GenerateBuffer(1, m_vertexVBO);
-	//m_buffer.GenerateBuffer(1, m_colorsVBO);
-	////m_buffer.GenerateBuffer(1, m_textureVBO);
-	//m_buffer.GenerateBuffer(1, m_EBO);
-
-	glGenVertexArrays(1, &m_VAO);
-
-	glBindVertexArray(m_VAO);
-
-		glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		glVertexAttribPointer(m_vertexAttributeID, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-		glEnableVertexAttribArray(m_vertexAttributeID);
-
-		glBindBuffer(GL_ARRAY_BUFFER, m_colorsVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-		glVertexAttribPointer(m_colorAttributeID, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-		glEnableVertexAttribArray(m_colorAttributeID);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glBindVertexArray(0);
 
 
-	//m_buffer.BindVertexArray(m_VAO);
+	m_buffer.Create(sizeof(vertices), true);
+	m_buffer.FillVBO(m_buffer.VERTEX_BUFFER, vertices, sizeof(vertices));
+	m_buffer.FillVBO(m_buffer.COLOR_BUFFER, colors, sizeof(colors));
+	m_buffer.FillEBO(indices, sizeof(indices));
 
-		//	m_buffer.BindVertices(m_vertexVBO, m_vertexContainer, m_vertexAttributeID);
-		//	m_buffer.BindColors(m_colorsVBO, m_colorContainer, m_colorAttributeID);
-		//	//m_buffer.BindTextures(m_textureVBO, m_uvContainer, m_textureAttributeID);
-		//	m_buffer.BindEBOArray(m_EBO, m_indiciesContainer);
+	m_buffer.LinkVBO("vertexIn", m_buffer.VERTEX_BUFFER, m_buffer.XYZ);
+	m_buffer.LinkVBO("colorIn", m_buffer.COLOR_BUFFER, m_buffer.RGB);
+	m_buffer.LinkEBO();
 
-	//m_buffer.CloseVertexArray();
+	//glGenVertexArrays(1, &m_VAO);
 
+	//glBindVertexArray(m_VAO);
+
+	//	glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
+	//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	//	glVertexAttribPointer(m_vertexAttributeID, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	//	glEnableVertexAttribArray(m_vertexAttributeID);
+
+	//	glBindBuffer(GL_ARRAY_BUFFER, m_colorsVBO);
+	//	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+	//	glVertexAttribPointer(m_colorAttributeID, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+	//	glEnableVertexAttribArray(m_colorAttributeID);
+
+	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+	//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	//glBindVertexArray(0);
 }
 
 void Cube::Draw()
 {
 	Shader::Instance()->SendUniformData("model", m_modelMatrix);
-	
-	//m_texture.Bind();
-
-		//m_buffer.BindVertexArray(m_VAO);
-
-		glBindVertexArray(m_VAO);
 
 
-			//glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
-			glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
+	m_buffer.Render(m_buffer.TRIANGLES);
 
-		
-		glBindVertexArray(0);
+	//
+	//glBindVertexArray(m_VAO);
 
-		//m_buffer.CloseVertexArray();
+	//	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+	//	//glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
+	//	
+	//glBindVertexArray(0);
 
-	//m_texture.UnBind();
 }
 
 void Cube::Update()

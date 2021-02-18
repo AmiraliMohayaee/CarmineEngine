@@ -2,19 +2,10 @@
 
 Grid::Grid()
 {
-	m_VAO = 0;
-	m_vertexVBO = 0;
-	m_colorsVBO = 0;
-	m_EBO = 0;
-
 	// a value to keep in track of where 
 	// we are when filling up the buffer
 	// for the grid
 	m_offset = 0;
-
-	m_vertexAttributeID = 0;
-	m_colorAttributeID = 0;
-	m_modelUniformID = 0;
 
 	m_modelMatrix = glm::mat4(1.0f);
 }
@@ -23,14 +14,6 @@ Grid::Grid()
 void Grid::SetupGridDimentions(int quadrants, float maxSize,
 	float red, float green, float blue)
 {
-	m_buffer.GenerateVertexArray(1, m_VAO);
-	m_buffer.GenerateBuffer(1, m_vertexVBO);
-	m_buffer.GenerateBuffer(1, m_colorsVBO);
-
-	m_vertexAttributeID = Shader::Instance()->GetAttributeID("vertexIn");
-	m_colorAttributeID = Shader::Instance()->GetAttributeID("colorIn");
-
-
 	// Setting up space for the buffer in accordance to the size
 	// of the grid we are looking to make
 	const int SIZE = static_cast<int>(maxSize);
@@ -38,6 +21,10 @@ void Grid::SetupGridDimentions(int quadrants, float maxSize,
 	const int BYTES_PER_LINE = 6 * sizeof(GLfloat);
 	
 	const int TOTAL_BYTES_VBO = SIZE * QUADRANTS * BYTES_PER_LINE;
+
+	m_buffer.Create(0, false);
+	m_buffer.FillVBO(m_buffer.VERTEX_BUFFER, 0, 0);
+	m_buffer.FillVBO(m_buffer.COLOR_BUFFER, 0, 0);
 
 
 	m_buffer.BindVertexArray(m_VAO);
@@ -53,13 +40,13 @@ void Grid::SetupGridDimentions(int quadrants, float maxSize,
 		for (int i = 0; i < maxSize; i++)
 		{
 			// gridline vertices - negative X
-			m_vertexContainer = {
+			float vertices[] = {
 				-maxSize + i, 0, maxSize,	// first vertex
 				-maxSize + i, 0, -maxSize	// second vertex
 			};
 		
 			// gridline colors
-			m_colorContainer = {
+			float color[] = {
 				m_color.r, m_color.g, m_color.b,
 				m_color.r, m_color.g, m_color.b
 			};
@@ -143,11 +130,13 @@ void Grid::Draw()
 {
 	Shader::Instance()->SendUniformData("model", m_modelMatrix);
 
-	m_buffer.BindVertexArray(m_VAO);
+	m_buffer.Render(m_buffer.TRIANGLES);
 
-		glDrawArrays(GL_LINES, 0, 80);
+	//m_buffer.BindVertexArray(m_VAO);
 
-	m_buffer.CloseVertexArray();
+	//	glDrawArrays(GL_LINES, 0, 80);
+
+	//m_buffer.CloseVertexArray();
 }
 
 void Grid::Update()

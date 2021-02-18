@@ -34,9 +34,6 @@
     <Filter Include="Source Files\glad">
       <UniqueIdentifier>{8f89a964-ddfa-4bf1-a2d1-d85f448b4d00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Shapes">
-      <UniqueIdentifier>{b71c72c9-3670-41ac-a497-1b922e744922}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shapes">
       <UniqueIdentifier>{fa26c6c0-c163-4081-8348-200e60fedb9c}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,15 @@
     </Filter>
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{bd6c8005-1dfc-444e-8429-7e29004c44db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects">
+      <UniqueIdentifier>{d0663edb-b56d-4d89-872a-4a91ae5e6e2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\CustomObjects">
+      <UniqueIdentifier>{130f23f7-ddd1-4b15-8b52-b300940054c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects\CustomObjects\Shapes">
+      <UniqueIdentifier>{b71c72c9-3670-41ac-a497-1b922e744922}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +126,7 @@
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Cube.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\GameObjects\CustomObjects\Shapes</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Graphics</Filter>
@@ -135,7 +141,7 @@
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\GameObjects\CustomObjects\Shapes</Filter>
     </ClInclude>
     <ClInclude Include="App.h">
       <Filter>Header Files\Core</Filter>
@@ -144,7 +150,10 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Quad.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\GameObjects\CustomObjects\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

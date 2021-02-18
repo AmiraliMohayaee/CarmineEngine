@@ -167,6 +167,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="File.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="glad.h" />
     <ClInclude Include="GLError.h" />
     <ClInclude Include="Grid.h" />

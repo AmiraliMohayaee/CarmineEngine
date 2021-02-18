@@ -4,114 +4,99 @@
 Buffer::Buffer()
 {
 	m_VAO = 0;
-	m_vertexVBO = 0;
-	m_colorsVBO = 0;
-	m_textureVBO = 0;
 	m_EBO = 0;
+	m_hasEBO = false;
+	m_totalVertices = 0;
+
+	//for (int i = 0; i < TOTAL_BUFFERS; i++)
+	//{
+	//	m_VBOs[i] = 0;
+	//}
+
+	for (auto& i : m_VBOs)
+	{
+		i = 0;
+	}
 }
 
-//==========================================================================
-//	Functions creating VAOs, VBOs and EBOs
-//==========================================================================
-void Buffer::GenerateBuffer(GLsizei size, GLuint& target)
+void Buffer::Create(GLuint totalVertices, bool hasEBO)
 {
-	glGenBuffers(size, &target);
+	glGenVertexArrays(1, &m_VAO);
+	glGenBuffers(TOTAL_BUFFERS, m_VBOs);
+
+	if (hasEBO)
+	{
+		glGenBuffers(1, &m_EBO);
+	}
+
+	m_hasEBO = hasEBO;
+	m_totalVertices = totalVertices;
 }
 
-void Buffer::GenerateVertexArray(GLsizei size, GLuint& target)
+void Buffer::FillVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize, FillType fillType)
 {
-	glGenVertexArrays(size, &target);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[bufferType]);
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, data, fillType);
 }
 
-void Buffer::BindVertexArray(GLuint vertexArray)
+void Buffer::FillEBO(GLfloat* data, GLsizeiptr bufferSize, FillType fillType)
 {
-	glBindVertexArray(vertexArray);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, bufferSize, data, fillType);
 }
 
-void Buffer::CreateEmptyVBO(GLuint& bufferObj, const int size, GLuint attributeData)
+void Buffer::AppendVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize, GLuint offset)
 {
-	glBindBuffer(GL_ARRAY_BUFFER, bufferObj);
-	glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_STATIC_DRAW);
-	glVertexAttribPointer(attributeData, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(attributeData);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[bufferType]);
+	glBufferSubData(GL_ARRAY_BUFFER, offset, bufferSize, data);
 }
 
-void Buffer::BindVertices(GLuint& bufferObj, std::vector<GLfloat> data,
-	GLuint attributeData)
+void Buffer::AppendEBO(GLfloat* data, GLsizeiptr bufferSize, GLuint offset)
 {
-	glBindBuffer(GL_ARRAY_BUFFER, bufferObj);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * data.size(), &data[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(attributeData, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(attributeData);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, bufferSize, data);
 }
 
-void Buffer::BindVerticesWithSubdata(GLuint& bufferObj, std::vector<GLfloat> data, GLuint offset)
+void Buffer::LinkEBO()
 {
-	glBindBuffer(GL_ARRAY_BUFFER, bufferObj);
-	glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(GLfloat) * data.size(), &data[0]);
-}
-
-void Buffer::BindColors(GLuint& bufferObj, std::vector<float> data, 
-	GLuint attributeData)
-{
-	glBindBuffer(GL_ARRAY_BUFFER, bufferObj);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * data.size(), &data[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(attributeData, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(attributeData);
-}
-
-void Buffer::BindColorsWithSubData(GLuint& bufferObj, std::vector<GLfloat> data, GLuint offset)
-{
-	glBindBuffer(GL_ARRAY_BUFFER, bufferObj);
-	glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(GLfloat) * data.size(), &data[0]);
-}
-
-void Buffer::BindTextures(GLuint& bufferObj, std::vector<GLfloat> data, GLuint attributeData)
-{
-	glBindBuffer(GL_ARRAY_BUFFER, bufferObj);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * data.size(), &data[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(attributeData, 2, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(attributeData);
-}
-
-void Buffer::BindBufferWithDynamicDraw(GLuint& bufferObj, const int size,
-	GLuint attributeData)
-{
-	glBindBuffer(GL_ARRAY_BUFFER, bufferObj);
-	glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
-	glVertexAttribPointer(attributeData, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	glEnableVertexAttribArray(attributeData);
-}
-
-void Buffer::BindEBOArray(GLuint& bufferObj, std::vector<GLuint> data)
-{
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufferObj);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * data.size(), &data[0], GL_STATIC_DRAW);
-}
-
-//==========================================================================
-// To close the Vertex array contents when done with populating it
-//==========================================================================
-void Buffer::CloseVertexArray()
-{
+	glBindVertexArray(m_VAO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 	glBindVertexArray(0);
 }
 
-
-//==========================================================================
-//	Functions for deleting buffer and vertex attribute elements
-//==========================================================================
-void Buffer::DisableVertexAttribute(GLuint attribute)
+void Buffer::LinkVBO(const std::string& attribute, VBOType bufferType, ComponentType componentType)
 {
-	glDisableVertexAttribArray(attribute);
+	glBindVertexArray(m_VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[bufferType]);
+		glVertexAttribPointer(Shader::Instance()->GetAttributeID(attribute), componentType, GL_FLOAT, GL_FALSE, 0, nullptr);
+		glEnableVertexAttribArray(Shader::Instance()->GetAttributeID(attribute));
+	glBindVertexArray(0);
 }
 
-void Buffer::DeleteBuffer(GLuint& buffer)
+void Buffer::Render(RenderType renderType)
 {
-	glDeleteBuffers(1, &buffer);
+	glBindVertexArray(m_VAO);
+
+		if (m_hasEBO)
+		{
+			glDrawElements(renderType, m_totalVertices, GL_UNSIGNED_INT, 0);
+		}
+
+		else
+		{
+			glDrawArrays(renderType, 0, m_totalVertices);
+		}
+
+	glBindVertexArray(0);
 }
 
-void Buffer::DeleteVertexArray(GLuint& vertexArray)
+void Buffer::Destroy()
 {
-	glDeleteVertexArrays(1, &vertexArray);
+	glDeleteBuffers(TOTAL_BUFFERS, m_VBOs);
+	glDeleteVertexArrays(1, &m_VAO);
+
+	if (m_hasEBO)
+	{
+		glDeleteBuffers(1, &m_EBO);
+	}
 }

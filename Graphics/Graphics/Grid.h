@@ -20,14 +20,6 @@ private:
 	Buffer m_buffer;
 	GLuint m_offset;
 
-	GLuint m_VAO;
-	GLuint m_vertexVBO;
-	GLuint m_colorsVBO;
-	GLuint m_EBO;
-
-	GLuint m_vertexAttributeID;
-	GLuint m_colorAttributeID;
-
 	glm::mat4 m_modelMatrix;
 
 	GLuint m_modelUniformID;

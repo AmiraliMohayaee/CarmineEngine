@@ -30,7 +30,9 @@ public:
 	enum ComponentType
 	{
 		UV = 2,
+		XY = 2,
 		XYZ = 3,
+		RGB = 3,
 		RGBA = 4,
 	};
 
@@ -39,6 +41,7 @@ public:
 	{
 		INT = GL_INT,
 		FLOAT = GL_FLOAT,
+		U_INT = GL_UNSIGNED_INT,
 	};
 
 	enum VBOType
@@ -46,81 +49,54 @@ public:
 		VERTEX_BUFFER,
 		COLOR_BUFFER,
 		TEXTURE_BUFFER,
+		NORMAL_BUFFER,
+		TOTAL_BUFFERS
 	};
 
-	enum DrawType
+	enum RenderType
 	{
 		POINTS = GL_POINTS,
-
+		LINES = GL_LINES,
+		TRIANGLES = GL_TRIANGLES,
 	};
 
 
 public:
-
-	Buffer();
 
 	////////////////////////////////////////////////////
 	////	New set of functions to streamline the 
 	////	bufer functions
 	////////////////////////////////////////////////////
+	Buffer();
 
-	// Where we can 
-	void CreateAndGenObjBuffers();
+	void Create(GLuint totalVertices, bool hasEBO = false);
 
-	void PassVertexElements(float vertexElements);
-	void PassColorElements(float colorElements);
-	void PassIndicies(float indicies);
+	void FillVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize, FillType fillType = SINGLE);
+	void FillEBO(GLfloat* data, GLsizeiptr bufferSize, FillType fillType = SINGLE);
 
+	void AppendVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize, GLuint offset = 0);
+	void AppendEBO(GLfloat* data, GLsizeiptr bufferSize, GLuint offset = 0);
 
-	void BeginBindObjArray();
-	void FinishBindObjArray();
+	void LinkEBO();
+	void LinkVBO(const std::string& attribute, VBOType bufferType, ComponentType componentType);
 
-
-
-public:
-
-	// Generating VAOs and other buffers
-	void GenerateVertexArray(GLsizei size, GLuint& target);
-	void GenerateBuffer(GLsizei size, GLuint& target);
-	
-	// Binding buffers and VAOs
-	void BindVertexArray(GLuint vertexArray);
-
-	// An empty buffer so that it can populated later
-	void CreateEmptyVBO(GLuint& bufferObj, const int size, GLuint attributeData);
-
-	void BindVertices(GLuint& bufferObj, std::vector<GLfloat> data,
-		GLuint attributeData);
-	void BindVerticesWithSubdata(GLuint& bufferObj, std::vector<GLfloat> data,
-		GLuint offset);
-
-	void BindColors(GLuint& bufferObj, std::vector<GLfloat> data,
-		GLuint attributeData);
-	void BindColorsWithSubData(GLuint& bufferObj, std::vector<GLfloat> data,
-		GLuint offset);
-
-	void BindTextures(GLuint& bufferObj, std::vector<GLfloat> data,
-		GLuint attributeData);
-
-	void BindBufferWithDynamicDraw(GLuint& bufferObj, const int size,
-		GLuint attributeData);
-
-	void BindEBOArray(GLuint& bufferObj, std::vector<GLuint> data);
-	void CloseVertexArray();
-
-
-	void DisableVertexAttribute(GLuint attribute);
-	void DeleteBuffer(GLuint& buffer);
-	void DeleteVertexArray(GLuint& vertexArray);
+	void Render(RenderType renderType);
+	void Destroy();
 
 
 private:
 
+	bool m_hasEBO;
+
 	GLuint m_VAO;
 	GLuint m_EBO;
-	GLuint m_vertexVBO;
-	GLuint m_colorsVBO;
-	GLuint m_textureVBO;
-	GLuint m_normalVBO;
+	GLuint m_VBOs[TOTAL_BUFFERS];
+	GLuint m_totalVertices;
+
+
+	//GLuint m_vertexVBO;
+	//GLuint m_colorsVBO;
+	//GLuint m_textureVBO;
+	//GLuint m_normalVBO;
 
 };
