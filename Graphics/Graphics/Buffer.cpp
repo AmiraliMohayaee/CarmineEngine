@@ -39,7 +39,7 @@ void Buffer::FillVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize, F
 	glBufferData(GL_ARRAY_BUFFER, bufferSize, data, fillType);
 }
 
-void Buffer::FillEBO(GLfloat* data, GLsizeiptr bufferSize, FillType fillType)
+void Buffer::FillEBO(GLuint* data, GLsizeiptr bufferSize, FillType fillType)
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, bufferSize, data, fillType);
@@ -51,7 +51,7 @@ void Buffer::AppendVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize,
 	glBufferSubData(GL_ARRAY_BUFFER, offset, bufferSize, data);
 }
 
-void Buffer::AppendEBO(GLfloat* data, GLsizeiptr bufferSize, GLuint offset)
+void Buffer::AppendEBO(GLuint* data, GLsizeiptr bufferSize, GLuint offset)
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, bufferSize, data);

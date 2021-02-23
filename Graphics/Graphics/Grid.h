@@ -10,6 +10,10 @@ public:
 	Grid();
 	void SetupGridDimentions(int quadrants, float maxSize,
 		float red, float green, float blue);
+
+	void CreateBuffers();
+	void DestroyBuffers();
+
 	void Draw();
 	void Update();
 	

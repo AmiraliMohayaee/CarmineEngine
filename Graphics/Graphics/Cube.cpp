@@ -1,31 +1,31 @@
 #include "Cube.h"
 #include "Debug.h"
-#include "Screen.h"
+#include "Shader.h"
 #include "Input.h"
 
 
 Cube::Cube()
 {
 	// Uniforms
-	m_modelUniformID = 0;
-	m_dimention = glm::vec3(1.0f);
+	//m_modelUniformID = 0;
+	m_position = glm::vec3(0.0f);
+	m_dimension = glm::vec3(1.0f);
 	m_modelMatrix = glm::mat4(1.0f);
 }
 
 Cube::~Cube()
 {
-	m_buffer.Destroy();
 }
 
 void Cube::CreateBuffers()
 {
-	glm::vec3 halfDimension = m_dimention * 0.5f;
+	glm::vec3 halfDimension = m_dimension * 0.5f;
 
-	float vertices[] = {
+	GLfloat vertices[] = {
 						-halfDimension.x, halfDimension.y, halfDimension.z,   //0
-							halfDimension.x, halfDimension.y, halfDimension.z,    //1
-							halfDimension.x, -halfDimension.y, halfDimension.z,    //2
-						   -halfDimension.x, -halfDimension.y, halfDimension.z,   //3   //front face
+						halfDimension.x, halfDimension.y, halfDimension.z,    //1
+						halfDimension.x, -halfDimension.y, halfDimension.z,    //2
+						 -halfDimension.x, -halfDimension.y, halfDimension.z,   //3   //front face
 
 						 -halfDimension.x, halfDimension.y, -halfDimension.z,   //4
 						  halfDimension.x, halfDimension.y, -halfDimension.z,   //5
@@ -54,9 +54,9 @@ void Cube::CreateBuffers()
 	};
 
 
-	float colors[] = {
+	GLfloat colors[] = {
 						1.0f, 1.0f, 1.0f,
-					   1.0f, 1.0f, 1.0f,
+					    1.0f, 1.0f, 1.0f,
 						1.0f, 1.0f, 1.0f,
 						1.0f, 1.0f, 1.0f,    //front face
 
@@ -87,9 +87,7 @@ void Cube::CreateBuffers()
 	};
 
 
-
-
-	float indices[] = {
+	GLuint indices[] = {
 						0,  1,  3,  3,  1,  2,            //front face
 						 4,  5,  7,  7,  5,  6,            //back face
 						 8,  9,  11,  11,  9,  10,         //left face
@@ -99,57 +97,31 @@ void Cube::CreateBuffers()
 	};
 
 	//m_texture.Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
-	
 
-
-	m_buffer.Create(sizeof(vertices), true);
-	m_buffer.FillVBO(m_buffer.VERTEX_BUFFER, vertices, sizeof(vertices));
-	m_buffer.FillVBO(m_buffer.COLOR_BUFFER, colors, sizeof(colors));
+	// Specfically putting the number of elements from the vertices instead of
+	// 
+	m_buffer.Create(36, true);
+	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices));
+	m_buffer.FillVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors));
 	m_buffer.FillEBO(indices, sizeof(indices));
 
-	m_buffer.LinkVBO("vertexIn", m_buffer.VERTEX_BUFFER, m_buffer.XYZ);
-	m_buffer.LinkVBO("colorIn", m_buffer.COLOR_BUFFER, m_buffer.RGB);
+	m_buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ);
+	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGB);
 	m_buffer.LinkEBO();
+}
 
-	//glGenVertexArrays(1, &m_VAO);
-
-	//glBindVertexArray(m_VAO);
-
-	//	glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
-	//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	//	glVertexAttribPointer(m_vertexAttributeID, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-	//	glEnableVertexAttribArray(m_vertexAttributeID);
-
-	//	glBindBuffer(GL_ARRAY_BUFFER, m_colorsVBO);
-	//	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-	//	glVertexAttribPointer(m_colorAttributeID, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-	//	glEnableVertexAttribArray(m_colorAttributeID);
-
-	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
-	//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	//glBindVertexArray(0);
+void Cube::DestroyBuffers()
+{
+	m_buffer.Destroy();
 }
 
 void Cube::Draw()
 {
 	Shader::Instance()->SendUniformData("model", m_modelMatrix);
 
-
-	m_buffer.Render(m_buffer.TRIANGLES);
-
-	//
-	//glBindVertexArray(m_VAO);
-
-	//	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-	//	//glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
-	//	
-	//glBindVertexArray(0);
-
+	m_buffer.Render(Buffer::TRIANGLES);
 }
 
 void Cube::Update()
 {
-
-
 }

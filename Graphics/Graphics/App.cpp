@@ -70,7 +70,8 @@ void App::InitObjects()
 	m_camera->InitCamera(0.0f, 0.0f, 5.0f, 75.0f, 0.1f, 1000.0f);
 	m_cube->CreateBuffers();
 	m_quad->CreateBuffers();
-	m_grid->SetupGridDimentions(4, 10, 1.0f, 1.0f, 1.0f);
+	//m_grid->SetupGridDimentions(4, 10, 1.0f, 1.0f, 1.0f);
+	m_grid->CreateBuffers();
 
 	// Error Catching Code
 	GLError::GraphicsErrorCatch();
@@ -79,7 +80,7 @@ void App::InitObjects()
 void App::Draw()
 {
 	m_cube->Draw();
-	//m_quad->Draw();
+	m_quad->Draw();
 	m_grid->Draw();
 }
 
@@ -104,9 +105,11 @@ void App::Update()
 			}
 		}
 		
+		
+		m_camera->UpdateCamera();
+		
 		// Encapsulates draw calls from other game objects
 		Draw();
-		m_camera->UpdateCamera();
 
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();

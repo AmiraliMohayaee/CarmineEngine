@@ -14,7 +14,7 @@ public:
 		TRUE = GL_TRUE,
 		FALSE = GL_FALSE
 	};
-
+	
 	enum BufferType
 	{
 		VBO = GL_ARRAY_BUFFER,
@@ -72,10 +72,10 @@ public:
 	void Create(GLuint totalVertices, bool hasEBO = false);
 
 	void FillVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize, FillType fillType = SINGLE);
-	void FillEBO(GLfloat* data, GLsizeiptr bufferSize, FillType fillType = SINGLE);
+	void FillEBO(GLuint* data, GLsizeiptr bufferSize, FillType fillType = SINGLE);
 
 	void AppendVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize, GLuint offset = 0);
-	void AppendEBO(GLfloat* data, GLsizeiptr bufferSize, GLuint offset = 0);
+	void AppendEBO(GLuint* data, GLsizeiptr bufferSize, GLuint offset = 0);
 
 	void LinkEBO();
 	void LinkVBO(const std::string& attribute, VBOType bufferType, ComponentType componentType);
