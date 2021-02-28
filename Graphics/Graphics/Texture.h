@@ -12,13 +12,15 @@ public:
 	Texture();
 	~Texture();
 
-	static Texture GetTexture(const std::string& textureID);
+	bool GetTexture(const std::string& textureID, Texture& texture);
 
-	bool Load(const std::string& filename, const std::string textureTag);
+	// TODO This could be static loaded so when adding multiple objects
+	static bool Load(const std::string& filename, const std::string textureTag);
 
 	void Bind(); 
 	void UnBind(); 
 
+	// TODO Don't use the SDL type. 
 	void Unload(SDL_Surface* surface);
 	void UnloadAll();
 
@@ -26,10 +28,7 @@ public:
 private:
 	
 	GLuint m_ID;
-
 	std::string m_tag;
-
-	// Global texture container for keeping all available textures
 	static std::map<std::string, Texture>* s_textureMap;
 
 };

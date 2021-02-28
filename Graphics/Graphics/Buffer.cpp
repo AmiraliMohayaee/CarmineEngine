@@ -51,6 +51,12 @@ void Buffer::AppendVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize,
 	glBufferSubData(GL_ARRAY_BUFFER, offset, bufferSize, data);
 }
 
+void Buffer::AppendVBO(VBOType bufferType, GLint* data, GLsizeiptr bufferSize, GLuint offset)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[bufferType]);
+	glBufferSubData(GL_ARRAY_BUFFER, offset, bufferSize, data);
+}
+
 void Buffer::AppendEBO(GLuint* data, GLsizeiptr bufferSize, GLuint offset)
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
@@ -64,7 +70,7 @@ void Buffer::LinkEBO()
 	glBindVertexArray(0);
 }
 
-void Buffer::LinkVBO(const std::string& attribute, VBOType bufferType, ComponentType componentType)
+void Buffer::LinkVBO(const std::string& attribute, VBOType bufferType, ComponentType componentType, DataType dataType)
 {
 	glBindVertexArray(m_VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[bufferType]);

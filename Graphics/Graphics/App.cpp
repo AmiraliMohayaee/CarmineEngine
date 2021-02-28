@@ -56,10 +56,11 @@ void App::BindElements()
 {
 	Shader::Instance()->BindAttribute("vertexIn");
 	Shader::Instance()->BindAttribute("colorIn");
-	//Shader::Instance()->BindAttribute("textureIn");
+	Shader::Instance()->BindAttribute("textureIn");
 	Shader::Instance()->BindUniform("model");
 	Shader::Instance()->BindUniform("view");
 	Shader::Instance()->BindUniform("projection");
+	Shader::Instance()->BindUniform("isTextured");
 }
 
 void App::InitObjects()

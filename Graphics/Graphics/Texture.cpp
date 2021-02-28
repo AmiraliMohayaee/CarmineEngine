@@ -15,23 +15,20 @@ Texture::~Texture()
 	glDeleteTextures(1, &m_ID);
 }
 
-// To-Do
-Texture Texture::GetTexture(const std::string& textureID)
+
+bool Texture::GetTexture(const std::string& textureID, Texture& texture)
 {
-	Texture tempTexture;
-
 	Debug::Log("Getting Texture object: ", textureID);
-
 	auto it = s_textureMap->find(textureID);
 
 	if (it == s_textureMap->end())
 	{
 		Debug::Log("Could not find texture object in texture container: ", textureID);
+		return false;
 	}
 
-	tempTexture = it->second;
-
-	return tempTexture;
+	texture = it->second;
+	return true;
 }
 
 void Texture::Bind()
@@ -49,11 +46,11 @@ bool Texture::Load(const std::string& filename, const std::string textureTag)
 	}
 
 
-	if (m_ID == -1)
-	{
-		Debug::Log("Failed to generate Texture ID for ", textureTag);
-		return false;
-	}
+	//if (m_ID == -1)
+	//{
+	//	Debug::Log("Failed to generate Texture ID for ", textureTag);
+	//	return false;
+	//}
 
 	
 	SDL_Surface* textureData = nullptr;
@@ -65,12 +62,15 @@ bool Texture::Load(const std::string& filename, const std::string textureTag)
 		return false;
 	}
 
+	// Creating temporary texture to assign into the map
+	Texture texture;
+
 
 	// Generate Texture obj first before creating a surface
 	// and binding it
-	glGenTextures(1, &m_ID);
+	glGenTextures(1, &texture.m_ID);
 
-	glBindTexture(GL_TEXTURE_2D, m_ID);
+	glBindTexture(GL_TEXTURE_2D, texture.m_ID);
 
 		Uint8* pixels = (Uint8*)textureData->pixels;
 		GLsizei width = textureData->w;
@@ -92,14 +92,14 @@ bool Texture::Load(const std::string& filename, const std::string textureTag)
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 
-		Unload(textureData);
+		SDL_FreeSurface(textureData);
 	
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	Debug::Log("Texture File Loaded successfully: ", textureTag);
-	m_tag = textureTag;
+	texture.m_tag = textureTag;
 
-	s_textureMap->insert(std::pair<std::string, Texture>(textureTag, *this));
+	s_textureMap->insert(std::pair<std::string, Texture>(textureTag, texture));
 
 	return true;
 }

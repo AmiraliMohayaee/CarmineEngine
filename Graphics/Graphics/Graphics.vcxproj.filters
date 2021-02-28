@@ -34,9 +34,6 @@
     <Filter Include="Source Files\glad">
       <UniqueIdentifier>{8f89a964-ddfa-4bf1-a2d1-d85f448b4d00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shapes">
-      <UniqueIdentifier>{fa26c6c0-c163-4081-8348-200e60fedb9c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Utility">
       <UniqueIdentifier>{c0cc8951-7acf-47cb-bbc0-3f55fe0471f7}</UniqueIdentifier>
     </Filter>
@@ -57,6 +54,15 @@
     </Filter>
     <Filter Include="Header Files\GameObjects\CustomObjects\Shapes">
       <UniqueIdentifier>{b71c72c9-3670-41ac-a497-1b922e744922}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects">
+      <UniqueIdentifier>{a678eaf9-feec-4023-a5ff-1f16aec0a6e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\CustomObjects">
+      <UniqueIdentifier>{a117ff6f-4c8b-4ba8-ad02-ec52c473ff59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\CustomObjects\Shapes">
+      <UniqueIdentifier>{fa26c6c0-c163-4081-8348-200e60fedb9c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -79,7 +85,7 @@
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Source Files\GameObjects\CustomObjects\Shapes</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Graphics</Filter>
@@ -94,7 +100,7 @@
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Source Files\GameObjects\CustomObjects\Shapes</Filter>
     </ClCompile>
     <ClCompile Include="App.cpp">
       <Filter>Source Files\Core</Filter>
@@ -103,7 +109,7 @@
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Quad.cpp">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Source Files\GameObjects\CustomObjects\Shapes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@
 #include <vector>
 
 
+
 class Buffer
 {
 public:
@@ -74,29 +75,24 @@ public:
 	void FillVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize, FillType fillType = SINGLE);
 	void FillEBO(GLuint* data, GLsizeiptr bufferSize, FillType fillType = SINGLE);
 
+	void AppendVBO(VBOType bufferType, GLint* data, GLsizeiptr bufferSize, GLuint offset = 0);
 	void AppendVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize, GLuint offset = 0);
 	void AppendEBO(GLuint* data, GLsizeiptr bufferSize, GLuint offset = 0);
 
 	void LinkEBO();
-	void LinkVBO(const std::string& attribute, VBOType bufferType, ComponentType componentType);
+	void LinkVBO(const std::string& attribute, VBOType bufferType, 
+		ComponentType componentType, DataType dataType = Buffer::FLOAT);
 
 	void Render(RenderType renderType);
 	void Destroy();
 
 
 private:
-
 	bool m_hasEBO;
 
 	GLuint m_VAO;
 	GLuint m_EBO;
 	GLuint m_VBOs[TOTAL_BUFFERS];
 	GLuint m_totalVertices;
-
-
-	//GLuint m_vertexVBO;
-	//GLuint m_colorsVBO;
-	//GLuint m_textureVBO;
-	//GLuint m_normalVBO;
 
 };

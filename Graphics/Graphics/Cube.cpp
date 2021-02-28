@@ -117,6 +117,7 @@ void Cube::DestroyBuffers()
 
 void Cube::Draw()
 {
+	Shader::Instance()->SendUniformData("isTextured", 0);
 	Shader::Instance()->SendUniformData("model", m_modelMatrix);
 
 	m_buffer.Render(Buffer::TRIANGLES);

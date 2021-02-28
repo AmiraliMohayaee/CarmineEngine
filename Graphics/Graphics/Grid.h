@@ -15,14 +15,13 @@ public:
 	void DestroyBuffers();
 
 	void Draw();
-	void Update();
+	void Update() {}
 	
 
 private:
 	glm::vec3 m_color;
 
 	Buffer m_buffer;
-	GLuint m_offset;
 
 	glm::mat4 m_modelMatrix;
 
