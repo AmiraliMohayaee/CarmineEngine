@@ -64,6 +64,12 @@
     <Filter Include="Source Files\GameObjects\CustomObjects\Shapes">
       <UniqueIdentifier>{fa26c6c0-c163-4081-8348-200e60fedb9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameObjects\Core">
+      <UniqueIdentifier>{02d15143-b171-45a3-b4cd-cbf90af924b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects\Core">
+      <UniqueIdentifier>{3edfd176-2d2f-4aff-a3bc-887de05be856}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -159,7 +165,7 @@
       <Filter>Header Files\GameObjects\CustomObjects\Shapes</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files\GameObjects</Filter>
+      <Filter>Header Files\GameObjects\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

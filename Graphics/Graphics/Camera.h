@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Shader.h"
-#include "..\DevLibs\GLM\include\gtc\matrix_transform.hpp"
+#include <gtc\matrix_transform.hpp>
 
 
 class Camera

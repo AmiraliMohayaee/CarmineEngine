@@ -59,31 +59,31 @@ void Cube::CreateBuffers()
 					    1.0f, 1.0f, 1.0f,
 						1.0f, 1.0f, 1.0f,
 						1.0f, 1.0f, 1.0f,    //front face
-
-						0.8f, 0.8f, 0.8f,
-						0.8f, 0.8f, 0.8f,
-						0.8f, 0.8f, 0.8f,
-						0.8f, 0.8f, 0.8f,   //back face
-
-						0.6f, 0.6f, 0.6f,
-						0.6f, 0.6f, 0.6f,
-						0.6f, 0.6f, 0.6f,
-						0.6f, 0.6f, 0.6f,  //left face
-
-						0.4f, 0.4f, 0.4f,
-						0.4f, 0.4f, 0.4f,
-						0.4f, 0.4f, 0.4f,
-						0.4f, 0.4f, 0.4f,  //right face
-
-						0.2f, 0.2f, 0.2f,
-						0.2f, 0.2f, 0.2f,
-						0.2f, 0.2f, 0.2f,
-						0.2f, 0.2f, 0.2f,  //top face
-
-						0.1f, 0.1f, 0.1f,
-						0.1f, 0.1f, 0.1f,
-						0.1f, 0.1f, 0.1f,
-						0.1f, 0.1f, 0.1f   //bottom face
+						  
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,   //back face
+						 
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,  //left face
+						 
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,  //right face
+						
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,  //top face
+						
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f,
+						1.0f, 1.0f, 1.0f   //bottom face
 	};
 
 
@@ -96,17 +96,51 @@ void Cube::CreateBuffers()
 						 20,  21,  23,  23,  21,  22       //bottom face
 	};
 
-	//m_texture.Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
+	GLfloat UVs[] = { 0.0f, 0.0f,
+					  1.0f, 0.0f,
+					  1.0f, 1.0f,
+					  0.0f, 1.0f,	// front face
+					 
+					  0.0f, 0.0f,
+					  1.0f, 0.0f,
+					  1.0f, 1.0f,
+					  0.0f, 1.0f,	// back face
+
+					  0.0f, 0.0f,
+					  1.0f, 0.0f,
+					  1.0f, 1.0f,
+					  0.0f, 1.0f,	// left face
+
+					  0.0f, 0.0f,
+					  1.0f, 0.0f,
+					  1.0f, 1.0f,
+					  0.0f, 1.0f,	// right face
+
+					  0.0f, 0.0f,
+					  1.0f, 0.0f,
+					  1.0f, 1.0f,
+					  0.0f, 1.0f,	// top face
+
+					  0.0f, 0.0f,
+					  1.0f, 0.0f,
+					  1.0f, 1.0f,
+					  0.0f, 1.0f,	// bottom face 
+					  };
+
+	m_texture.Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
+	m_texture.GetTexture("CRATE", m_texture);
 
 	// Specfically putting the number of elements from the vertices instead of
 	// 
 	m_buffer.Create(36, true);
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices));
 	m_buffer.FillVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors));
+	m_buffer.FillVBO(Buffer::TEXTURE_BUFFER, UVs, sizeof(UVs));
 	m_buffer.FillEBO(indices, sizeof(indices));
 
 	m_buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ);
 	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGB);
+	m_buffer.LinkVBO("textureIn", Buffer::TEXTURE_BUFFER, Buffer::UV);
 	m_buffer.LinkEBO();
 }
 
@@ -117,10 +151,12 @@ void Cube::DestroyBuffers()
 
 void Cube::Draw()
 {
-	Shader::Instance()->SendUniformData("isTextured", 0);
+	Shader::Instance()->SendUniformData("isTextured", true);
 	Shader::Instance()->SendUniformData("model", m_modelMatrix);
 
-	m_buffer.Render(Buffer::TRIANGLES);
+	m_texture.Bind();
+		m_buffer.Render(Buffer::TRIANGLES);
+	m_texture.UnBind();
 }
 
 void Cube::Update()

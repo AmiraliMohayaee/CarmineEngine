@@ -8,7 +8,7 @@ class Grid
 {
 public:
 	Grid();
-	void SetupGridDimentions(int quadrants, float maxSize,
+	void SetupGridDimentions(int quadrants, int maxSize,
 		float red, float green, float blue);
 
 	void CreateBuffers();
@@ -24,9 +24,4 @@ private:
 	Buffer m_buffer;
 
 	glm::mat4 m_modelMatrix;
-
-	GLuint m_modelUniformID;
-
-	std::vector<GLfloat> m_vertexContainer;
-	std::vector<GLfloat> m_colorContainer;
 };

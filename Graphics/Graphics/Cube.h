@@ -19,7 +19,7 @@ public:
 
 private:
 	Buffer m_buffer;
-	//Texture m_texture;
+	Texture m_texture;
 
 
 	glm::vec3 m_position;

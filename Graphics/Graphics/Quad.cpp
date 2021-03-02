@@ -52,16 +52,6 @@ void Quad::CreateBuffers()
 	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGB);
 	m_buffer.LinkEBO();
 
-	
-
-	//m_buffer.BindVertexArray(m_VAO);
-
-	//	m_buffer.BindVertices(m_vertexVBO, m_vertexContainer, m_vertexAttributeID);
-	//	m_buffer.BindColors(m_colorsVBO, m_colorContainer, m_colorAttributeID);
-	//	m_buffer.BindTextures(m_textureVBO, m_uvContainer, m_textureAttributeID);
-	//	//m_buffer.BindEBOArray(m_EBO, m_indiciesContainer);
-
-	//m_buffer.CloseVertexArray();
 }
 
 void Quad::DestroyBuffer()
