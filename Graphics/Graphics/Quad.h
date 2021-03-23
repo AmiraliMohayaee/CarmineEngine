@@ -3,7 +3,7 @@
 #include "Shader.h"
 #include "Buffer.h"
 #include "Texture.h"
-#include "..\DevLibs\GLM\include\gtc\matrix_transform.hpp"
+#include <gtc\matrix_transform.hpp>
 #include <vector>
 
 

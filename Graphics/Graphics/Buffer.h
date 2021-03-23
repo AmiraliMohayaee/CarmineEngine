@@ -88,6 +88,7 @@ public:
 
 
 private:
+
 	bool m_hasEBO;
 
 	GLuint m_VAO;

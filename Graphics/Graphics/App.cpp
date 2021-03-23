@@ -8,7 +8,7 @@ App::App()
 	m_camera = std::make_unique<Camera>();
 	m_cube = std::make_unique<Cube>();
 	m_grid = std::make_unique<Grid>();
-	m_quad = std::make_unique<Quad>();
+	//m_quad = std::make_unique<Quad>();
 }
 
 bool App::InitScreenAndShaders()
@@ -68,10 +68,13 @@ void App::InitObjects()
 	//////////////////////////////////////////
 	// Initializing Viewing Grid and Camera
 	//////////////////////////////////////////
+
+	Texture::Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
+
 	m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
 	m_cube->CreateBuffers();
-	m_quad->CreateBuffers();
-	//m_grid->SetupGridDimentions(4, 10, 1.0f, 1.0f, 1.0f);
+	//m_quad->CreateBuffers();
+	//m_grid->SetupGridDimentions(4, 11, 1.0f, 1.0f, 1.0f);
 	m_grid->CreateBuffers();
 
 	// Error Catching Code
@@ -81,7 +84,7 @@ void App::InitObjects()
 void App::Draw()
 {
 	m_cube->Draw();
-	m_quad->Draw();
+	//m_quad->Draw();
 	m_grid->Draw();
 }
 
@@ -119,6 +122,10 @@ void App::Update()
 
 void App::Shutdown()
 {
+	//m_quad->DestroyBuffer();
+	m_cube->DestroyBuffers();
+	m_grid->DestroyBuffers();
+
 	Shader::Instance()->DetachShaders();
 	Shader::Instance()->DestroyShaders();
 	Shader::Instance()->DestroyProgram();

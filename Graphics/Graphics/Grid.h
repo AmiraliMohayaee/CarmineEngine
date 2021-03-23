@@ -24,4 +24,9 @@ private:
 	Buffer m_buffer;
 
 	glm::mat4 m_modelMatrix;
+
+	GLuint m_modelUniformID;
+
+	std::vector<GLfloat> m_vertexContainer;
+	std::vector<GLfloat> m_colorContainer;
 };

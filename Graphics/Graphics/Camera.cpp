@@ -41,7 +41,8 @@ bool Camera::InitCamera(float x, float y, float z, float fov, float close, float
 	// Aquiring the aspect ration to pass alongside 
 	// fov, close and far clipping range for the 
 	// view frustum
-	float aspectRatio = static_cast<float>(Screen::Instance()->GetScreenWidth() / Screen::Instance()->GetScreenHeight());
+	float aspectRatio = (static_cast<float>(Screen::Instance()->GetScreenWidth()) /
+						 static_cast<float>(Screen::Instance()->GetScreenHeight()));
 	
 	m_projectionMatrix = glm::perspective(glm::radians(fov),
 		aspectRatio,

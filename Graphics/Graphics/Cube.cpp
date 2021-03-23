@@ -21,36 +21,35 @@ void Cube::CreateBuffers()
 {
 	glm::vec3 halfDimension = m_dimension * 0.5f;
 
-	GLfloat vertices[] = {
-						-halfDimension.x, halfDimension.y, halfDimension.z,   //0
-						halfDimension.x, halfDimension.y, halfDimension.z,    //1
-						halfDimension.x, -halfDimension.y, halfDimension.z,    //2
-						 -halfDimension.x, -halfDimension.y, halfDimension.z,   //3   //front face
+	GLfloat vertices[] = { -halfDimension.x, halfDimension.y, halfDimension.z,   //0
+							halfDimension.x, halfDimension.y, halfDimension.z,    //1
+							halfDimension.x, -halfDimension.y, halfDimension.z,    //2
+						   -halfDimension.x, -halfDimension.y, halfDimension.z,   //3   //front face
 
-						 -halfDimension.x, halfDimension.y, -halfDimension.z,   //4
-						  halfDimension.x, halfDimension.y, -halfDimension.z,   //5
-						  halfDimension.x, -halfDimension.y, -halfDimension.z,   //6
-						 -halfDimension.x, -halfDimension.y, -halfDimension.z,  //7    //back face
-
-						 -halfDimension.x, halfDimension.y, halfDimension.z,
-						 -halfDimension.x, -halfDimension.y, halfDimension.z,
-						 -halfDimension.x, -halfDimension.y, -halfDimension.z,
-						 -halfDimension.x,  halfDimension.y, -halfDimension.z,   //left face
-
-						  halfDimension.x,  halfDimension.y, halfDimension.z,
-						  halfDimension.x, -halfDimension.y, halfDimension.z,
-						  halfDimension.x, -halfDimension.y, -halfDimension.z,
-						  halfDimension.x,  halfDimension.y, -halfDimension.z,   //right face
-
-						  -halfDimension.x, halfDimension.y, -halfDimension.z,
-						  halfDimension.x, halfDimension.y, -halfDimension.z,
-						  halfDimension.x, halfDimension.y, halfDimension.z,
-						  -halfDimension.x, halfDimension.y, halfDimension.z,   //top face
-
-						 -halfDimension.x, -halfDimension.y, -halfDimension.z,
-						  halfDimension.x, -halfDimension.y, -halfDimension.z,
-						  halfDimension.x, -halfDimension.y, halfDimension.z,
-						  -halfDimension.x, -halfDimension.y, halfDimension.z,   //bottom face
+						    halfDimension.x,  halfDimension.y,  -halfDimension.z,   //4
+						    -halfDimension.x,  halfDimension.y,  -halfDimension.z,   //5
+						    -halfDimension.x, -halfDimension.y, -halfDimension.z,   //6
+						    halfDimension.x, -halfDimension.y, -halfDimension.z,  //7    //back face
+						   
+						    -halfDimension.x,  halfDimension.y, -halfDimension.z,
+						    -halfDimension.x,  halfDimension.y,  halfDimension.z,
+						    -halfDimension.x, -halfDimension.y,  halfDimension.z,
+						    -halfDimension.x, -halfDimension.y, -halfDimension.z,   //left face
+						   
+						     halfDimension.x,  halfDimension.y, halfDimension.z,
+						     halfDimension.x,  halfDimension.y, -halfDimension.z,
+						     halfDimension.x, -halfDimension.y, -halfDimension.z,
+						     halfDimension.x, -halfDimension.y, halfDimension.z,   //right face
+						   
+						     -halfDimension.x, halfDimension.y, -halfDimension.z,
+						     halfDimension.x, halfDimension.y, -halfDimension.z,
+						     halfDimension.x, halfDimension.y, halfDimension.z,
+						     -halfDimension.x, halfDimension.y, halfDimension.z,   //top face
+						   
+						    -halfDimension.x,  -halfDimension.y, halfDimension.z,
+						     halfDimension.x,  -halfDimension.y, halfDimension.z,
+						     halfDimension.x,  -halfDimension.y, -halfDimension.z,
+						    -halfDimension.x, -halfDimension.y,  -halfDimension.z,   //bottom face
 	};
 
 
@@ -127,11 +126,10 @@ void Cube::CreateBuffers()
 					  0.0f, 1.0f,	// bottom face 
 					  };
 
-	m_texture.Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
+
 	m_texture.GetTexture("CRATE", m_texture);
 
-	// Specfically putting the number of elements from the vertices instead of
-	// 
+	
 	m_buffer.Create(36, true);
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices));
 	m_buffer.FillVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors));

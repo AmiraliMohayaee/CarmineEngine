@@ -12,7 +12,6 @@ Texture::Texture()
 
 Texture::~Texture()
 {
-	glDeleteTextures(1, &m_ID);
 }
 
 
@@ -45,13 +44,11 @@ bool Texture::Load(const std::string& filename, const std::string textureTag)
 		return false;
 	}
 
-
 	//if (m_ID == -1)
 	//{
 	//	Debug::Log("Failed to generate Texture ID for ", textureTag);
 	//	return false;
 	//}
-
 	
 	SDL_Surface* textureData = nullptr;
 	textureData = IMG_Load(filename.c_str());
@@ -61,6 +58,7 @@ bool Texture::Load(const std::string& filename, const std::string textureTag)
 		Debug::Log("Problem loading texture data: ", filename);
 		return false;
 	}
+
 
 	// Creating temporary texture to assign into the map
 	Texture texture;
@@ -84,17 +82,19 @@ bool Texture::Load(const std::string& filename, const std::string textureTag)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+		// Additional environment texture setting that can be set in
+		// the future
+		//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
 		// (target texture dimentions, mipmap level, image format(RGB/RGBA), width&height,
 		// image border, pixel data, pointer to pixel data
 		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
-
-		SDL_FreeSurface(textureData);
 	
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	SDL_FreeSurface(textureData);
 
 	Debug::Log("Texture File Loaded successfully: ", textureTag);
 	texture.m_tag = textureTag;
@@ -109,12 +109,24 @@ void Texture::UnBind()
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture::Unload(SDL_Surface* surface)
+void Texture::Unload(const std::string& textureID)
 {
-	SDL_FreeSurface(surface);
+	auto it = s_textureMap->find(textureID);
+
+	if (it != s_textureMap->end())
+	{
+		glDeleteTextures(1, &(it->second.m_ID));
+		s_textureMap->erase(it);
+		Debug::Log(textureID + " removed");
+	}
+
+	else
+	{
+		Debug::Log(textureID + " not found in map");
+	}
 }
 
-void Texture::UnloadAll()
+void Texture::Unload()
 {
 	Debug::Log("Clearing all loaded textures");
 

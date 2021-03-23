@@ -117,6 +117,9 @@
     <ClCompile Include="Quad.cpp">
       <Filter>Source Files\GameObjects\CustomObjects\Shapes</Filter>
     </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Screen.h">
@@ -166,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\GameObjects\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

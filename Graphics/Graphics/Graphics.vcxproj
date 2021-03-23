@@ -155,6 +155,7 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="khrplatform.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Shader.h" />

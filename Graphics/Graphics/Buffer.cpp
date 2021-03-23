@@ -45,13 +45,13 @@ void Buffer::FillEBO(GLuint* data, GLsizeiptr bufferSize, FillType fillType)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, bufferSize, data, fillType);
 }
 
-void Buffer::AppendVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize, GLuint offset)
+void Buffer::AppendVBO(VBOType bufferType, GLint* data, GLsizeiptr bufferSize, GLuint offset)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[bufferType]);
 	glBufferSubData(GL_ARRAY_BUFFER, offset, bufferSize, data);
-}
 
-void Buffer::AppendVBO(VBOType bufferType, GLint* data, GLsizeiptr bufferSize, GLuint offset)
+}
+void Buffer::AppendVBO(VBOType bufferType, GLfloat* data, GLsizeiptr bufferSize, GLuint offset)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[bufferType]);
 	glBufferSubData(GL_ARRAY_BUFFER, offset, bufferSize, data);
@@ -66,16 +66,16 @@ void Buffer::AppendEBO(GLuint* data, GLsizeiptr bufferSize, GLuint offset)
 void Buffer::LinkEBO()
 {
 	glBindVertexArray(m_VAO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 	glBindVertexArray(0);
 }
 
 void Buffer::LinkVBO(const std::string& attribute, VBOType bufferType, ComponentType componentType, DataType dataType)
 {
 	glBindVertexArray(m_VAO);
-		glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[bufferType]);
-		glVertexAttribPointer(Shader::Instance()->GetAttributeID(attribute), componentType, GL_FLOAT, GL_FALSE, 0, nullptr);
-		glEnableVertexAttribArray(Shader::Instance()->GetAttributeID(attribute));
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[bufferType]);
+	glVertexAttribPointer(Shader::Instance()->GetAttributeID(attribute), componentType, dataType, GL_FALSE, 0, nullptr);
+	glEnableVertexAttribArray(Shader::Instance()->GetAttributeID(attribute));
 	glBindVertexArray(0);
 }
 
@@ -83,15 +83,15 @@ void Buffer::Render(RenderType renderType)
 {
 	glBindVertexArray(m_VAO);
 
-		if (m_hasEBO)
-		{
-			glDrawElements(renderType, m_totalVertices, GL_UNSIGNED_INT, 0);
-		}
+	if (m_hasEBO)
+	{
+		glDrawElements(renderType, m_totalVertices, GL_UNSIGNED_INT, 0);
+	}
 
-		else
-		{
-			glDrawArrays(renderType, 0, m_totalVertices);
-		}
+	else
+	{
+		glDrawArrays(renderType, 0, m_totalVertices);
+	}
 
 	glBindVertexArray(0);
 }

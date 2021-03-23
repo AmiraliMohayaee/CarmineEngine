@@ -117,7 +117,7 @@ void Grid::CreateBuffers()
 {
 	// Setting up space for the buffer in accordance to the size
 	// of the grid we are looking to make
-	const GLint SIZE = 10;
+	const GLint SIZE = 11;
 	const GLint QUADRANTS = 4;
 	const GLint BYTES_PER_LINE_VERTEX = 6 * sizeof(GLint);
 	const GLint BYTES_PER_LINE_COLOR = 6 * sizeof(GLfloat);
@@ -129,6 +129,7 @@ void Grid::CreateBuffers()
 	m_buffer.Create(SIZE * QUADRANTS * 2, false);
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, nullptr, TOTAL_BYTES_VBO_VERTEX);
 	m_buffer.FillVBO(Buffer::COLOR_BUFFER, nullptr, TOTAL_BYTES_VBO_COLOR);
+
 
 	m_color.r = 1.0f;
 	m_color.g = 1.0f;
@@ -216,6 +217,7 @@ void Grid::CreateBuffers()
 
 	m_buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::INT);
 	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGB, Buffer::FLOAT);
+	//m_buffer.BindBufferWithDynamicDraw(m_vertexVBO, TOTAL_BYTES_VBO, m_vertexAttributeID);
 
 }
 

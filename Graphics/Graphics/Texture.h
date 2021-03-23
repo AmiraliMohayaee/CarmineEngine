@@ -9,20 +9,21 @@
 class Texture
 {
 public:
+
 	Texture();
 	~Texture();
-
-	bool GetTexture(const std::string& textureID, Texture& texture);
-
+	
 	// TODO This could be static loaded so when adding multiple objects
 	static bool Load(const std::string& filename, const std::string textureTag);
+	static void Unload(const std::string& textureID);
+	static void Unload();
+
+	GLuint GetID();
+	bool GetTexture(const std::string& textureID, Texture& texture);
 
 	void Bind(); 
 	void UnBind(); 
 
-	// TODO Don't use the SDL type. 
-	void Unload(SDL_Surface* surface);
-	void UnloadAll();
 
 
 private:
