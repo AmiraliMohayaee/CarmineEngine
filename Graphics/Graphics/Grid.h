@@ -9,7 +9,7 @@ class Grid
 public:
 	Grid();
 	void SetupGridDimentions(int quadrants, int maxSize,
-		float red, float green, float blue);
+		float red, float green, float blue, float alpha);
 
 	void CreateBuffers();
 	void DestroyBuffers();
@@ -19,7 +19,7 @@ public:
 	
 
 private:
-	glm::vec3 m_color;
+	glm::vec4 m_color;
 
 	Buffer m_buffer;
 

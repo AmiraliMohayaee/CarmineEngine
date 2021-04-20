@@ -1,6 +1,16 @@
 #include "Buffer.h"
 
 
+void Buffer::SetLineWidth(GLfloat lineWidth)
+{
+	glLineWidth(lineWidth);
+}
+
+void Buffer::SetPointSize(GLfloat pointSize)
+{
+	glPointSize(pointSize);
+}
+
 Buffer::Buffer()
 {
 	m_VAO = 0;
@@ -74,6 +84,10 @@ void Buffer::LinkVBO(const std::string& attribute, VBOType bufferType, Component
 {
 	glBindVertexArray(m_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[bufferType]);
+
+	//// TODO: Error checking to test attibute existing; if not, send error
+	assert(Shader::Instance()->GetAttributeID(attribute));
+	
 	glVertexAttribPointer(Shader::Instance()->GetAttributeID(attribute), componentType, dataType, GL_FALSE, 0, nullptr);
 	glEnableVertexAttribArray(Shader::Instance()->GetAttributeID(attribute));
 	glBindVertexArray(0);

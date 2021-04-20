@@ -8,6 +8,8 @@ App::App()
 	m_camera = std::make_unique<Camera>();
 	m_cube = std::make_unique<Cube>();
 	m_grid = std::make_unique<Grid>();
+	m_model = std::make_unique<Model>();
+	m_light = std::make_unique<Light>(0.0f, 3.0f, 0.0f);
 	//m_quad = std::make_unique<Quad>();
 }
 
@@ -56,11 +58,26 @@ void App::BindElements()
 {
 	Shader::Instance()->BindAttribute("vertexIn");
 	Shader::Instance()->BindAttribute("colorIn");
+	Shader::Instance()->BindAttribute("normalIn");
 	Shader::Instance()->BindAttribute("textureIn");
+
 	Shader::Instance()->BindUniform("model");
 	Shader::Instance()->BindUniform("view");
 	Shader::Instance()->BindUniform("projection");
+
+	Shader::Instance()->BindUniform("isLit");
 	Shader::Instance()->BindUniform("isTextured");
+	Shader::Instance()->BindUniform("cameraPosition");
+
+	Shader::Instance()->BindUniform("light.ambient");
+	Shader::Instance()->BindUniform("light.diffuse");
+	Shader::Instance()->BindUniform("light.specular");
+	Shader::Instance()->BindUniform("light.position");
+
+	Shader::Instance()->BindUniform("material.ambient");
+	Shader::Instance()->BindUniform("material.diffuse");
+	Shader::Instance()->BindUniform("material.specular");
+	Shader::Instance()->BindUniform("material.shininess");
 }
 
 void App::InitObjects()
@@ -73,9 +90,14 @@ void App::InitObjects()
 
 	m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
 	m_cube->CreateBuffers();
+
+	m_light->CreateBuffers();
+
 	//m_quad->CreateBuffers();
 	//m_grid->SetupGridDimentions(4, 11, 1.0f, 1.0f, 1.0f);
 	m_grid->CreateBuffers();
+
+	//m_model->Load("Assets/Models/Cube.obj");
 
 	// Error Catching Code
 	GLError::GraphicsErrorCatch();
@@ -83,9 +105,14 @@ void App::InitObjects()
 
 void App::Draw()
 {
+	m_light->Render();
+	m_light->SendToShader();
+
 	m_cube->Draw();
 	//m_quad->Draw();
 	m_grid->Draw();
+
+	//m_model->Render();
 }
 
 void App::Update()
@@ -125,6 +152,9 @@ void App::Shutdown()
 	//m_quad->DestroyBuffer();
 	m_cube->DestroyBuffers();
 	m_grid->DestroyBuffers();
+	m_light->DestroyBuffers();
+
+	m_model->Unload();
 
 	Shader::Instance()->DetachShaders();
 	Shader::Instance()->DestroyShaders();

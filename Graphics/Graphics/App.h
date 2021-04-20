@@ -11,6 +11,8 @@
 #include "Debug.h"
 #include "GLError.h"
 #include "Grid.h"
+#include "Light.h"
+#include "Model.h"
 
 
 class App
@@ -33,6 +35,7 @@ private:
 	std::unique_ptr<Cube> m_cube;
 	std::unique_ptr<Grid> m_grid;
 	std::unique_ptr<Quad> m_quad;
-	
+	std::unique_ptr<Light> m_light;
+	std::unique_ptr<Model> m_model;
 
 };

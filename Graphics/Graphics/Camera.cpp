@@ -136,6 +136,7 @@ void Camera::CameraKeyboardMovement(float camMoveSpeed)
 void Camera::SetViewAndProJ()
 {
 	Shader::Instance()->SendUniformData("view", m_viewMatrix);
+	Shader::Instance()->SendUniformData("cameraPosition", m_cameraPos.x, m_cameraPos.y, m_cameraPos.y);
 }
 
 void Camera::UpdateCamera()

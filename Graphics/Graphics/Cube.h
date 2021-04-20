@@ -2,6 +2,7 @@
 
 #include "Buffer.h"
 #include "Texture.h"
+#include "Material.h"
 #include <gtc\matrix_transform.hpp>
 
 
@@ -20,6 +21,7 @@ public:
 private:
 	Buffer m_buffer;
 	Texture m_texture;
+	Material m_material;
 
 	glm::vec3 m_position;
 	glm::vec3 m_dimension;

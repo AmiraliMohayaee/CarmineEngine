@@ -7,14 +7,14 @@ Grid::Grid()
 
 
 void Grid::SetupGridDimentions(int quadrants, int maxSize,
-	float red, float green, float blue)
+	float red, float green, float blue, float alpha)
 {
 	// Setting up space for the buffer in accordance to the size
 	// of the grid we are looking to make
 	const GLint SIZE = maxSize;
 	const GLint QUADRANTS = quadrants;
 	const GLint BYTES_PER_LINE_VERTEX = 6 * sizeof(GLint);
-	const GLint BYTES_PER_LINE_COLOR = 6 * sizeof(GLfloat);
+	const GLint BYTES_PER_LINE_COLOR = 8 * sizeof(GLfloat);
 	
 	const int TOTAL_BYTES_VBO_VERTEX = SIZE * QUADRANTS * BYTES_PER_LINE_VERTEX;
 	const int TOTAL_BYTES_VBO_COLOR = SIZE * QUADRANTS * BYTES_PER_LINE_COLOR;
@@ -28,6 +28,7 @@ void Grid::SetupGridDimentions(int quadrants, int maxSize,
 	m_color.r = red;
 	m_color.g = blue;
 	m_color.b = green;
+	m_color.a = alpha;
 	
 	GLuint m_offsetVertex = 0;
 	GLuint m_offsetColor = 0;
@@ -41,8 +42,8 @@ void Grid::SetupGridDimentions(int quadrants, int maxSize,
 		};
 	
 		// gridline colors
-		GLfloat colors[] = { m_color.r, m_color.g, m_color.b,
-							 m_color.r, m_color.g, m_color.b };
+		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
+							 m_color.r, m_color.g, m_color.b, m_color.a };
 	
 	
 		m_buffer.AppendVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), m_offsetVertex);
@@ -61,8 +62,8 @@ void Grid::SetupGridDimentions(int quadrants, int maxSize,
 		};
 	
 		// gridline colors
-		GLfloat colors[] = { m_color.r, m_color.g, m_color.b,
-							 m_color.r, m_color.g, m_color.b };
+		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
+							 m_color.r, m_color.g, m_color.b, m_color.a };
 	
 		m_buffer.AppendVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), m_offsetVertex);
 		m_buffer.AppendVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors), m_offsetColor);
@@ -80,8 +81,8 @@ void Grid::SetupGridDimentions(int quadrants, int maxSize,
 		};
 
 		// gridline colors
-		GLfloat colors[] = { m_color.r, m_color.g, m_color.b,
-							 m_color.r, m_color.g, m_color.b };
+		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
+							 m_color.r, m_color.g, m_color.b, m_color.a };
 
 		m_buffer.AppendVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), m_offsetVertex);
 		m_buffer.AppendVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors), m_offsetColor);
@@ -99,8 +100,8 @@ void Grid::SetupGridDimentions(int quadrants, int maxSize,
 		};
 
 		// gridline colors
-		GLfloat colors[] = { m_color.r, m_color.g, m_color.b,
-							 m_color.r, m_color.g, m_color.b };
+		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
+							 m_color.r, m_color.g, m_color.b, m_color.a };
 
 		m_buffer.AppendVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), m_offsetVertex);
 		m_buffer.AppendVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors), m_offsetColor);
@@ -120,12 +121,11 @@ void Grid::CreateBuffers()
 	const GLint SIZE = 11;
 	const GLint QUADRANTS = 4;
 	const GLint BYTES_PER_LINE_VERTEX = 6 * sizeof(GLint);
-	const GLint BYTES_PER_LINE_COLOR = 6 * sizeof(GLfloat);
+	const GLint BYTES_PER_LINE_COLOR = 8 * sizeof(GLfloat);
 
 	const int TOTAL_BYTES_VBO_VERTEX = SIZE * QUADRANTS * BYTES_PER_LINE_VERTEX;
 	const int TOTAL_BYTES_VBO_COLOR = SIZE * QUADRANTS * BYTES_PER_LINE_COLOR;
 
-	//TODO - Chang Magic Numbers
 	m_buffer.Create(SIZE * QUADRANTS * 2, false);
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, nullptr, TOTAL_BYTES_VBO_VERTEX);
 	m_buffer.FillVBO(Buffer::COLOR_BUFFER, nullptr, TOTAL_BYTES_VBO_COLOR);
@@ -134,6 +134,7 @@ void Grid::CreateBuffers()
 	m_color.r = 1.0f;
 	m_color.g = 1.0f;
 	m_color.b = 1.0f;
+	m_color.a = 1.0f;
 
 	GLuint m_offsetVertex = 0;
 	GLuint m_offsetColor = 0;
@@ -147,8 +148,8 @@ void Grid::CreateBuffers()
 		};
 
 		// gridline colors
-		GLfloat colors[] = { m_color.r, m_color.g, m_color.b,
-							 m_color.r, m_color.g, m_color.b };
+		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
+							 m_color.r, m_color.g, m_color.b, m_color.a };
 
 
 		m_buffer.AppendVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), m_offsetVertex);
@@ -167,8 +168,8 @@ void Grid::CreateBuffers()
 		};
 
 		// gridline colors
-		GLfloat colors[] = { m_color.r, m_color.g, m_color.b,
-							 m_color.r, m_color.g, m_color.b };
+		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
+							 m_color.r, m_color.g, m_color.b, m_color.a };
 
 		m_buffer.AppendVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), m_offsetVertex);
 		m_buffer.AppendVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors), m_offsetColor);
@@ -186,8 +187,8 @@ void Grid::CreateBuffers()
 		};
 
 		// gridline colors
-		GLfloat colors[] = { m_color.r, m_color.g, m_color.b,
-							 m_color.r, m_color.g, m_color.b };
+		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
+							 m_color.r, m_color.g, m_color.b, m_color.a };
 
 		m_buffer.AppendVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), m_offsetVertex);
 		m_buffer.AppendVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors), m_offsetColor);
@@ -205,8 +206,8 @@ void Grid::CreateBuffers()
 		};
 
 		// gridline colors
-		GLfloat colors[] = { m_color.r, m_color.g, m_color.b,
-							 m_color.r, m_color.g, m_color.b };
+		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
+							 m_color.r, m_color.g, m_color.b, m_color.a };
 
 		m_buffer.AppendVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), m_offsetVertex);
 		m_buffer.AppendVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors), m_offsetColor);
@@ -217,7 +218,6 @@ void Grid::CreateBuffers()
 
 	m_buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::INT);
 	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGB, Buffer::FLOAT);
-	//m_buffer.BindBufferWithDynamicDraw(m_vertexVBO, TOTAL_BYTES_VBO, m_vertexAttributeID);
 
 }
 
@@ -230,6 +230,7 @@ void Grid::DestroyBuffers()
 
 void Grid::Draw()
 {
+	Shader::Instance()->SendUniformData("isLit", false);
 	Shader::Instance()->SendUniformData("isTextured", false);
 	Shader::Instance()->SendUniformData("model", m_modelMatrix);
 

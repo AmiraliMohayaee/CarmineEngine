@@ -64,6 +64,9 @@ public:
 
 public:
 
+	static void SetLineWidth(GLfloat lineWidth);
+	static void SetPointSize(GLfloat pointSize);
+
 	////////////////////////////////////////////////////
 	////	New set of functions to streamline the 
 	////	bufer functions
