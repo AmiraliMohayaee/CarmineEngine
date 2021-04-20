@@ -19,7 +19,6 @@ void Grid::SetupGridDimentions(int quadrants, int maxSize,
 	const int TOTAL_BYTES_VBO_VERTEX = SIZE * QUADRANTS * BYTES_PER_LINE_VERTEX;
 	const int TOTAL_BYTES_VBO_COLOR = SIZE * QUADRANTS * BYTES_PER_LINE_COLOR;
 	
-	//TODO - Chang Magic Numbers
 	m_buffer.Create(SIZE* QUADRANTS * 2, false);
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, nullptr, TOTAL_BYTES_VBO_VERTEX);
 	m_buffer.FillVBO(Buffer::COLOR_BUFFER, nullptr, TOTAL_BYTES_VBO_COLOR);
@@ -111,7 +110,7 @@ void Grid::SetupGridDimentions(int quadrants, int maxSize,
 	}
 
 	m_buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::INT);
-	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGB, Buffer::FLOAT);
+	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
 }
 
 void Grid::CreateBuffers()
@@ -217,7 +216,7 @@ void Grid::CreateBuffers()
 	}
 
 	m_buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::INT);
-	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGB, Buffer::FLOAT);
+	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
 
 }
 

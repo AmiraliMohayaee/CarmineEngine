@@ -1,9 +1,9 @@
 #include "Model.h"
 #include "Debug.h"
 #include "Tools.h"
+#include "Shader.h"
 #include <fstream>
 #include <iostream>
-
 
 
 
@@ -146,7 +146,7 @@ bool Model::Load(const std::string& filename)
 
 void Model::Render()
 {
-    Shader::Instance()->SendUniformData("isLit", false);
+    Shader::Instance()->SendUniformData("isLit", true);
     Shader::Instance()->SendUniformData("isTextured", false);
 
     m_modelMatrix = glm::mat4(1.0f);

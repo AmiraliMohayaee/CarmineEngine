@@ -1,5 +1,7 @@
 #include "Light.h"
 #include "Shader.h"
+#include <gtc/matrix_transform.hpp>
+
 
 Light::Light(GLfloat x, GLfloat y, GLfloat z)
 {
@@ -26,8 +28,12 @@ void Light::CreateBuffers()
 
 void Light::Render()
 {
+	Buffer::SetPointSize(5.0f);
+	m_modelMatrix = glm::translate(glm::mat4(1.0f), m_position);
+
 	Shader::Instance()->SendUniformData("isLit", false);
 	Shader::Instance()->SendUniformData("isTextured", false);
+	Shader::Instance()->SendUniformData("model", m_modelMatrix);
 	m_buffer.Render(Buffer::POINTS);
 }
 

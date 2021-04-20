@@ -74,7 +74,7 @@ void App::BindElements()
 	Shader::Instance()->BindUniform("light.specular");
 	Shader::Instance()->BindUniform("light.position");
 
-	Shader::Instance()->BindUniform("material.ambient");
+ 	Shader::Instance()->BindUniform("material.ambient");
 	Shader::Instance()->BindUniform("material.diffuse");
 	Shader::Instance()->BindUniform("material.specular");
 	Shader::Instance()->BindUniform("material.shininess");
@@ -89,7 +89,7 @@ void App::InitObjects()
 	Texture::Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
 
 	m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
-	m_cube->CreateBuffers();
+	//m_cube->CreateBuffers();
 
 	m_light->CreateBuffers();
 
@@ -97,7 +97,7 @@ void App::InitObjects()
 	//m_grid->SetupGridDimentions(4, 11, 1.0f, 1.0f, 1.0f);
 	m_grid->CreateBuffers();
 
-	//m_model->Load("Assets/Models/Cube.obj");
+	m_model->Load("Assets/Models/Cube.obj");
 
 	// Error Catching Code
 	GLError::GraphicsErrorCatch();
@@ -108,11 +108,11 @@ void App::Draw()
 	m_light->Render();
 	m_light->SendToShader();
 
-	m_cube->Draw();
+	//m_cube->Draw();
 	//m_quad->Draw();
 	m_grid->Draw();
 
-	//m_model->Render();
+	m_model->Render();
 }
 
 void App::Update()
