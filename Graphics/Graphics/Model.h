@@ -2,15 +2,19 @@
 
 #include "Buffer.h"
 #include "Shader.h"
+#include <glm.hpp>
 #include <gtc\matrix_transform.hpp>
 #include <string>
 #include <vector>
+#include "Material.h"
+#include "Texture.h"
 
 
 // Stored the seperate groups of the model
 struct Mesh
 {
 	std::string name;
+	Material material;
 	std::vector<GLuint> indices;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec4> colors;
@@ -56,17 +60,30 @@ public:
 	bool Load(const std::string& filename);
 	void Render();
 	void Unload();
+
+	void IsTextured(bool flag);
+	void IsLit(bool flag);
 	
 
 private:
 
+	static std::string s_rootFolderModel;
+
 	void FillBuffers();
 	void SortVertexData(Mesh& newMesh, const Mesh& oldMesh, const std::vector<Face>& faces);
-
+	
 	glm::mat4 m_modelMatrix;
+
+	bool m_isTextured;
+	bool m_isLit;
+
+	Texture m_ambientTexture;
+	Texture m_diffuseTexture;
+	Texture m_specularTexture;
+	Texture m_normalTexture;
 
 	std::vector<Mesh> m_meshes;
 	std::vector<Buffer> m_buffers;
-
+	std::vector<Material> m_materials;
 };
 

@@ -65,7 +65,7 @@ void main(void)
 		}
 	}
 
-	if(isTextured)
+	else if(isTextured)
 	{
 		pixelColor = colorOut * texture(textureImage, textureOut);
 	}

@@ -67,4 +67,7 @@ private:
 	// Container storing the ID and attributes of shader elements
 	std::map<std::string, unsigned int> m_shaderAttributes;
 	std::map<std::string, unsigned int> m_shaderUniforms;
+
+	// TODO start using multiple shader progreams
+	std::map <std::string, unsigned int> m_shaderPrograms;
 };

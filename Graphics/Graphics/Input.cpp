@@ -115,14 +115,14 @@ void Input::Update()
 
 			case SDL_MOUSEBUTTONDOWN:
 			{
-				Debug::Log("Mouse Button Down event detected.");
+				//Debug::Log("Mouse Button Down event detected.");
 
 				break;
 			}
 
 			case SDL_MOUSEBUTTONUP:
 			{
-				Debug::Log("Mouse Button is up");
+				//Debug::Log("Mouse Button is up");
 
 				break;
 			}

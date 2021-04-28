@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Buffer.h"
+#include "Model.h"
+#include "RigidBody.h"
+#include "Transform.h"
 #include <gtc\matrix_transform.hpp>
 
 
@@ -21,14 +24,27 @@ public:
 	virtual void Destroy() = 0;
 
 
+public:
+
+	void IsTextured(bool flag);
+	void IsLit(bool flag);
+	void IsVisible(bool flag);
 
 
 protected:
 
+	bool m_isTextuted;
+	bool m_isLit;
+	bool m_isVisible;
+
+
 	Buffer m_buffer;
+	Model m_model;
+	RigidBody m_rigidBody;
+	Transform m_transform;
+
 
 	glm::vec3 m_position;
-	
 	glm::mat4 m_modelMatrix;
 
 };

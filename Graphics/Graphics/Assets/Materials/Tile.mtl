@@ -1,0 +1,8 @@
+newmtl DefaultMaterial
+illum 4
+Kd 0.20 0.20 0.75
+Ka 0.25 0.25 0.25
+Tf 1.00 1.00 1.00
+map_Kd Compass.png
+Ni 25.00
+Ks 1.00 1.00 1.00

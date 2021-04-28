@@ -47,7 +47,7 @@ bool App::InitScreenAndShaders()
 		return 0;
 	}
 
-
+	
 	Debug::PrintGraphicsEngineVersion();
 
 	return true;
@@ -89,16 +89,25 @@ void App::InitObjects()
 	Texture::Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
 
 	m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
-	//m_cube->CreateBuffers();
+	
+	m_cube->CreateBuffers();
+	m_cube->IsLit(true);
+	m_cube->IsTextured(true);
 
 	m_light->CreateBuffers();
 
 	//m_quad->CreateBuffers();
-	//m_grid->SetupGridDimentions(4, 11, 1.0f, 1.0f, 1.0f);
-	m_grid->CreateBuffers();
+	m_grid->SetupGridDimentions(4, 12, 1.0f, 1.0f, 1.0f, 1.0f);
+	//m_grid->CreateBuffers();
 
-	m_model->Load("Assets/Models/Cube.obj");
+	Material::LoadMaterials("Materials.mat");
+	Material::LoadMaterials("cube.mtl");
 
+	m_model->Load("Spaceship.obj");
+	m_model->IsLit(true);
+	m_model->IsTextured(false);
+	
+	
 	// Error Catching Code
 	GLError::GraphicsErrorCatch();
 }
@@ -135,7 +144,8 @@ void App::Update()
 				m_isProgramRunning = false;
 			}
 		}
-		
+
+
 		
 		m_camera->UpdateCamera();
 		

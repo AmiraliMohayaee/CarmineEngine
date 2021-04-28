@@ -1,20 +1,22 @@
-#include "Model.h"
 #include "Debug.h"
+#include "Model.h"
 #include "Tools.h"
-#include "Shader.h"
 #include <fstream>
 #include <iostream>
+#include <map>
+
+#include "Shader.h"
 
 
+std::string Model::s_rootFolderModel = "Assets/Models/";
 
 bool Model::Load(const std::string& filename)
 {
-
-    std::fstream file(filename.c_str(), std::ios_base::in);
+    std::fstream file(s_rootFolderModel + filename, std::ios_base::in);
 
     if (!file)
     {
-        Debug::Log("Error loading " + filename);
+        Debug::Log("Error loading model file \"" + (s_rootFolderModel + filename) + "\"");
         return false;
     }
 
@@ -30,6 +32,7 @@ bool Model::Load(const std::string& filename)
     file.close();
 
     Mesh rawMesh;
+    Material lastMaterial;
     std::string lastName;
     std::vector<Face> faces;
 
@@ -47,8 +50,8 @@ bool Model::Load(const std::string& filename)
             if (subStrings[0] == "v")
             {
                 rawMesh.vertices.push_back(glm::vec3(std::stof(subStrings[1]),
-                    std::stof(subStrings[2]),
-                    std::stof(subStrings[3])));
+                                                     std::stof(subStrings[2]),
+                                                     std::stof(subStrings[3])));
                 continue;
             }
 
@@ -56,7 +59,7 @@ bool Model::Load(const std::string& filename)
             if (subStrings[0] == "vt")
             {
                 rawMesh.UVs.push_back(glm::vec2(std::stof(subStrings[1]),
-                    std::stof(subStrings[2])));
+                                                std::stof(subStrings[2])));
                 continue;
             }
 
@@ -64,8 +67,8 @@ bool Model::Load(const std::string& filename)
             if (subStrings[0] == "vn")
             {
                 rawMesh.normals.push_back(glm::vec3(std::stof(subStrings[1]),
-                    std::stof(subStrings[2]),
-                    std::stof(subStrings[3])));
+                                                    std::stof(subStrings[2]),
+                                                    std::stof(subStrings[3])));
                 continue;
             }
 
@@ -93,12 +96,15 @@ bool Model::Load(const std::string& filename)
                 continue;
             }
 
+
+            // Different files define groups as either 'g' or 'o'
             if (subStrings[0] == "g" || subStrings[0] == "o")
             {
                 if (!faces.empty())
                 {
                     Mesh mesh;
                     mesh.name = lastName;
+                    mesh.material = lastMaterial;
                     SortVertexData(mesh, rawMesh, faces);
                 }
 
@@ -117,16 +123,76 @@ bool Model::Load(const std::string& filename)
             //All materials are found in the subsequent .mtl file
             if (subStrings[0] == "usemtl")
             {
-                //TODO
+                if (!m_materials.empty())
+                {
+                    for (size_t i = 0; i < m_materials.size(); ++i)
+                    {
+                        if (m_materials[i].GetName() == subStrings[1])
+                        {
+                            lastMaterial = m_materials[i];
+                            break;
+                        }
+                    }
+                }
+
+                continue;
             }
 
             //This indicates the name of the .mtl file to use for the mesh 
             //group. All materials are found in the subsequent material file 
             if (subStrings[0] == "mtllib")
             {
-                //TODO
+                //If the material file could not be loaded we load in a default material
+                if (!Material::LoadMaterials(m_materials, subStrings[1]))
+                {
+                    Material material;
+                    material.SetMaterial("Gold");
+                    m_materials.push_back(material);
+                }
+
+                continue;
             }
 
+        }
+    }
+
+    //Check if any materials were loaded because there may be a 'mtllib' 
+    //statement missing. This means that no materials, not even default 
+    //ones are loaded so as a last resort, we add a default material
+    if (m_materials.empty())
+    {
+        Material material;
+        material.SetMaterial("Gold");
+        m_materials.push_back(material);
+    }
+
+    //Otherwise we loop through all loaded materials and check
+    //if any textures are required for the ADS lighting model
+    else
+    {
+        for (size_t i = 0; i < m_materials.size(); i++)
+        {
+            Texture temp;
+
+            if (temp.Load(m_materials[i].GetAmbientMap(), m_materials[i].GetAmbientMap()))
+            {
+                m_ambientTexture = temp;
+            }
+
+            if (temp.Load(m_materials[i].GetDiffuseMap(), m_materials[i].GetDiffuseMap()))
+            {
+                m_diffuseTexture = temp;
+            }
+
+            if (temp.Load(m_materials[i].GetSpecularMap(), m_materials[i].GetSpecularMap()))
+            {
+                m_specularTexture = temp;
+            }
+
+            if (temp.Load(m_materials[i].GetNormalMap(), m_materials[i].GetNormalMap()))
+            {
+                m_normalTexture = temp;
+            }
         }
     }
 
@@ -136,6 +202,7 @@ bool Model::Load(const std::string& filename)
     {
         Mesh mesh;
         mesh.name = lastName;
+        mesh.material = lastMaterial;
         SortVertexData(mesh, rawMesh, faces);
     }
 
@@ -143,20 +210,29 @@ bool Model::Load(const std::string& filename)
     return true;
 }
 
-
 void Model::Render()
 {
-    Shader::Instance()->SendUniformData("isLit", true);
-    Shader::Instance()->SendUniformData("isTextured", false);
+    Shader::Instance()->SendUniformData("isLit", m_isLit);
+    Shader::Instance()->SendUniformData("isTextured", m_isTextured);
 
     m_modelMatrix = glm::mat4(1.0f);
+    //m_modelMatrix = glm::scale(m_modelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 
     Shader::Instance()->SendUniformData("model", m_modelMatrix);
+
+    m_materials.back().SendToShader();
+
+    if (m_isTextured)
+    {
+        //m_texture.Bind();
+    }
 
     for (size_t i = 0; i < m_buffers.size(); i++)
     {
         m_buffers[i].Render(Buffer::TRIANGLES);
     }
+
+    //m_texture.Unbind();
 }
 
 void Model::Unload()
@@ -167,6 +243,15 @@ void Model::Unload()
     }
 }
 
+void Model::IsLit(bool flag)
+{
+    m_isLit = flag;
+}
+
+void Model::IsTextured(bool flag)
+{
+    m_isTextured = flag;
+}
 
 void Model::FillBuffers()
 {
