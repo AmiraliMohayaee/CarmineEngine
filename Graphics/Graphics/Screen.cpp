@@ -222,3 +222,25 @@ const int Screen::GetScreenHeight()
 {
 	return m_resolutionHeight;
 }
+
+/// <summary>
+/// Returns the total time passed in milliseconds
+/// </summary>
+int Screen::GetTotalTime()
+{
+	return SDL_GetTicks();
+}
+
+/// <summary>
+/// Returns elapsed time between ticks; This function may need to be 
+/// reassessed later
+/// TODO: Test Function
+/// </summary>
+int Screen::GetElapsedTime()
+{
+	int startTime = SDL_GetTicks();
+
+	m_elapsedTime = SDL_GetTicks() - startTime;
+
+	return m_elapsedTime;
+}

@@ -27,7 +27,7 @@ void Input::PassKeyboardMsgDown(SDL_KeyboardEvent* key)
 
 
 
-	if (m_keyPressed == Key_W)
+	if (m_keyPressed == KEY_W)
 	{
 		Debug::Log("Seems liek W, heh?");
 	}

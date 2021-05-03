@@ -62,30 +62,30 @@ void Light::LightMovementControl(float cameraMoveSpeed)
 	//Key press motions for movement
 	if (Input::Instance()->KeyPressed() == true)
 	{
-		if (Input::Instance()->GetKeyPressed() == Key_Up)
+		if (Input::Instance()->GetKeyPressed() == KEY_UP)
 		{
 			m_position += cameraMoveSpeed * m_forward;
 		}
-		if (Input::Instance()->GetKeyPressed() == Key_Left)
+		if (Input::Instance()->GetKeyPressed() == KEY_LEFT)
 		{
 			m_position -= (glm::normalize(glm::cross(m_forward, m_up)) * cameraMoveSpeed);
 
 		}
-		if (Input::Instance()->GetKeyPressed() == Key_Down)
+		if (Input::Instance()->GetKeyPressed() == KEY_DOWN)
 		{
 			m_position -= cameraMoveSpeed * m_forward;
 		}
-		if (Input::Instance()->GetKeyPressed() == Key_Right)
+		if (Input::Instance()->GetKeyPressed() == KEY_RIGHT)
 		{
 			m_position += (glm::normalize(glm::cross(m_forward, m_up)) * cameraMoveSpeed);
 		}
 
-		if (Input::Instance()->GetKeyPressed() == Key_L)
+		if (Input::Instance()->GetKeyPressed() == KEY_L)
 		{
 			m_position.y -= cameraMoveSpeed;
 		}
 
-		if (Input::Instance()->GetKeyPressed() == Key_P)
+		if (Input::Instance()->GetKeyPressed() == KEY_P)
 		{
 			m_position.y += cameraMoveSpeed;
 		}

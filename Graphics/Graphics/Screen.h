@@ -38,6 +38,9 @@ public:
 	const int GetScreenWidth();
 	const int GetScreenHeight();
 
+	int GetTotalTime();
+	int GetElapsedTime();
+
 
 private:
 	Screen();
@@ -52,6 +55,9 @@ private:
 
 	std::string m_applicationName;
 	std::string m_glMode;
+
+	int m_elapsedTime;
+
 	int m_resolutionWidth;
 	int m_resolutionHeight;
 	int m_oGLMajorVersion;

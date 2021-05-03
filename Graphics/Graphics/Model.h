@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Buffer.h"
-#include "Shader.h"
 #include <glm.hpp>
 #include <gtc\matrix_transform.hpp>
 #include <string>

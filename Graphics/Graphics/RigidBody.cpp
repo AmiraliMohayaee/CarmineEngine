@@ -1,4 +1,5 @@
 #include "RigidBody.h"
+#include "Screen.h"
 
 
 RigidBody::RigidBody()
@@ -27,11 +28,11 @@ void RigidBody::Update()
 	}
 
 	// Get engine ellapsed time of the game
-	//float deltaTime = TheGame::Instance()->GetElapsedTime() / 1000.0f;
+	float deltaTime = static_cast<float>(Screen::Instance()->GetElapsedTime()) / 1000.0f;
 
 	// Setting up 
-	//m_vel += m_acc * deltaTime;
-	//m_pos += ((oldVel + m_vel) * 0.5f) * deltaTime;
+	m_vel += m_acc * deltaTime;
+	m_pos += ((oldVel + m_vel) * 0.5f) * deltaTime;
 }
 
 void RigidBody::SetVel(const glm::vec3& vel)
@@ -39,7 +40,7 @@ void RigidBody::SetVel(const glm::vec3& vel)
 	m_vel = vel;
 }
 
-void RigidBody::SetVel(float x, float y, float z)
+void RigidBody::SetVel(GLfloat x, GLfloat y, GLfloat z)
 {
 	m_vel.x = x;
 	m_vel.y = y;
@@ -51,7 +52,7 @@ void RigidBody::SetPos(const glm::vec3& pos)
 	m_pos = pos;
 }
 
-void RigidBody::SetPos(float x, float y, float z)
+void RigidBody::SetPos(GLfloat x, GLfloat y, GLfloat z)
 {
 	m_pos.x = x;
 	m_pos.y = y;
@@ -63,7 +64,7 @@ void RigidBody::SetAcc(const glm::vec3& acc)
 	m_acc = acc;
 }
 
-void RigidBody::SetAcc(float x, float y, float z)
+void RigidBody::SetAcc(GLfloat x, GLfloat y, GLfloat z)
 {
 	m_acc.x = x;
 	m_acc.y = y;
@@ -75,14 +76,14 @@ void RigidBody::SetForce(const glm::vec3& force)
 	m_force = force;
 }
 
-void RigidBody::SetForce(float x, float y, float z)
+void RigidBody::SetForce(GLfloat x, GLfloat y, GLfloat z)
 {
 	m_force.x = x;
 	m_force.y = y;
 	m_force.z = z;
 }
 
-void RigidBody::SetMass(float mass)
+void RigidBody::SetMass(GLfloat mass)
 {
 	m_mass = mass;
 }
@@ -92,7 +93,7 @@ void RigidBody::AddForce(const glm::vec3& addForce)
 	m_force += addForce;
 }
 
-void RigidBody::AddForce(float x, float y, float z)
+void RigidBody::AddForce(GLfloat x, GLfloat y, GLfloat z)
 {
 	m_force.x = x;
 	m_force.y = y;

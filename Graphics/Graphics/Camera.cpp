@@ -100,29 +100,29 @@ void Camera::CameraKeyboardMovement(float camMoveSpeed)
 	//Key press motions for movement
 	if (Input::Instance()->KeyPressed() == true)
 	{
-		if (Input::Instance()->GetKeyPressed() == Key_W)
+		if (Input::Instance()->GetKeyPressed() == KEY_W)
 		{
 			m_cameraPos += camMoveSpeed * m_cameraForward;
 		}
-		if (Input::Instance()->GetKeyPressed() == Key_A)
+		if (Input::Instance()->GetKeyPressed() == KEY_A)
 		{
 			m_cameraPos -= (glm::normalize(glm::cross(m_cameraForward, m_cameraUp)) * camMoveSpeed);
 
 		}
-		if (Input::Instance()->GetKeyPressed() == Key_S)
+		if (Input::Instance()->GetKeyPressed() == KEY_S)
 		{
 			m_cameraPos -= camMoveSpeed * m_cameraForward;
 		}
-		if (Input::Instance()->GetKeyPressed() == Key_D)
+		if (Input::Instance()->GetKeyPressed() == KEY_D)
 		{
 			m_cameraPos += (glm::normalize(glm::cross(m_cameraForward, m_cameraUp)) * camMoveSpeed);
 		}
 
-		if (Input::Instance()->GetKeyPressed() == Key_Q)
+		if (Input::Instance()->GetKeyPressed() == KEY_Q)
 		{
 			m_cameraPos.y -= camMoveSpeed;
 		}
-		if (Input::Instance()->GetKeyPressed() == Key_E)
+		if (Input::Instance()->GetKeyPressed() == KEY_E)
 		{
 			m_cameraPos.y += camMoveSpeed;
 		}

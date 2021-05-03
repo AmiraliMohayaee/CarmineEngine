@@ -3,7 +3,6 @@
 
 #include <memory>
 #include "Screen.h"
-#include "Shader.h"
 #include "Input.h"
 #include "Camera.h"
 #include "Cube.h"
@@ -21,6 +20,9 @@ public:
 	App();
 	bool InitScreenAndShaders();
 	void BindElements();
+
+	int GetTotalTime();
+	int GetElapsedTime();
 
 	void InitObjects();
 	void Draw();

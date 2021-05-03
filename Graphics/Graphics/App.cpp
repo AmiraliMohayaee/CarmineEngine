@@ -139,7 +139,7 @@ void App::Update()
 		}
 		if (Input::Instance()->KeyPressed() == true)
 		{
-			if (Input::Instance()->GetKeyPressed() == Key_Esc)
+			if (Input::Instance()->GetKeyPressed() == KEY_ESC)
 			{
 				m_isProgramRunning = false;
 			}
