@@ -224,7 +224,10 @@ void Model::Render()
 
     if (m_isTextured)
     {
-        //m_texture.Bind();
+        m_ambientTexture.Bind();
+        m_diffuseTexture.Bind();
+        m_specularTexture.Bind();
+        m_normalTexture.Bind();
     }
 
     for (size_t i = 0; i < m_buffers.size(); i++)
@@ -232,7 +235,11 @@ void Model::Render()
         m_buffers[i].Render(Buffer::TRIANGLES);
     }
 
-    //m_texture.Unbind();
+    m_ambientTexture.UnBind();
+    m_diffuseTexture.UnBind();
+    m_specularTexture.UnBind();
+    m_normalTexture.UnBind();
+
 }
 
 void Model::Unload()

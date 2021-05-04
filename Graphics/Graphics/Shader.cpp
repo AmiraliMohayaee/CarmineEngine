@@ -4,6 +4,8 @@
 #include <Windows.h>
 
 
+std::string Shader::s_shaderRootFolder = "Assets/Shaders/";
+
 Shader* Shader::Instance()
 {
 	static Shader* shaderInstance = new Shader();
@@ -54,7 +56,7 @@ bool Shader::CompileShaders()
 
 	std::string line;
 	std::string source;
-	std::fstream file("Assets/Shaders/main.vert");
+	std::fstream file(s_shaderRootFolder + "main.vert");
 
 	if (!file)
 	{
@@ -111,7 +113,7 @@ bool Shader::CompileShaders()
 
 	std::string line2;
 	std::string source2;
-	std::fstream file2("Assets/Shaders/main.frag");
+	std::fstream file2(s_shaderRootFolder + "main.frag");
 
 	if (!file2)
 	{
@@ -168,9 +170,14 @@ bool Shader::CompileShaders()
 
 bool Shader::CompileShader(std::string filename)
 {
+	//=====================================================
+	//	Loading and Compiling shader according to type
+	//=====================================================
+
 	std::string line;
 	std::string source;
-	std::fstream file(filename);
+	std::fstream file(s_shaderRootFolder + filename);
+
 
 	if (!file)
 	{
@@ -182,26 +189,81 @@ bool Shader::CompileShader(std::string filename)
 	{
 		std::string format;
 
-		format = filename.substr(filename.find("."), 4);
+		format = filename.substr(filename.find("."), 5);
 
-		if (format == "vert")
+		while (!file.eof())
+		{
+			std::getline(file, line);
+			source += line + '\n';
+		}
+
+		// Closing file after fully copying its contents
+		file.close();
+
+		if (format == ".vert")
 		{
 			// make vertex shader
+			const GLchar* glSource = static_cast<const GLchar*>(source.c_str());
+
+			// bing the source to a vertex shader object
+			glShaderSource(m_vertexShaderID, 1, &glSource, nullptr);
+
+			// compile vertex shader code
+			glCompileShader(m_vertexShaderID);
+
+			GLint compileResult = 0;
+
+			glGetShaderiv(m_vertexShaderID, GL_COMPILE_STATUS, &compileResult);
+
+			if (compileResult == GL_TRUE)
+			{
+				Debug::Log("Vertex Shader compilation successful.");
+			}
+			else
+			{
+				GLchar errorMessage[1000];
+				GLsizei bufferSize = 1000;
+
+				glGetShaderInfoLog(m_vertexShaderID, bufferSize, &bufferSize, errorMessage);
+
+				Debug::Log(errorMessage);
+			}
 		}
-		else if (format == "frag")
+
+		else if (format == ".frag")
 		{
 			// make fragment shader
+
+			const GLchar* glSource = static_cast<const GLchar*>(source.c_str());
+
+			// bing the source to a vertex shader object
+			glShaderSource(m_fragmentShaderID, 1, &glSource, nullptr);
+
+			// compile vertex shader code
+			glCompileShader(m_fragmentShaderID);
+
+			GLint compileResult = 0;
+
+			glGetShaderiv(m_fragmentShaderID, GL_COMPILE_STATUS, &compileResult);
+
+			if (compileResult == GL_TRUE)
+			{
+				Debug::Log("Fragment Shader compilation successful.");
+			}
+			else
+			{
+				GLchar errorMessage[1000];
+				GLsizei bufferSize = 1000;
+
+				glGetShaderInfoLog(m_fragmentShaderID, bufferSize, &bufferSize, errorMessage);
+
+				Debug::Log(errorMessage);
+			}
 		}
 	}
 
-	// Add the newly found shader type to the map container of shaders 
 
 
-	while (!file.eof())
-	{
-		std::getline(file, line);
-		source += line + '\n';
-	}
 
 
 	return true;

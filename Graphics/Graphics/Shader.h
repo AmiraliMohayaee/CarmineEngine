@@ -60,6 +60,8 @@ private:
 
 private:
 
+	static std::string s_shaderRootFolder;
+
 	GLuint m_shaderProgramID;
 	GLuint m_vertexShaderID;
 	GLuint m_fragmentShaderID;

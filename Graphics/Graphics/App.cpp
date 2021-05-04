@@ -33,7 +33,19 @@ bool App::InitScreenAndShaders()
 		return 0;
 	}
 
-	if (!Shader::Instance()->CompileShaders())
+	//if (!Shader::Instance()->CompileShaders())
+	//{
+	//	Debug::Log("Failed to compile shaders.");
+	//	return 0;
+	//}
+
+	if (!Shader::Instance()->CompileShader("main.vert"))
+	{
+		Debug::Log("Failed to compile shaders.");
+		return 0;
+	}
+
+ 	if (!Shader::Instance()->CompileShader("main.frag"))
 	{
 		Debug::Log("Failed to compile shaders.");
 		return 0;
