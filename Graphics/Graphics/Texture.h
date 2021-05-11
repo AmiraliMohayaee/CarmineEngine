@@ -27,6 +27,8 @@ public:
 
 
 private:
+
+	static std::string s_rootFolderTexture;
 	
 	GLuint m_ID;
 	std::string m_tag;

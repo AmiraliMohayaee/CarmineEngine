@@ -13,7 +13,7 @@ class GameObject
 public:
 
 	GameObject();
-	GameObject(float x, float y, float z);
+	GameObject(const Transform& transform);
 	virtual ~GameObject() = 0 {}
 
 
@@ -26,25 +26,35 @@ public:
 
 public:
 
-	void IsTextured(bool flag);
-	void IsLit(bool flag);
 	void IsVisible(bool flag);
+	void IsAlive(bool flag);
+	void IsActive(bool flag);
+
+
+public:
+
+	const Transform& GetTransform() { return m_transform; }
+
+	void Translate(const glm::vec3& translate, Transform::Space);
+
+	void SetTransform(const Transform& transform);
+	void SetPosition(const glm::vec3& position);
+	void SetScale(const glm::vec3& scale);
+	void SetRotation(const glm::quat& rotation);
+
+
+
 
 
 protected:
 
-	bool m_isTextuted;
-	bool m_isLit;
 	bool m_isVisible;
+	bool m_isAlive;
+	bool m_isActive;
 
 
 	Buffer m_buffer;
 	Model m_model;
-	RigidBody m_rigidBody;
 	Transform m_transform;
-
-
-	glm::vec3 m_position;
-	glm::mat4 m_modelMatrix;
 
 };

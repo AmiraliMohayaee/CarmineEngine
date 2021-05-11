@@ -33,12 +33,6 @@ bool App::InitScreenAndShaders()
 		return 0;
 	}
 
-	//if (!Shader::Instance()->CompileShaders())
-	//{
-	//	Debug::Log("Failed to compile shaders.");
-	//	return 0;
-	//}
-
 	if (!Shader::Instance()->CompileShader("main.vert"))
 	{
 		Debug::Log("Failed to compile shaders.");
@@ -98,7 +92,7 @@ void App::InitObjects()
 	// Initializing Viewing Grid and Camera
 	//////////////////////////////////////////
 
-	Texture::Load("Assets/Textures/Crate_1_Diffuse.png", "CRATE");
+	Texture::Load("Crate_1_Diffuse.png", "CRATE");
 
 	m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
 	
@@ -115,7 +109,7 @@ void App::InitObjects()
 	Material::LoadMaterials("Materials.mat");
 	Material::LoadMaterials("cube.mtl");
 
-	m_model->Load("Spaceship.obj");
+	m_model->Load("Teapot.obj");
 	m_model->IsLit(true);
 	m_model->IsTextured(false);
 	

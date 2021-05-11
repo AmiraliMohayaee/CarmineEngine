@@ -4,6 +4,8 @@
 // Globally initializing the texture map in static memory
 std::map<std::string, Texture>* Texture::s_textureMap = new std::map<std::string, Texture>;
 
+std::string Texture::s_rootFolderTexture = "Assets/Textures/";
+
 
 Texture::Texture()
 {
@@ -51,7 +53,7 @@ bool Texture::Load(const std::string& filename, const std::string textureTag)
 	//}
 	
 	SDL_Surface* textureData = nullptr;
-	textureData = IMG_Load(filename.c_str());
+	textureData = IMG_Load((s_rootFolderTexture + filename).c_str());
 
 	if (!textureData)
 	{

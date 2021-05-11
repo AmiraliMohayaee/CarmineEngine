@@ -1,6 +1,9 @@
 #pragma once
 
 
+#include "Shader.h"
+#include <gtc\matrix_transform.hpp>
+
 
 class CameraBase
 {
@@ -16,7 +19,13 @@ public:
 public:
 
 	virtual bool InitCamera(float x, float y, float z, float fov,
-		float close, float far) {}
+		float close, float far);
+
+	virtual void SetFreeControl();
+	virtual void SetObjectControl();
+
+	virtual void CameraMouseMovement(float mouseSensitivity);
+	virtual void CameraKeyboardMovement(float camMoveSpeed);
 
 	virtual void SetViewAndProjection();
 	virtual void Update();

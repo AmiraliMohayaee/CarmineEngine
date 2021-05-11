@@ -6,26 +6,23 @@ GameObject::GameObject()
 
 }
 
-GameObject::GameObject(float x, float y, float z)
+GameObject::GameObject(const Transform& transform)
 {
 
 }
 
-
-
-void GameObject::IsTextured(bool flag)
-{
-	m_isTextuted = flag;
-}
-
-void GameObject::IsLit(bool flag)
-{
-	m_isLit = flag;
-}
 
 void GameObject::IsVisible(bool flag)
 {
 	m_isVisible = flag;
+}
+
+void GameObject::IsAlive(bool flag)
+{
+}
+
+void GameObject::IsActive(bool flag)
+{
 }
 
 

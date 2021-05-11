@@ -10,6 +10,7 @@
 
 std::string Model::s_rootFolderModel = "Assets/Models/";
 
+
 bool Model::Load(const std::string& filename)
 {
     std::fstream file(s_rootFolderModel + filename, std::ios_base::in);
@@ -177,21 +178,25 @@ bool Model::Load(const std::string& filename)
             if (temp.Load(m_materials[i].GetAmbientMap(), m_materials[i].GetAmbientMap()))
             {
                 m_ambientTexture = temp;
+                m_ambientTexture.GetTexture(m_materials[i].GetAmbientMap(), m_ambientTexture);
             }
 
             if (temp.Load(m_materials[i].GetDiffuseMap(), m_materials[i].GetDiffuseMap()))
             {
                 m_diffuseTexture = temp;
+                m_diffuseTexture.GetTexture(m_materials[i].GetDiffuseMap(), m_diffuseTexture);
             }
 
             if (temp.Load(m_materials[i].GetSpecularMap(), m_materials[i].GetSpecularMap()))
             {
                 m_specularTexture = temp;
+                m_specularTexture.GetTexture(m_materials[i].GetSpecularMap(), m_specularTexture);
             }
 
             if (temp.Load(m_materials[i].GetNormalMap(), m_materials[i].GetNormalMap()))
             {
                 m_normalTexture = temp;
+                m_normalTexture.GetTexture(m_materials[i].GetNormalMap(), m_normalTexture);
             }
         }
     }
@@ -224,10 +229,10 @@ void Model::Render()
 
     if (m_isTextured)
     {
-        m_ambientTexture.Bind();
+        //m_ambientTexture.Bind();
         m_diffuseTexture.Bind();
-        m_specularTexture.Bind();
-        m_normalTexture.Bind();
+       // m_specularTexture.Bind();
+       // m_normalTexture.Bind();
     }
 
     for (size_t i = 0; i < m_buffers.size(); i++)
@@ -235,10 +240,10 @@ void Model::Render()
         m_buffers[i].Render(Buffer::TRIANGLES);
     }
 
-    m_ambientTexture.UnBind();
+    //m_ambientTexture.UnBind();
     m_diffuseTexture.UnBind();
-    m_specularTexture.UnBind();
-    m_normalTexture.UnBind();
+    //m_specularTexture.UnBind();
+    //m_normalTexture.UnBind();
 
 }
 

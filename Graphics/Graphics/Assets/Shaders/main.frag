@@ -56,7 +56,11 @@ void main(void)
 
 		if(isTextured)
 		{
-			pixelColor = vec4(finalLight, 1.0) * texture(textureImage, textureOut);
+			vec2 UV;
+			UV.x = textureOut.x;
+			UV.y = 1 - textureOut.y;
+
+			pixelColor = vec4(finalLight, 1.0) * texture(textureImage, UV);
 		}
 
 		else
@@ -67,7 +71,11 @@ void main(void)
 
 	else if(isTextured)
 	{
-		pixelColor = colorOut * texture(textureImage, textureOut);
+		vec2 UV;
+		UV.x = textureOut.x;
+		UV.y = 1 - textureOut.y;
+
+		pixelColor = colorOut * texture(textureImage, UV);
 	}
 
 	else
