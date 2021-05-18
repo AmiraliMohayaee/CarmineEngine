@@ -7,6 +7,7 @@
 class Grid
 {
 public:
+
 	Grid();
 	void SetupGridDimentions(int quadrants, int maxSize,
 		float red, float green, float blue, float alpha);
@@ -27,6 +28,4 @@ private:
 
 	GLuint m_modelUniformID;
 
-	std::vector<GLfloat> m_vertexContainer;
-	std::vector<GLfloat> m_colorContainer;
 };

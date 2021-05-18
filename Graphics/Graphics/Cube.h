@@ -2,38 +2,36 @@
 
 #include "Buffer.h"
 #include "Texture.h"
-#include "Model.h"
 #include "Material.h"
-#include <gtc\matrix_transform.hpp>
+#include "GameObject.h"
 
 
-class Cube
+class Cube : public GameObject
 {
 
 public:
-	Cube();
+
+	Cube(GLfloat width = 1.0f, GLfloat height = 1.0f, GLfloat depth = 1.0f,
+		GLfloat r = 1.0f, GLfloat g = 1.0f, GLfloat b = 1.0f, GLfloat alpha = 1.0f);
 	~Cube();
-	void CreateBuffers();
-	void DestroyBuffers();
 
-	void IsTextured(bool flag);
-	void IsLit(bool flag);
+	void SetDimension(const glm::vec3& dimensions);
+	void SetDimension(GLfloat width, GLfloat height, GLfloat depth);
+	void SetColor(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha = 1.0f);
 
-	void Draw();
-	void Update();
+	virtual void Create();
+	virtual void Destroy();
+	virtual void Draw();
+	virtual void Update();
 
 
 private:
-
-	bool m_isTextured = false;
-	bool m_isLit = false;
 
 	Buffer m_buffer;
 	Texture m_texture;
 	Material m_material;
 
-	glm::vec3 m_position;
 	glm::vec3 m_dimension;
-	glm::mat4 m_modelMatrix;
+	glm::vec4 m_color;
 
 };

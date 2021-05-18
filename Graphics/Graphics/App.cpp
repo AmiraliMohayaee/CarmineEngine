@@ -10,7 +10,7 @@ App::App()
 	m_grid = std::make_unique<Grid>();
 	m_model = std::make_unique<Model>();
 	m_light = std::make_unique<Light>(0.0f, 3.0f, 0.0f);
-	//m_quad = std::make_unique<Quad>();
+	m_quad = std::make_unique<Quad>();
 }
 
 bool App::InitScreenAndShaders()
@@ -96,7 +96,7 @@ void App::InitObjects()
 
 	m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
 	
-	m_cube->CreateBuffers();
+	m_cube->Create();
 	m_cube->IsLit(true);
 	m_cube->IsTextured(true);
 
@@ -165,8 +165,8 @@ void App::Update()
 
 void App::Shutdown()
 {
-	//m_quad->DestroyBuffer();
-	m_cube->DestroyBuffers();
+	m_quad->Destroy();
+	m_cube->Destroy();
 	m_grid->DestroyBuffers();
 	m_light->DestroyBuffers();
 

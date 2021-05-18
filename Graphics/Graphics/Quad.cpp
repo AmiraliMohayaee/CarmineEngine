@@ -1,40 +1,45 @@
 #include "Quad.h"
+#include <vector>
 
-Quad::Quad()
+
+Quad::Quad(GLfloat width, GLfloat height, GLfloat r, GLfloat g, GLfloat b, GLfloat alpha)
 {
-	m_modelMatrix = glm::mat4(1.0f);
-	m_dimension = glm::vec3(1.0f);
+	m_dimension.x = width;
+	m_dimension.y = height;
+	m_color.r = r;
+	m_color.g = g;
+	m_color.b = b;
+	m_color.a = alpha;
 }
 
-void Quad::CreateBuffers()
+void Quad::Create()
 {
 	glm::vec3 halfDimension = m_dimension * 0.5f;
 
 	GLfloat vertices[] = {
-			-halfDimension.x, halfDimension.y, 0.0f,   
-			 halfDimension.x, halfDimension.y, 0.0f,  
-			 halfDimension.x, -halfDimension.y, 0.0f,   
+			-halfDimension.x, halfDimension.y, 0.0f,
+			 halfDimension.x, halfDimension.y, 0.0f,
+			 halfDimension.x, -halfDimension.y, 0.0f,
 			-halfDimension.x, -halfDimension.y, 0.0f,
 	};
 
 
 	// Passing in color data
-	GLfloat colors[] = { 1.0f, 1.0f, 1.0f,
-						 1.0f, 1.0f, 1.0f,
-						 1.0f, 1.0f, 1.0f,
-						 1.0f, 1.0f, 1.0f };
+	GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
+						 m_color.r, m_color.g, m_color.b, m_color.a,
+						 m_color.r, m_color.g, m_color.b, m_color.a,
+						 m_color.r, m_color.g, m_color.b, m_color.a };
 
 
-	GLuint indices[] = { 0,  1,  3,  3,  1,  2 };
+	GLfloat UVs[] = { 0.0f, 1.0f,	// top left
+					  1.0f, 1.0f,	// top right
+					  1.0f, 0.0f,	// bottom left
+					  0.0f, 0.0f }; // bottom right
 
-	// Contains UV coordinates
-	// Coordinates are flipped upside down as OpenGL
-	// takes in UV coords differently
-	GLfloat UVs[] = { 0.0f, 0.0f,
-					  1.0f, 0.0f,
-					  1.0f, 1.0f,
-				      0.0f, 1.0f };
+	GLuint indices[] = { 0,  1,  3,  
+						 3,  1,  2 };
 
+	// TODO - Remove hardcoded txture name
 	m_texture.GetTexture("CRATE", m_texture);
 
 
@@ -48,10 +53,9 @@ void Quad::CreateBuffers()
 	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGB);
 	m_buffer.LinkVBO("textureIn", Buffer::TEXTURE_BUFFER, Buffer::UV);
 	m_buffer.LinkEBO();
-
 }
 
-void Quad::DestroyBuffer()
+void Quad::Destroy()
 {
 	m_buffer.Destroy();
 	m_texture.Unload("CRATE");
@@ -59,8 +63,7 @@ void Quad::DestroyBuffer()
 
 void Quad::Draw()
 {
-	Shader::Instance()->SendUniformData("model", m_modelMatrix);
-	Shader::Instance()->SendUniformData("isTextured", true);
+	GameObject::Draw();
 
 	m_texture.Bind();
 		m_buffer.Render(Buffer::TRIANGLES);
@@ -70,4 +73,18 @@ void Quad::Draw()
 void Quad::Update()
 {
 
+}
+
+void Quad::SetDimension(GLfloat width, GLfloat height)
+{
+	m_dimension.x = width;
+	m_dimension.y = height;
+}
+
+void Quad::SetColor(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha)
+{
+	m_color.r = r;
+	m_color.g = g;
+	m_color.b = b;
+	m_color.a = alpha;
 }

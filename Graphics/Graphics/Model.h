@@ -57,6 +57,7 @@ class Model
 {
 public:
 	bool Load(const std::string& filename);
+	bool Load(const std::string& filename, const std::string& texture);
 	void Render();
 	void Unload();
 
@@ -80,6 +81,7 @@ private:
 	Texture m_diffuseTexture;
 	Texture m_specularTexture;
 	Texture m_normalTexture;
+	Texture m_individualTexture;
 
 	std::vector<Mesh> m_meshes;
 	std::vector<Buffer> m_buffers;

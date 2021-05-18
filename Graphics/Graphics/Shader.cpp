@@ -465,7 +465,7 @@ void Shader::SendUniformData(const std::string& uniform, GLfloat x, GLfloat y, G
 	glUniform4f(UniformLocation, x, y, z, w);
 }
 
-void Shader::SendUniformData(const std::string& uniform, glm::mat4& mat)
+void Shader::SendUniformData(const std::string& uniform, const glm::mat4& mat)
 {
 	GLint UniformLocation = Shader::Instance()->GetUniformID(uniform);
 

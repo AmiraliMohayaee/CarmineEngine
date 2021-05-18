@@ -20,6 +20,7 @@ public:
 
 
 private:
+
 	GLuint m_viewUniformID;
 	GLuint m_projUniformID;
 

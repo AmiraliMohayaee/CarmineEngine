@@ -50,7 +50,7 @@ public:
 	void SendUniformData(const std::string& uniform, GLfloat x, GLfloat y); 
 	void SendUniformData(const std::string& uniform, GLfloat x, GLfloat y, GLfloat z); 
 	void SendUniformData(const std::string& uniform, GLfloat x, GLfloat y, GLfloat z, GLfloat w); 
-	void SendUniformData(const std::string& uniform, glm::mat4& mat);
+	void SendUniformData(const std::string& uniform, const glm::mat4& mat);
 
 
 private:

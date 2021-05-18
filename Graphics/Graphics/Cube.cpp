@@ -4,20 +4,44 @@
 #include "Input.h"
 
 
-Cube::Cube()
+
+Cube::Cube(GLfloat width, GLfloat height, GLfloat depth, GLfloat r, GLfloat g, GLfloat b, GLfloat alpha)
 {
-	// Uniforms
-	//m_modelUniformID = 0;
-	m_position = glm::vec3(0.0f);
-	m_dimension = glm::vec3(1.0f);
-	m_modelMatrix = glm::mat4(1.0f);
+	m_dimension.x = width;
+	m_dimension.y = height;
+	m_dimension.z = depth;
+	m_color.r = r;
+	m_color.g = g;
+	m_color.b = b;
+	m_color.a = alpha;
 }
 
 Cube::~Cube()
 {
+
 }
 
-void Cube::CreateBuffers()
+void Cube::SetDimension(GLfloat width, GLfloat height, GLfloat depth)
+{
+	m_dimension.x = width;
+	m_dimension.y = height;
+	m_dimension.z = depth;
+}
+
+void Cube::SetDimension(const glm::vec3& dimensions)
+{
+	m_dimension = dimensions;
+}
+
+void Cube::SetColor(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha)
+{
+	m_color.r = r;
+	m_color.g = g;
+	m_color.b = b;
+	m_color.a = alpha;
+}
+
+void Cube::Create()
 {
 	glm::vec3 halfDimension = m_dimension * 0.5f;
 
@@ -26,102 +50,101 @@ void Cube::CreateBuffers()
 							halfDimension.x, -halfDimension.y, halfDimension.z,    //2
 						   -halfDimension.x, -halfDimension.y, halfDimension.z,   //3   //front face
 
-						    halfDimension.x,  halfDimension.y,  -halfDimension.z,   //4
-						    -halfDimension.x,  halfDimension.y,  -halfDimension.z,   //5
-						    -halfDimension.x, -halfDimension.y, -halfDimension.z,   //6
-						    halfDimension.x, -halfDimension.y, -halfDimension.z,  //7    //back face
-						   
-						    -halfDimension.x,  halfDimension.y, -halfDimension.z,
-						    -halfDimension.x,  halfDimension.y,  halfDimension.z,
-						    -halfDimension.x, -halfDimension.y,  halfDimension.z,
-						    -halfDimension.x, -halfDimension.y, -halfDimension.z,   //left face
-						   
-						     halfDimension.x,  halfDimension.y, halfDimension.z,
-						     halfDimension.x,  halfDimension.y, -halfDimension.z,
-						     halfDimension.x, -halfDimension.y, -halfDimension.z,
-						     halfDimension.x, -halfDimension.y, halfDimension.z,   //right face
-						   
-						     -halfDimension.x, halfDimension.y, -halfDimension.z,
-						     halfDimension.x, halfDimension.y, -halfDimension.z,
-						     halfDimension.x, halfDimension.y, halfDimension.z,
-						     -halfDimension.x, halfDimension.y, halfDimension.z,   //top face
-						   
-						    -halfDimension.x,  -halfDimension.y, halfDimension.z,
-						     halfDimension.x,  -halfDimension.y, halfDimension.z,
-						     halfDimension.x,  -halfDimension.y, -halfDimension.z,
-						    -halfDimension.x, -halfDimension.y,  -halfDimension.z,   //bottom face
+							halfDimension.x,  halfDimension.y,  -halfDimension.z,   //4
+							-halfDimension.x,  halfDimension.y,  -halfDimension.z,   //5
+							-halfDimension.x, -halfDimension.y, -halfDimension.z,   //6
+							halfDimension.x, -halfDimension.y, -halfDimension.z,  //7    //back face
+
+							-halfDimension.x,  halfDimension.y, -halfDimension.z,
+							-halfDimension.x,  halfDimension.y,  halfDimension.z,
+							-halfDimension.x, -halfDimension.y,  halfDimension.z,
+							-halfDimension.x, -halfDimension.y, -halfDimension.z,   //left face
+
+							 halfDimension.x,  halfDimension.y, halfDimension.z,
+							 halfDimension.x,  halfDimension.y, -halfDimension.z,
+							 halfDimension.x, -halfDimension.y, -halfDimension.z,
+							 halfDimension.x, -halfDimension.y, halfDimension.z,   //right face
+
+							 -halfDimension.x, halfDimension.y, -halfDimension.z,
+							 halfDimension.x, halfDimension.y, -halfDimension.z,
+							 halfDimension.x, halfDimension.y, halfDimension.z,
+							 -halfDimension.x, halfDimension.y, halfDimension.z,   //top face
+
+							-halfDimension.x,  -halfDimension.y, halfDimension.z,
+							 halfDimension.x,  -halfDimension.y, halfDimension.z,
+							 halfDimension.x,  -halfDimension.y, -halfDimension.z,
+							-halfDimension.x, -halfDimension.y,  -halfDimension.z,   //bottom face
 	};
 
 
 	GLfloat colors[] = {
-						1.0f, 1.0f, 1.0f,
-					    1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,    //front face
-						  
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,   //back face
-						 
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,  //left face
-						 
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,  //right face
-						
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,  //top face
-						
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f,
-						1.0f, 1.0f, 1.0f   //bottom face
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,    //front face
+
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,   //back face
+
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,  //left face
+
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,  //right face
+
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,  //top face
+
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a,
+						m_color.r, m_color.g, m_color.b, m_color.a, //bottom face
 	};
 
-	GLfloat normals[] = {	0.0f, 0.0f, 1.0f,
-							0.0f, 0.0f, 1.0f,
-							0.0f, 0.0f, 1.0f,
-							0.0f, 0.0f, 1.0f, // front face
-							
-							0.0f, 0.0f, -1.0f,
-							0.0f, 0.0f, -1.0f,
-							0.0f, 0.0f, -1.0f,
-							0.0f, 0.0f, -1.0f, // back face
-
-							-1.0f, 0.0f, 0.0f,
-							-1.0f, 0.0f, 0.0f,
-							-1.0f, 0.0f, 0.0f,
-							-1.0f, 0.0f, 0.0f, // left face
-
-							1.0f, 0.0f, 0.0f,
-							1.0f, 0.0f, 0.0f,
-							1.0f, 0.0f, 0.0f,
-							1.0f, 0.0f, 0.0f, // right face
-							
-							0.0f, 1.0f, 0.0f,
-							0.0f, 1.0f, 0.0f,
-							0.0f, 1.0f, 0.0f,
-							0.0f, 1.0f, 0.0f, // top face
-
-							0.0f, -1.0f, 0.0f,
-							0.0f, -1.0f, 0.0f,
-							0.0f, -1.0f, 0.0f,
-							0.0f, -1.0f, 0.0f, // bottom face
-							
+	GLfloat normals[] = { 0.0f, 0.0f, 1.0f,
+						  0.0f, 0.0f, 1.0f,
+						  0.0f, 0.0f, 1.0f,
+						  0.0f, 0.0f, 1.0f, // front face
+						  
+						  0.0f, 0.0f, -1.0f,
+						  0.0f, 0.0f, -1.0f,
+						  0.0f, 0.0f, -1.0f,
+						  0.0f, 0.0f, -1.0f, // back face
+						  
+						  -1.0f, 0.0f, 0.0f,
+						  -1.0f, 0.0f, 0.0f,
+						  -1.0f, 0.0f, 0.0f,
+						  -1.0f, 0.0f, 0.0f, // left face
+						  
+						  1.0f, 0.0f, 0.0f,
+						  1.0f, 0.0f, 0.0f,
+						  1.0f, 0.0f, 0.0f,
+						  1.0f, 0.0f, 0.0f, // right face
+						  
+						  0.0f, 1.0f, 0.0f,
+						  0.0f, 1.0f, 0.0f,
+						  0.0f, 1.0f, 0.0f,
+						  0.0f, 1.0f, 0.0f, // top face
+						  
+						  0.0f, -1.0f, 0.0f,
+						  0.0f, -1.0f, 0.0f,
+						  0.0f, -1.0f, 0.0f,
+						  0.0f, -1.0f, 0.0f, // bottom face
 	};
 
 	GLfloat UVs[] = { 0.0f, 0.0f,
 					  1.0f, 0.0f,
 					  1.0f, 1.0f,
 					  0.0f, 1.0f,	// front face
-					 
+
 					  0.0f, 0.0f,
 					  1.0f, 0.0f,
 					  1.0f, 1.0f,
@@ -146,7 +169,7 @@ void Cube::CreateBuffers()
 					  1.0f, 0.0f,
 					  1.0f, 1.0f,
 					  0.0f, 1.0f,	// bottom face 
-					  };
+	};
 
 	GLuint indices[] = {
 					0,  1,  3,  3,  1,  2,            //front face
@@ -161,7 +184,7 @@ void Cube::CreateBuffers()
 	m_texture.GetTexture("CRATE", m_texture);
 
 	m_material.SetMaterial("cube.mtl");
-	
+
 	m_buffer.Create(36, true);
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices));
 	m_buffer.FillVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors));
@@ -178,35 +201,21 @@ void Cube::CreateBuffers()
 	m_buffer.LinkEBO();
 }
 
-void Cube::DestroyBuffers()
+void Cube::Destroy()
 {
 	m_buffer.Destroy();
 }
 
-void Cube::IsTextured(bool flag)
-{
-	m_isTextured = flag;
-}
-
-void Cube::IsLit(bool flag)
-{
-	m_isLit = flag;
-}
-
 void Cube::Draw()
 {
-	Shader::Instance()->SendUniformData("isLit", m_isLit);
-	Shader::Instance()->SendUniformData("isTextured", m_isTextured);
-	Shader::Instance()->SendUniformData("model", m_modelMatrix);
-
-
+	GameObject::Draw();
 
 	if (m_isTextured)
 	{
 		m_texture.Bind();
 	}
 
-		m_buffer.Render(Buffer::TRIANGLES);
+	m_buffer.Render(Buffer::TRIANGLES);
 	m_texture.UnBind();
 }
 

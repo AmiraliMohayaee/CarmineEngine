@@ -141,6 +141,9 @@
     <ClCompile Include="CameraBase.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files\GameObjects\CustomObjects\Shapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Screen.h">
@@ -211,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="CameraBase.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Header Files\GameObjects\CustomObjects\Shapes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
