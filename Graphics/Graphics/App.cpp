@@ -5,12 +5,16 @@ App::App()
 {
 	m_isProgramRunning = true;
 
-	m_camera = std::make_unique<Camera>();
+	// TODO: Add asserts inside the functions to make sure they're loaded before the materials are use
+	Material::LoadMaterials("Materials.mat");
+	Material::LoadMaterials("cube.mtl");
+
 	m_cube = std::make_unique<Cube>();
 	m_grid = std::make_unique<Grid>();
-	m_model = std::make_unique<Model>();
-	m_light = std::make_unique<Light>(0.0f, 3.0f, 0.0f);
 	m_quad = std::make_unique<Quad>();
+	m_model = std::make_unique<Model>();
+	m_camera = std::make_unique<FPSCamera>();
+	m_light = std::make_unique<Light>(0.0f, 3.0f, 0.0f);
 }
 
 bool App::InitScreenAndShaders()
@@ -94,20 +98,25 @@ void App::InitObjects()
 
 	Texture::Load("Crate_1_Diffuse.png", "CRATE");
 
-	m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
+	m_camera->CreatePerspView();
+	m_camera->IsFlying(false);
+	m_camera->SetSensitivity(0.0f);
+	m_camera->SetSpeed(0.0f);
+	m_camera->SetPosition(0.0f, 0.0f, 3.0f);
 	
 	m_cube->Create();
-	m_cube->IsLit(true);
+	m_cube->IsLit(false);
 	m_cube->IsTextured(true);
 
-	m_light->CreateBuffers();
+	m_light->Create();
 
-	//m_quad->CreateBuffers();
+	m_quad->Create();
+	m_quad->IsLit(false);
+	m_quad->IsTextured(true);
+
 	m_grid->SetupGridDimentions(4, 12, 1.0f, 1.0f, 1.0f, 1.0f);
 	//m_grid->CreateBuffers();
 
-	Material::LoadMaterials("Materials.mat");
-	Material::LoadMaterials("cube.mtl");
 
 	m_model->Load("Teapot.obj");
 	m_model->IsLit(true);
@@ -115,19 +124,19 @@ void App::InitObjects()
 	
 	
 	// Error Catching Code
-	GLError::GraphicsErrorCatch();
+	//GLError::GraphicsErrorCatch();
 }
 
 void App::Draw()
 {
-	m_light->Render();
+	m_grid->Draw();
+	
+	m_light->Draw();
 	m_light->SendToShader();
 
-	//m_cube->Draw();
+	m_cube->Draw();
 	//m_quad->Draw();
-	m_grid->Draw();
-
-	m_model->Render();
+	//m_model->Render();
 }
 
 void App::Update()
@@ -151,12 +160,31 @@ void App::Update()
 			}
 		}
 
-
+		static GLfloat yaw = 0.0f;
+		static GLfloat pitch = 0.0f;
 		
-		m_camera->UpdateCamera();
+		yaw += Input::Instance()->GetMouseMotion().x;
+		pitch += Input::Instance()->GetMouseMotion().y;
+
+		m_cube->GetTransform().SetRotation(pitch, yaw, 0.0f);
+		
+		m_camera->Update();
+		m_camera->SendToShader();
 		
 		// Encapsulates draw calls from other game objects
 		Draw();
+
+		
+		ImGui::NewFrame();
+
+		ImGui::Begin("HEllo World!");
+
+
+		ImGui::End();
+
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_Init("#version 460");
 
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();
@@ -167,8 +195,8 @@ void App::Shutdown()
 {
 	m_quad->Destroy();
 	m_cube->Destroy();
-	m_grid->DestroyBuffers();
-	m_light->DestroyBuffers();
+	m_grid->Destroy();
+	m_light->Destroy();
 
 	m_model->Unload();
 

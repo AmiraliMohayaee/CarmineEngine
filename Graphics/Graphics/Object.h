@@ -8,18 +8,18 @@
 
 
 
-class GameObject
+class Object
 {
 public:
 
-	GameObject();
-	GameObject(const Transform& transform);
-	virtual ~GameObject() = 0 {}
+	Object();
+	Object(const Transform& transform);
+	virtual ~Object() = 0 {}
 
 
 	virtual void Create() = 0;
 	virtual void Destroy() = 0;
-	virtual void Draw();
+	virtual void Draw() = 0;
 	virtual void Update() = 0;
 
 
@@ -27,10 +27,10 @@ public:
 
 	bool IsVisible();
 	bool IsAlive();
-	bool IsActive(); 
+	bool IsActive();
 	bool IsTexture();
 	bool IsLit();
-	
+
 	void IsVisible(bool flag);
 	void IsAlive(bool flag);
 	void IsActive(bool flag);

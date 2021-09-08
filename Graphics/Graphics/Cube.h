@@ -3,10 +3,10 @@
 #include "Buffer.h"
 #include "Texture.h"
 #include "Material.h"
-#include "GameObject.h"
+#include "Object.h"
 
 
-class Cube : public GameObject
+class Cube : public Object
 {
 
 public:

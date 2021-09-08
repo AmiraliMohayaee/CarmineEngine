@@ -12,8 +12,8 @@ Sphere::Sphere(GLfloat radius, GLuint sectors, GLuint stacks, GLfloat r,
 {
 	m_dimension = glm::vec3(1.0f);
 	m_radius = radius;
-	m_sectors = sectors;
 	m_stacks = stacks;
+	m_sectors = sectors;
 	m_color.r = r;
 	m_color.g = g;
 	m_color.b = b;
@@ -142,15 +142,22 @@ void Sphere::Destroy()
 
 void Sphere::Draw()
 {
-	GameObject::Draw();
+	Shader::Instance()->SendUniformData("isLit", m_isLit);
+	Shader::Instance()->SendUniformData("isTextured", m_isTextured);
+	Shader::Instance()->SendUniformData("model", m_transform.GetMatrix());
 
 	if (m_isTextured)
 	{
 		m_texture.Bind();
 	}
 
-		m_buffer.Render(Buffer::TRIANGLES);
-	m_texture.UnBind();
+	m_buffer.Render(Buffer::TRIANGLES);
+
+	if (m_isTextured)
+	{
+		m_texture.UnBind();
+
+	}
 }
 
 void Sphere::Update()

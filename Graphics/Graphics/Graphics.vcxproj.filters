@@ -22,12 +22,6 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{dcb18c1f-693a-4fa8-a871-e018e3276fba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphics">
-      <UniqueIdentifier>{4761fa47-710c-46c5-98d6-b8615c52d97e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics">
-      <UniqueIdentifier>{463cf756-6c7d-4b9e-aa50-6b790c6ea6f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\glad">
       <UniqueIdentifier>{e0a3ae9c-66cb-43b4-8e63-4610b305f949}</UniqueIdentifier>
     </Filter>
@@ -46,29 +40,47 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{bd6c8005-1dfc-444e-8429-7e29004c44db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameObjects">
+    <Filter Include="Header Files\Objects">
       <UniqueIdentifier>{d0663edb-b56d-4d89-872a-4a91ae5e6e2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameObjects\CustomObjects">
-      <UniqueIdentifier>{130f23f7-ddd1-4b15-8b52-b300940054c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GameObjects\CustomObjects\Shapes">
-      <UniqueIdentifier>{b71c72c9-3670-41ac-a497-1b922e744922}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObjects">
+    <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{a678eaf9-feec-4023-a5ff-1f16aec0a6e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameObjects\CustomObjects">
+    <Filter Include="Source Files\Objects\CustomObjects">
       <UniqueIdentifier>{a117ff6f-4c8b-4ba8-ad02-ec52c473ff59}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameObjects\CustomObjects\Shapes">
+    <Filter Include="Source Files\Objects\CustomObjects\Shapes">
       <UniqueIdentifier>{fa26c6c0-c163-4081-8348-200e60fedb9c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameObjects\Core">
-      <UniqueIdentifier>{02d15143-b171-45a3-b4cd-cbf90af924b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObjects\Core">
+    <Filter Include="Source Files\Objects\Core">
       <UniqueIdentifier>{3edfd176-2d2f-4aff-a3bc-887de05be856}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\SceneObjects">
+      <UniqueIdentifier>{0c2a1f5b-00b9-49c5-8ac4-9fecb5a78558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\GameObjects">
+      <UniqueIdentifier>{ebc433f5-3204-47ff-be4a-07957075dffc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Scene">
+      <UniqueIdentifier>{1ef43ef9-a227-4890-bb9b-964836c351f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Scene">
+      <UniqueIdentifier>{ad92d290-569e-4533-a085-36fa1cb9f7ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\GameObjects">
+      <UniqueIdentifier>{70fb5dcf-65e5-4456-b044-e24982569b5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Objects">
+      <UniqueIdentifier>{42eb7cb3-b77b-4338-9689-20bd2424df9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Objects">
+      <UniqueIdentifier>{a9d3a875-ea05-44a7-9320-41bc3399ffaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ImGui">
+      <UniqueIdentifier>{a2dc0a5c-0cfb-429f-9521-c774368fd262}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ImGui">
+      <UniqueIdentifier>{01da1cde-6d30-4713-937d-c3b59f66032c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -81,20 +93,8 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>Source Files\glad</Filter>
-    </ClCompile>
-    <ClCompile Include="Buffer.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Source Files\GameObjects\CustomObjects\Shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp">
       <Filter>Source Files\Utility</Filter>
@@ -103,7 +103,7 @@
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
-      <Filter>Source Files\GameObjects\CustomObjects\Shapes</Filter>
+      <Filter>Source Files\Objects\CustomObjects\Shapes</Filter>
     </ClCompile>
     <ClCompile Include="App.cpp">
       <Filter>Source Files\Core</Filter>
@@ -111,17 +111,11 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Quad.cpp">
-      <Filter>Source Files\GameObjects\CustomObjects\Shapes</Filter>
-    </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Tools.cpp">
       <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\Components</Filter>
@@ -130,7 +124,7 @@
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files\GameObjects\Core</Filter>
+      <Filter>Source Files\Objects\Core</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files\Components</Filter>
@@ -138,11 +132,53 @@
     <ClCompile Include="MathUtilities.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="CameraBase.cpp">
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files\Objects\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Quad.cpp">
+      <Filter>Source Files\Objects\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Source Files\Objects\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files\Objects\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Objects\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Sphere.cpp">
-      <Filter>Source Files\GameObjects\CustomObjects\Shapes</Filter>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files\Objects\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="FPSCamera.cpp">
+      <Filter>Source Files\Objects\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_widgets.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_tables.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_sdl.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,23 +188,11 @@
     <ClInclude Include="Input.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="glad.h">
       <Filter>Header Files\glad</Filter>
     </ClInclude>
     <ClInclude Include="khrplatform.h">
       <Filter>Header Files\glad</Filter>
-    </ClInclude>
-    <ClInclude Include="Buffer.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Header Files\GameObjects\CustomObjects\Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h">
       <Filter>Header Files\Utility</Filter>
@@ -176,29 +200,17 @@
     <ClInclude Include="GLError.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>Header Files\GameObjects\CustomObjects\Shapes</Filter>
-    </ClInclude>
     <ClInclude Include="App.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Quad.h">
-      <Filter>Header Files\GameObjects\CustomObjects\Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files\GameObjects\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Tools.h">
       <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Header Files\Components</Filter>
@@ -212,11 +224,62 @@
     <ClInclude Include="MathUtilities.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="CameraBase.h">
-      <Filter>Header Files\Components</Filter>
+    <ClInclude Include="Quad.h">
+      <Filter>Header Files\Objects\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Header Files\Objects\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Sphere.h">
-      <Filter>Header Files\GameObjects\CustomObjects\Shapes</Filter>
+      <Filter>Header Files\Objects\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Objects\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Objects\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files\Objects\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Header Files\Objects\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FPSCamera.h">
+      <Filter>Header Files\Objects\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files\Objects\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_sdl.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_opengl3.h">
+      <Filter>Header Files\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

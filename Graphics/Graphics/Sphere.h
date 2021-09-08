@@ -1,9 +1,9 @@
 #pragma once
 
-#include "GameObject.h"
+#include "Object.h"
 
 
-class Sphere :	public GameObject
+class Sphere :	public Object
 {
 public:
 

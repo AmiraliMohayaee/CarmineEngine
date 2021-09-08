@@ -36,16 +36,23 @@ void Quad::Create()
 					  1.0f, 0.0f,	// bottom left
 					  0.0f, 0.0f }; // bottom right
 
+
+	GLfloat normals[] = {
+		0, 0, 1
+	};
+
 	GLuint indices[] = { 0,  1,  3,  
 						 3,  1,  2 };
 
 	// TODO - Remove hardcoded txture name
 	m_texture.GetTexture("CRATE", m_texture);
 
+	m_material.SetMaterial("Chrome.mtl");
 
 	m_buffer.Create(6, true);
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices));
 	m_buffer.FillVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors));
+	m_buffer.FillVBO(Buffer::NORMAL_BUFFER, normals, sizeof(normals));
 	m_buffer.FillVBO(Buffer::TEXTURE_BUFFER, UVs, sizeof(UVs));
 	m_buffer.FillEBO(indices, sizeof(indices));
 
@@ -63,11 +70,24 @@ void Quad::Destroy()
 
 void Quad::Draw()
 {
-	GameObject::Draw();
+	Shader::Instance()->SendUniformData("isLit", m_isLit);
+	Shader::Instance()->SendUniformData("isTextured", m_isTextured);
+	Shader::Instance()->SendUniformData("model", m_transform.GetMatrix());
 
-	m_texture.Bind();
-		m_buffer.Render(Buffer::TRIANGLES);
-	m_texture.UnBind();
+	m_material.SendToShader();
+
+	if (m_isTextured)
+	{
+		m_texture.Bind();
+	}
+		
+	m_buffer.Render(Buffer::TRIANGLES);
+	
+	if (m_isTextured)
+	{
+		m_texture.UnBind();
+
+	}
 }
 
 void Quad::Update()

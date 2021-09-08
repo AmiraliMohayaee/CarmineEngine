@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 
+#define IMGUI_IMPL_OPENGL_LOADER_GLAD2
+
 
 Screen::Screen()
 {
@@ -186,6 +188,17 @@ bool Screen::InitScreen()
 	// Allowing the use of depth buffer
 	glEnable(GL_DEPTH_TEST);
 
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();	(void)io;
+
+	ImGui::StyleColorsDark();
+
+	ImGui_ImplOpenGL3_Init("#version 460");
+
+	
+
+
 	return true;
 }
 
@@ -194,6 +207,12 @@ void Screen::ClearBuffer()
 {
 	// Clears the frame buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Screen::RenderUI()
+{
+	
+	ImGui::Render();
 }
 
 void Screen::SwapBuffer()

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "Object.h"
 #include "glad.h"
 #include "Buffer.h"
 #include "Texture.h"
@@ -8,7 +8,7 @@
 
 
 
-class Quad : public GameObject
+class Quad : public Object
 {
 public:
 
@@ -29,7 +29,8 @@ private:
 
 	Buffer m_buffer;
 	Texture m_texture;
-	
+	Material m_material;
+
 	glm::vec4 m_color;
 	glm::vec3 m_dimension;
 

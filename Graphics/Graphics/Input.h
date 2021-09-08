@@ -58,6 +58,7 @@ public:
 
 	glm::vec2 GetMouseMotion();
 	glm::vec2 GetMousePosition();
+	glm::vec2 GetMouseWheel();
 	
 	int GetKeyPressed();
 	
@@ -86,5 +87,6 @@ private:
 
 	glm::vec2 m_mouseMotion;
 	glm::vec2 m_mousePos;
+	glm::vec2 m_mouseWheelMotion;
 };
 

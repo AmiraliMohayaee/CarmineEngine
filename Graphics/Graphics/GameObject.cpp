@@ -86,9 +86,8 @@ void GameObject::SetTransform(const Transform& transform)
 	m_transform = transform;
 }
 
-const Transform& GameObject::GetTransform()
+Transform& GameObject::GetTransform()
 {
 	return m_transform;
 }
-
 

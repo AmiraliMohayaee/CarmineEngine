@@ -1,9 +1,9 @@
 #pragma once
 
 #include "glad.h"
-//#include "imgui/imgui.h"
-//#include "imgui/imgui_impl_sdl.h"
-//#include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_sdl.h"
+#include "imgui/imgui_impl_opengl3.h"
 #include <SDL.h>
 #include <iostream>
 
@@ -32,6 +32,8 @@ public:
 	bool InitScreen();
 
 	void ClearBuffer();
+	void StartUI();
+	void RenderUI();
 	void SwapBuffer();
 	void Shutdown();
 

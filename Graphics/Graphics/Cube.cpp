@@ -183,7 +183,7 @@ void Cube::Create()
 
 	m_texture.GetTexture("CRATE", m_texture);
 
-	m_material.SetMaterial("cube.mtl");
+	m_material.SetMaterial("Chrome.mtl");
 
 	m_buffer.Create(36, true);
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices));
@@ -191,8 +191,6 @@ void Cube::Create()
 	m_buffer.FillVBO(Buffer::NORMAL_BUFFER, normals, sizeof(normals));
 	m_buffer.FillVBO(Buffer::TEXTURE_BUFFER, UVs, sizeof(UVs));
 	m_buffer.FillEBO(indices, sizeof(indices));
-
-	m_material.SendToShader();
 
 	m_buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ);
 	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA);
@@ -208,7 +206,11 @@ void Cube::Destroy()
 
 void Cube::Draw()
 {
-	GameObject::Draw();
+	Shader::Instance()->SendUniformData("isLit", m_isLit);
+	Shader::Instance()->SendUniformData("isTextured", m_isTextured);
+	Shader::Instance()->SendUniformData("model", m_transform.GetMatrix());
+
+	m_material.SendToShader();
 
 	if (m_isTextured)
 	{
@@ -216,7 +218,12 @@ void Cube::Draw()
 	}
 
 	m_buffer.Render(Buffer::TRIANGLES);
-	m_texture.UnBind();
+
+	if (m_isTextured)
+	{
+		m_texture.UnBind();
+
+	}
 }
 
 void Cube::Update()

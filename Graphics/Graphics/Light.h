@@ -3,18 +3,21 @@
 #include <glm.hpp>
 #include "glad.h"
 #include "Buffer.h"
+#include "Object.h"
 
-class Light
+class Light : public Object
 {
 
 public:
 
 	Light(GLfloat x = 0.0f, GLfloat y = 0.0f, GLfloat z = 0.0f);
+	virtual ~Light() {};
 
-	void CreateBuffers();
-	void Render();                 //for debug only!
+	virtual void Create();
+	virtual void Draw();                 //for debug only!
+	virtual void Update() {}
+	virtual void Destroy();
 	void SendToShader();
-	void DestroyBuffers();
 
 	void LightMovementControl(float cameraMoveSpeed);
 

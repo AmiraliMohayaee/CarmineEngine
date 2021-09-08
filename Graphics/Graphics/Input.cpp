@@ -8,6 +8,14 @@ Input* Input::Instance()
 	return inputInstance;
 }
 
+Input::Input()
+{
+	m_isExiting = false;
+	m_mouseMotion = glm::vec2();
+	m_mousePos = glm::vec2();
+}
+
+
 
 // Used for testing inputs and checking both keycodes and
 // scancode recieved from a key press
@@ -42,6 +50,11 @@ glm::vec2 Input::GetMouseMotion()
 glm::vec2 Input::GetMousePosition()
 {
 	return m_mousePos;
+}
+
+glm::vec2 Input::GetMouseWheel()
+{
+	return glm::vec2();
 }
 
 int Input::GetKeyPressed()
@@ -137,9 +150,3 @@ bool Input::IsXClicked()
 	return m_isExiting;
 }
 
-Input::Input()
-{
-	m_isExiting = false;
-	m_mouseMotion = glm::vec2();
-	m_mousePos = glm::vec2();
-}

@@ -16,18 +16,20 @@
 class Shader
 {
 public:
+
+	Shader();
+	~Shader();
+
+	const GLuint GetUniformID(std::string uniform) const;
+	const GLuint GetAttributeID(std::string attribute) const;
+
+	//bool Create(const std::string& )
 	
-	static Shader* Instance();
-
-public:
-
 	bool CreateProgram();
 	bool CreateShaders();
 
-	bool CompileShaders();
 	bool CompileShader(std::string filename);
 	void AttachShaders();
-	bool LinkProgram();
 
 	void DetachShaders();
 	void DestroyShaders();
@@ -36,8 +38,6 @@ public:
 
 	const GLuint GetShaderProgramID();
 
-	const GLuint GetAttributeID(std::string attribute);
-	const GLuint GetUniformID(std::string variable);
 
 	void BindAttribute(std::string attribute);
 	void BindUniform(std::string uniform);
@@ -53,12 +53,12 @@ public:
 	void SendUniformData(const std::string& uniform, const glm::mat4& mat);
 
 
-private:
-	Shader();
-	Shader(const Shader&);
-	Shader& operator=(const Shader&);
 
 private:
+
+	bool LinkProgram();
+	bool CompileShaders();
+
 
 	static std::string s_shaderRootFolder;
 
