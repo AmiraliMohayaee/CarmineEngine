@@ -99,9 +99,6 @@
     <ClCompile Include="Debug.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="GLError.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>Source Files\Objects\CustomObjects\Shapes</Filter>
     </ClCompile>
@@ -180,6 +177,12 @@
     <ClCompile Include="imgui\imgui_impl_opengl3.cpp">
       <Filter>Source Files\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_win32.cpp">
+      <Filter>Source Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Screen.h">
@@ -195,9 +198,6 @@
       <Filter>Header Files\glad</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="GLError.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="App.h">
@@ -279,6 +279,12 @@
       <Filter>Header Files\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imgui_impl_opengl3.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_win32.h">
       <Filter>Header Files\ImGui</Filter>
     </ClInclude>
   </ItemGroup>

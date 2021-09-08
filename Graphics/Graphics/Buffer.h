@@ -83,7 +83,7 @@ public:
 	void AppendEBO(GLuint* data, GLsizeiptr bufferSize, GLuint offset = 0);
 
 	void LinkEBO();
-	void LinkVBO(const std::string& attribute, VBOType bufferType, 
+	void LinkVBO(GLuint attribute, VBOType bufferType, 
 		ComponentType componentType, DataType dataType = Buffer::FLOAT);
 
 	void Render(RenderType renderType);

@@ -85,8 +85,8 @@ void Camera::Reset()
 	m_fieldOfView = 45.0f;
 }
 
-void Camera::SendToShader()
+void Camera::SendToShader(const Shader& shader)
 {
-	Shader::Instance()->SendUniformData("view", m_viewMatrix);
-	Shader::Instance()->SendUniformData("projection", m_projectionMatrix);
+	shader.SendData("view", m_viewMatrix);
+	shader.SendData("projection", m_projectionMatrix);
 }

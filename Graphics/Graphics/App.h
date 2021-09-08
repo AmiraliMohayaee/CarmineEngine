@@ -8,10 +8,11 @@
 #include "Cube.h"
 #include "Quad.h"
 #include "Debug.h"
-#include "GLError.h"
 #include "Grid.h"
 #include "Light.h"
 #include "Model.h"
+#include "Shader.h"
+#include "Utility.h"
 
 
 class App
@@ -19,7 +20,6 @@ class App
 public:
 
 	App();
-	void BindElements();
 	bool InitScreenAndShaders();
 
 	int GetTotalTime();
@@ -40,5 +40,8 @@ private:
 	std::unique_ptr<Light> m_light;
 	std::unique_ptr<Model> m_model;
 	std::unique_ptr<FPSCamera> m_camera;
+
+	std::unique_ptr<Shader> m_mainShader;
+	std::unique_ptr<Shader> m_lightShader;
 
 };

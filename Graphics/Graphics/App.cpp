@@ -25,70 +25,38 @@ bool App::InitScreenAndShaders()
 		return 0;
 	}
 
-	if (!Shader::Instance()->CreateProgram())
-	{
-		Debug::Log("Shader Program return a false result. Possile wrong linking.");
-		return 0;
-	}
+	m_mainShader = std::make_unique<Shader>();
 
-	if (!Shader::Instance()->CreateShaders())
-	{
-		Debug::Log("Failed to create shaders.");
-		return 0;
-	}
-
-	if (!Shader::Instance()->CompileShader("main.vert"))
-	{
-		Debug::Log("Failed to compile shaders.");
-		return 0;
-	}
-
- 	if (!Shader::Instance()->CompileShader("main.frag"))
-	{
-		Debug::Log("Failed to compile shaders.");
-		return 0;
-	}
-
-	Shader::Instance()->AttachShaders();
-
-	if (!Shader::Instance()->LinkProgram())
-	{
-		Debug::Log("Failed to link the shader program.");
-		return 0;
-	}
-
+	m_mainShader->Create("Assets/Shaders/main.vert", "Assets/Shader/main.frag");
 	
-	Debug::PrintGraphicsEngineVersion();
+	m_mainShader->BindAttribute("vertexIn");
+	m_mainShader->BindAttribute("colorIn");
+	m_mainShader->BindAttribute("normalIn");
+	m_mainShader->BindAttribute("textureIn");
+
+	m_mainShader->BindUniform("model");
+	m_mainShader->BindUniform("view");
+	m_mainShader->BindUniform("projection");
+
+	m_mainShader->BindUniform("isLit");
+	m_mainShader->BindUniform("isTextured");
+	m_mainShader->BindUniform("cameraPosition");
+
+	m_mainShader->BindUniform("light.ambient");
+	m_mainShader->BindUniform("light.diffuse");
+	m_mainShader->BindUniform("light.specular");
+	m_mainShader->BindUniform("light.position");
+
+	m_mainShader->BindUniform("material.ambient");
+	m_mainShader->BindUniform("material.diffuse");
+	m_mainShader->BindUniform("material.specular");
+	m_mainShader->BindUniform("material.shininess");
+	
+	//Debug::PrintGraphicsEngineVersion();
 
 	return true;
 }
 
-
-void App::BindElements()
-{
-	Shader::Instance()->BindAttribute("vertexIn");
-	Shader::Instance()->BindAttribute("colorIn");
-	Shader::Instance()->BindAttribute("normalIn");
-	Shader::Instance()->BindAttribute("textureIn");
-
-	Shader::Instance()->BindUniform("model");
-	Shader::Instance()->BindUniform("view");
-	Shader::Instance()->BindUniform("projection");
-
-	Shader::Instance()->BindUniform("isLit");
-	Shader::Instance()->BindUniform("isTextured");
-	Shader::Instance()->BindUniform("cameraPosition");
-
-	Shader::Instance()->BindUniform("light.ambient");
-	Shader::Instance()->BindUniform("light.diffuse");
-	Shader::Instance()->BindUniform("light.specular");
-	Shader::Instance()->BindUniform("light.position");
-
- 	Shader::Instance()->BindUniform("material.ambient");
-	Shader::Instance()->BindUniform("material.diffuse");
-	Shader::Instance()->BindUniform("material.specular");
-	Shader::Instance()->BindUniform("material.shininess");
-}
 
 void App::InitObjects()
 {
@@ -200,8 +168,6 @@ void App::Shutdown()
 
 	m_model->Unload();
 
-	Shader::Instance()->DetachShaders();
-	Shader::Instance()->DestroyShaders();
-	Shader::Instance()->DestroyProgram();
+	m_mainShader->Destroy();
 	Screen::Instance()->Shutdown();
 }

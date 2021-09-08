@@ -33,7 +33,7 @@ public:
 	void CreateOrthoView(Origin2D origin);
 
 	void Reset();
-	void SendToShader();
+	void SendToShader(const Shader& shader);
 
 	virtual void Draw() = 0;
 	virtual void Create() = 0;
