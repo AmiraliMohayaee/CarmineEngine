@@ -192,10 +192,6 @@ void Cube::Create()
 	m_buffer.FillVBO(Buffer::TEXTURE_BUFFER, UVs, sizeof(UVs));
 	m_buffer.FillEBO(indices, sizeof(indices));
 
-	m_buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ);
-	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA);
-	m_buffer.LinkVBO("normalIn", Buffer::NORMAL_BUFFER, Buffer::XYZ);
-	m_buffer.LinkVBO("textureIn", Buffer::TEXTURE_BUFFER, Buffer::UV);
 	m_buffer.LinkEBO();
 }
 
@@ -204,13 +200,18 @@ void Cube::Destroy()
 	m_buffer.Destroy();
 }
 
-void Cube::Draw()
+void Cube::Draw(const Shader& shader)
 {
-	Shader::Instance()->SendUniformData("isLit", m_isLit);
-	Shader::Instance()->SendUniformData("isTextured", m_isTextured);
-	Shader::Instance()->SendUniformData("model", m_transform.GetMatrix());
+	shader.SendData("isLit", m_isLit);
+	shader.SendData("isTextured", m_isTextured);
+	shader.SendData("model", m_transform.GetMatrix());
 
-	m_material.SendToShader();
+	m_buffer.LinkVBO(shader.GetAttributeID("vertexIn"), Buffer::VERTEX_BUFFER, Buffer::XYZ);
+	m_buffer.LinkVBO(shader.GetAttributeID("colorIn"), Buffer::COLOR_BUFFER, Buffer::RGBA);
+	m_buffer.LinkVBO(shader.GetAttributeID("normalIn"), Buffer::NORMAL_BUFFER, Buffer::XYZ);
+	m_buffer.LinkVBO(shader.GetAttributeID("textureIn"), Buffer::TEXTURE_BUFFER, Buffer::UV);
+
+	m_material.SendToShader(shader);
 
 	if (m_isTextured)
 	{
@@ -224,9 +225,4 @@ void Cube::Draw()
 		m_texture.UnBind();
 
 	}
-}
-
-void Cube::Update()
-{
-
 }

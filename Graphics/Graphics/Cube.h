@@ -20,9 +20,9 @@ public:
 	void SetColor(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha = 1.0f);
 
 	virtual void Create();
+	virtual void Update() {}
+	virtual void Draw(const Shader& shader);
 	virtual void Destroy();
-	virtual void Draw();
-	virtual void Update();
 
 
 private:

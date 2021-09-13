@@ -14,10 +14,11 @@ public:
 	virtual ~Light() {};
 
 	virtual void Create();
-	virtual void Draw();                 //for debug only!
+	virtual void Draw(const Shader& shader);                 //for debug only!
 	virtual void Update() {}
 	virtual void Destroy();
-	void SendToShader();
+
+	void SendToShader(const Shader& shader);
 
 	void LightMovementControl(float cameraMoveSpeed);
 

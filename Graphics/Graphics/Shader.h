@@ -20,8 +20,8 @@ public:
 	Shader();
 	~Shader();
 
-	const GLuint GetUniformID(std::string uniform) const;
-	const GLuint GetAttributeID(std::string attribute) const;
+	GLuint GetUniformID(const std::string& uniform) const;
+	GLuint GetAttributeID(const std::string& attribute) const;
 
 	bool Create(const std::string& vertexShaderFilename, 
 		const std::string& fragmentShaderFilename);
@@ -55,14 +55,14 @@ private:
 
 	static std::string s_shaderRootFolder;
 
-	static GLuint s_vertexShaderID;
-	static GLuint s_fragmentShaderID;
+	static GLint s_vertexShaderID;
+	static GLint s_fragmentShaderID;
 
 	GLuint m_shaderProgramID;
 
 	// Container storing the ID and attributes of shader elements
-	std::map<std::string, unsigned int> m_shaderAttributes;
-	std::map<std::string, unsigned int> m_shaderUniforms;
+	std::map<std::string, GLuint> m_uniforms;
+	std::map<std::string, GLuint> m_attributes;
 
 	// TODO start using multiple shader progreams
 	std::map <std::string, unsigned int> m_shaderPrograms;

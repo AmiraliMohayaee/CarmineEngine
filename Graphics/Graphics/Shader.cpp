@@ -1,13 +1,13 @@
 #include "Shader.h"
 #include <fstream>
-#include <Windows.h>
+#include <assert.h>
 #include "Utility.h"
 
 
-std::string Shader::s_shaderRootFolder = "Assets/Shaders/";
-
 GLint Shader::s_vertexShaderID = 0;
 GLint Shader::s_fragmentShaderID = 0;
+
+std::string Shader::s_shaderRootFolder = "Assets/Shaders/";
 
 //======================================================================================================
 Shader::Shader()

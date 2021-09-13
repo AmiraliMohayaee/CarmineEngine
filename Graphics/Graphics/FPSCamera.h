@@ -13,9 +13,9 @@ public:
 	void IsFlying(bool flag);
 	void SetSensitivity(GLfloat sensitivity);
 
-	virtual void Draw() {}
 	virtual void Create() {}
 	virtual void Destroy() {}
+	virtual void Draw(const Shader& shader) {}
 	virtual void Update();
 
 private:

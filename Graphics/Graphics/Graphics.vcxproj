@@ -152,7 +152,6 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="FPSCamera.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -187,7 +186,6 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="FPSCamera.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="glad.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="imgui\imconfig.h" />

@@ -21,14 +21,14 @@ Object::Object(const Transform& transform)
 	m_transform = transform;
 }
 
-void Object::Draw()
-{
-	// TODO - find a way to remove the hard-coded shader variable names
-	//Shader::Instance()->SendUniformData("isLit", m_isLit);
-	//Shader::Instance()->SendUniformData("isTextured", m_isTextured);
-	//Shader::Instance()->SendUniformData("model", m_transform.GetMatrix());
-
-}
+//void Object::Draw(const Shader& shader)
+//{
+//	// TODO - find a way to remove the hard-coded shader variable names
+//	shader.SendData("isLit", m_isLit);
+//	shader.SendData("isTextured", m_isTextured);
+//	shader.SendData("model", m_transform.GetMatrix());
+//
+//}
 
 
 bool Object::IsVisible()

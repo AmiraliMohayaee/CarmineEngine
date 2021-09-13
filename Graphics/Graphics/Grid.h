@@ -18,17 +18,13 @@ public:
 	void Create();
 	void Destroy();
 
-	void Draw();
+	void Draw(const Shader& shader);
 	void Update() {}
 	
 
 private:
-	glm::vec4 m_color;
 
 	Buffer m_buffer;
-
-	//glm::mat4 m_modelMatrix;
-
-	GLuint m_modelUniformID;
+	glm::vec4 m_color;
 
 };

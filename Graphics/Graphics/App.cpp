@@ -7,7 +7,7 @@ App::App()
 
 	// TODO: Add asserts inside the functions to make sure they're loaded before the materials are use
 	Material::LoadMaterials("Materials.mat");
-	Material::LoadMaterials("cube.mtl");
+	//Material::LoadMaterials("cube.mtl");
 
 	m_cube = std::make_unique<Cube>();
 	m_grid = std::make_unique<Grid>();
@@ -97,12 +97,17 @@ void App::InitObjects()
 
 void App::Draw()
 {
-	m_grid->Draw();
-	
-	m_light->Draw();
-	m_light->SendToShader();
+	auto& mainShader = *m_mainShader.get();
 
-	m_cube->Draw();
+	m_camera->Update();
+	m_camera->SendToShader(mainShader);
+
+	m_grid->Draw(mainShader);
+	
+	m_light->Draw(mainShader);
+	m_light->SendToShader(mainShader);
+
+	m_cube->Draw(mainShader);
 	//m_quad->Draw();
 	//m_model->Render();
 }
@@ -136,8 +141,7 @@ void App::Update()
 
 		m_cube->GetTransform().SetRotation(pitch, yaw, 0.0f);
 		
-		m_camera->Update();
-		m_camera->SendToShader();
+
 		
 		// Encapsulates draw calls from other game objects
 		Draw();
