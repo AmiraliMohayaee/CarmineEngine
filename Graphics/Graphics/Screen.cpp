@@ -188,15 +188,18 @@ bool Screen::InitScreen()
 	// Allowing the use of depth buffer
 	glEnable(GL_DEPTH_TEST);
 
+
+	//Setting up Dear Imgui Context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();	(void)io;
 
 	ImGui::StyleColorsDark();
 
-	ImGui_ImplOpenGL3_Init("#version 460");
-
-	
+	// Setup Platform/Renderer backends
+	const char* glsl_version = "#version 460";
+	ImGui_ImplSDL2_InitForOpenGL(window, context);
+	ImGui_ImplOpenGL3_Init(glsl_version);
 
 
 	return true;
@@ -209,10 +212,17 @@ void Screen::ClearBuffer()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void Screen::StartUI()
+{
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame(window);
+	ImGui::NewFrame();
+}
+
 void Screen::RenderUI()
 {
-	
 	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 void Screen::SwapBuffer()
@@ -224,6 +234,11 @@ void Screen::SwapBuffer()
 
 void Screen::Shutdown()
 {
+	// Shutting down Imgui Specific context first
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	//free OpenGL context
 	SDL_GL_DeleteContext(context);
 	//free game screen and window

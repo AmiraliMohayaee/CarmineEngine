@@ -52,9 +52,24 @@ glm::vec2 Input::GetMousePosition()
 	return m_mousePos;
 }
 
-glm::vec2 Input::GetMouseWheel()
+int Input::GetMouseWheelMotion()
 {
-	return glm::vec2();
+	return m_mouseWheelMotion;
+}
+
+bool Input::IsLeftButtonDown() const
+{
+	return m_isLeftButtonDown;
+}
+
+bool Input::IsRightButtonDown() const
+{
+	return m_isRightButtonDown;
+}
+
+bool Input::IsMiddleButtonDown() const
+{
+	return m_isMiddleButtonDown;
 }
 
 int Input::GetKeyPressed()
@@ -126,9 +141,39 @@ void Input::Update()
 				break;
 			}
 
+			case SDL_MOUSEWHEEL:
+			{
+				m_mouseWheelMotion = events.wheel.y;
+			}
+
+			// Checking which of the three main mouse
+			// buttons was pressed
 			case SDL_MOUSEBUTTONDOWN:
 			{
 				//Debug::Log("Mouse Button Down event detected.");
+				
+				switch (events.button.button)
+				{
+
+					case SDL_BUTTON_LEFT:
+					{
+						m_isLeftButtonDown = true;
+						break;
+					}
+
+					case SDL_BUTTON_RIGHT:
+					{
+						m_isRightButtonDown = true;
+						break;
+					}
+
+					case SDL_BUTTON_MIDDLE:
+					{
+						m_isMiddleButtonDown = true;
+						break;
+					}
+
+				}
 
 				break;
 			}
@@ -136,6 +181,28 @@ void Input::Update()
 			case SDL_MOUSEBUTTONUP:
 			{
 				//Debug::Log("Mouse Button is up");
+				switch (events.button.button)
+				{
+
+					case SDL_BUTTON_LEFT:
+					{
+						m_isLeftButtonDown = false;
+						break;
+					}
+
+					case SDL_BUTTON_RIGHT:
+					{
+						m_isRightButtonDown = false;
+						break;
+					}
+
+					case SDL_BUTTON_MIDDLE:
+					{
+						m_isMiddleButtonDown = false;
+						break;
+					}
+
+				}
 
 				break;
 			}

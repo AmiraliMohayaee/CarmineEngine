@@ -1,4 +1,9 @@
 #include "App.h"
+#include "Utility.h"
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_sdl.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 
 App::App()
@@ -27,7 +32,7 @@ bool App::InitScreenAndShaders()
 
 	m_mainShader = std::make_unique<Shader>();
 
-	m_mainShader->Create("Assets/Shaders/main.vert", "Assets/Shader/main.frag");
+	m_mainShader->Create("Assets/Shaders/main.vert", "Assets/Shaders/main.frag");
 	
 	m_mainShader->BindAttribute("vertexIn");
 	m_mainShader->BindAttribute("colorIn");
@@ -67,27 +72,27 @@ void App::InitObjects()
 	Texture::Load("Crate_1_Diffuse.png", "CRATE");
 
 	m_camera->CreatePerspView();
-	m_camera->IsFlying(false);
+	//m_camera->IsFlying(false);
 	m_camera->SetSensitivity(0.0f);
 	m_camera->SetSpeed(0.0f);
 	m_camera->SetPosition(0.0f, 0.0f, 3.0f);
 	
 	m_cube->Create();
-	m_cube->IsLit(false);
+	m_cube->IsLit(true);
 	m_cube->IsTextured(true);
 
 	m_light->Create();
 
-	m_quad->Create();
-	m_quad->IsLit(false);
-	m_quad->IsTextured(true);
+	//m_quad->Create();
+	//m_quad->IsLit(false);
+	//m_quad->IsTextured(true);
 
 	m_grid->SetupGridDimentions(4, 12, 1.0f, 1.0f, 1.0f, 1.0f);
 	//m_grid->CreateBuffers();
 
 
 	m_model->Load("Teapot.obj");
-	m_model->IsLit(true);
+	m_model->IsLit(false);
 	m_model->IsTextured(false);
 	
 	
@@ -98,9 +103,6 @@ void App::InitObjects()
 void App::Draw()
 {
 	auto& mainShader = *m_mainShader.get();
-
-	m_camera->Update();
-	m_camera->SendToShader(mainShader);
 
 	m_grid->Draw(mainShader);
 	
@@ -133,30 +135,69 @@ void App::Update()
 			}
 		}
 
+		// Using mouse wheel to zoom in the camera
+		int wheelMotion = Input::Instance()->GetMouseWheelMotion();
+
+		static glm::vec3 camPos = m_camera->GetTransform().GetPosition();
+
+		camPos.z += wheelMotion;
+		m_camera->GetTransform().SetPosition(camPos);
+
+		std::cout << wheelMotion << std::endl;
+
 		static GLfloat yaw = 0.0f;
 		static GLfloat pitch = 0.0f;
 		
-		yaw += Input::Instance()->GetMouseMotion().x;
-		pitch += Input::Instance()->GetMouseMotion().y;
+		if (Input::Instance()->IsLeftButtonDown())
+		{
+			yaw += Input::Instance()->GetMouseMotion().x;
+			pitch -= Input::Instance()->GetMouseMotion().y;
+		}
+
+
+		auto& mainShader = *m_mainShader.get();
 
 		m_cube->GetTransform().SetRotation(pitch, yaw, 0.0f);
+		m_grid->GetTransform().SetRotation(pitch, yaw, 0.0f);
 		
-
+		m_camera->Update();
+		m_camera->SendToShader(mainShader);
 		
 		// Encapsulates draw calls from other game objects
 		Draw();
 
-		
-		ImGui::NewFrame();
+		//UI==================================================================
+		Screen::Instance()->StartUI();
 
-		ImGui::Begin("HEllo World!");
+		bool newScene = false;
+		bool loadScene = false;
+		bool saveScene = false;
+		bool exitApp = false;
+
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				ImGui::MenuItem("New scene", nullptr, &newScene);
+				ImGui::MenuItem("Load scene...", nullptr, &loadScene);
+				ImGui::MenuItem("Save scene", nullptr, &saveScene);
+				ImGui::MenuItem("Exit", nullptr, &exitApp);
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Help"))
+			{
+				ImGui::MenuItem("Tutorial", nullptr, &newScene);
+				ImGui::MenuItem("About...", nullptr, &newScene);
+				ImGui::EndMenu();
+			}
+
+			ImGui::EndMainMenuBar();
+		}
 
 
-		ImGui::End();
-
-
-		ImGui::Render();
-		ImGui_ImplOpenGL3_Init("#version 460");
+		Screen::Instance()->RenderUI();
+		//====================================================================
 
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();

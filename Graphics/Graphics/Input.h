@@ -58,7 +58,11 @@ public:
 
 	glm::vec2 GetMouseMotion();
 	glm::vec2 GetMousePosition();
-	glm::vec2 GetMouseWheel();
+	int GetMouseWheelMotion();
+
+	bool IsLeftButtonDown() const;
+	bool IsRightButtonDown() const;
+	bool IsMiddleButtonDown() const;
 	
 	int GetKeyPressed();
 	
@@ -84,9 +88,13 @@ private:
 	// Key Press Falg
 	bool m_isKeyPressed;
 	bool m_isMousePressed;
+	int m_mouseWheelMotion;
+
+	bool m_isLeftButtonDown;
+	bool m_isRightButtonDown;
+	bool m_isMiddleButtonDown;
 
 	glm::vec2 m_mouseMotion;
 	glm::vec2 m_mousePos;
-	glm::vec2 m_mouseWheelMotion;
 };
 

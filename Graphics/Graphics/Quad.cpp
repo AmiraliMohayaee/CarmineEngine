@@ -28,7 +28,8 @@ void Quad::Create()
 	GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
 						 m_color.r, m_color.g, m_color.b, m_color.a,
 						 m_color.r, m_color.g, m_color.b, m_color.a,
-						 m_color.r, m_color.g, m_color.b, m_color.a };
+						 m_color.r, m_color.g, m_color.b, m_color.a 
+	};
 
 
 	GLfloat UVs[] = { 0.0f, 1.0f,	// top left
