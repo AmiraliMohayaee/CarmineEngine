@@ -109,6 +109,8 @@ void Grid::SetupGridDimentions(int quadrants, int maxSize,
 		m_offsetColor += BYTES_PER_LINE_COLOR;
 	}
 
+	m_buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::INT);
+	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
 }
 
 void Grid::Create()
@@ -213,7 +215,8 @@ void Grid::Create()
 		m_offsetColor += BYTES_PER_LINE_COLOR;
 	}
 
-
+	m_buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::INT);
+	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
 }
 
 
@@ -222,16 +225,25 @@ void Grid::Destroy()
 	m_buffer.Destroy();
 }
 
-void Grid::Draw(const Shader& shader)
+void Grid::Draw()
 {
-	shader.SendData("isLit", false);
-	shader.SendData("isTextured", false);
-	shader.SendData("model", m_transform.GetMatrix());
-
-	m_buffer.LinkVBO(shader.GetAttributeID("vertexIn"), Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::INT);
-	m_buffer.LinkVBO(shader.GetAttributeID("colorIn"), Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
-
+	Shader::Instance()->SendUniformData("isLit", false);
+	Shader::Instance()->SendUniformData("isTextured", false);
+	Shader::Instance()->SendUniformData("model", m_transform.GetMatrix());
 
 	m_buffer.Render(Buffer::LINES);
 }
+
+//void Grid::Draw(const Shader& shader)
+//{
+//	shader.SendData("isLit", true);
+//	shader.SendData("isTextured", false);
+//	shader.SendData("model", m_transform.GetMatrix());
+//
+//	m_buffer.LinkVBO(shader.GetAttributeID("vertexIn"), Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::INT);
+//	m_buffer.LinkVBO(shader.GetAttributeID("colorIn"), Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
+//
+//
+//	m_buffer.Render(Buffer::LINES);
+//}
 

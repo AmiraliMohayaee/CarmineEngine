@@ -13,6 +13,12 @@ Input::Input()
 	m_isExiting = false;
 	m_mouseMotion = glm::vec2();
 	m_mousePos = glm::vec2();
+
+	m_isLeftButtonDown = false;
+	m_isRightButtonDown = false;
+	m_isMiddleButtonDown = false;
+
+	m_mouseWheelMotion = 0;
 }
 
 

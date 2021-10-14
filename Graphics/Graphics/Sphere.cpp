@@ -134,31 +134,31 @@ void Sphere::Destroy()
 	m_buffer.Destroy();
 }
 
-void Sphere::Draw(const Shader& shader)
+void Sphere::Draw()
 {
-	shader.SendData("isLit", m_isLit);
-	shader.SendData("isTextured", m_isTextured);
-	shader.SendData("model", m_transform.GetMatrix());
+	//shader.SendData("isLit", m_isLit);
+	//shader.SendData("isTextured", m_isTextured);
+	//shader.SendData("model", m_transform.GetMatrix());
 
-	m_material.SendToShader(shader);
+	//m_material.SendToShader(shader);
 
-	m_buffer.LinkVBO(shader.GetAttributeID("vertexIn"), Buffer::VERTEX_BUFFER, Buffer::XYZ);
-	m_buffer.LinkVBO(shader.GetAttributeID("colorIn"), Buffer::COLOR_BUFFER, Buffer::RGBA);
-	m_buffer.LinkVBO(shader.GetAttributeID("normalIn"), Buffer::NORMAL_BUFFER, Buffer::XYZ);
-	m_buffer.LinkVBO(shader.GetAttributeID("textureIn"), Buffer::TEXTURE_BUFFER, Buffer::UV);
+	//m_buffer.LinkVBO(shader.GetAttributeID("vertexIn"), Buffer::VERTEX_BUFFER, Buffer::XYZ);
+	//m_buffer.LinkVBO(shader.GetAttributeID("colorIn"), Buffer::COLOR_BUFFER, Buffer::RGBA);
+	//m_buffer.LinkVBO(shader.GetAttributeID("normalIn"), Buffer::NORMAL_BUFFER, Buffer::XYZ);
+	//m_buffer.LinkVBO(shader.GetAttributeID("textureIn"), Buffer::TEXTURE_BUFFER, Buffer::UV);
 
 
-	if (m_isTextured)
-	{
-		m_texture.Bind();
-	}
+	//if (m_isTextured)
+	//{
+	//	m_texture.Bind();
+	//}
 
-	m_buffer.Render(Buffer::TRIANGLES);
+	//m_buffer.Render(Buffer::TRIANGLES);
 
-	if (m_isTextured)
-	{
-		m_texture.UnBind();
+	//if (m_isTextured)
+	//{
+	//	m_texture.UnBind();
 
-	}
+	//}
 }
 

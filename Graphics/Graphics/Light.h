@@ -14,20 +14,20 @@ public:
 	virtual ~Light() {};
 
 	virtual void Create();
-	virtual void Draw(const Shader& shader);                 //for debug only!
+	//virtual void Draw(const Shader& shader);                 //for debug only!
+	virtual void Draw();
 	virtual void Update() {}
 	virtual void Destroy();
 
-	void SendToShader(const Shader& shader);
+	void SendToShader();
 
 	void LightMovementControl(float cameraMoveSpeed);
+
+
 
 private:
 
 	Buffer m_buffer;
-
-	glm::vec3 m_position;
-	glm::mat4 m_modelMatrix;
 
 	glm::vec3 m_forward;
 	glm::vec3 m_up;

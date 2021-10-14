@@ -30,36 +30,68 @@ bool App::InitScreenAndShaders()
 		return 0;
 	}
 
-	m_mainShader = std::make_unique<Shader>();
+	if (!Shader::Instance()->CreateProgram())
+	{
+		Debug::Log("Shader Program return a false result. Possile wrong linking.");
+		return 0;
+	}
 
-	m_mainShader->Create("Assets/Shaders/main.vert", "Assets/Shaders/main.frag");
-	
-	m_mainShader->BindAttribute("vertexIn");
-	m_mainShader->BindAttribute("colorIn");
-	m_mainShader->BindAttribute("normalIn");
-	m_mainShader->BindAttribute("textureIn");
+	if (!Shader::Instance()->CreateShaders())
+	{
+		Debug::Log("Failed to create shaders.");
+		return 0;
+	}
 
-	m_mainShader->BindUniform("model");
-	m_mainShader->BindUniform("view");
-	m_mainShader->BindUniform("projection");
+	if (!Shader::Instance()->CompileShader("main.vert"))
+	{
+		Debug::Log("Failed to compile shaders.");
+		return 0;
+	}
 
-	m_mainShader->BindUniform("isLit");
-	m_mainShader->BindUniform("isTextured");
-	m_mainShader->BindUniform("cameraPosition");
+	if (!Shader::Instance()->CompileShader("main.frag"))
+	{
+		Debug::Log("Failed to compile shaders.");
+		return 0;
+	}
 
-	m_mainShader->BindUniform("light.ambient");
-	m_mainShader->BindUniform("light.diffuse");
-	m_mainShader->BindUniform("light.specular");
-	m_mainShader->BindUniform("light.position");
+	Shader::Instance()->AttachShaders();
 
-	m_mainShader->BindUniform("material.ambient");
-	m_mainShader->BindUniform("material.diffuse");
-	m_mainShader->BindUniform("material.specular");
-	m_mainShader->BindUniform("material.shininess");
-	
+	if (!Shader::Instance()->LinkProgram())
+	{
+		Debug::Log("Failed to link the shader program.");
+		return 0;
+	}
+
+
 	//Debug::PrintGraphicsEngineVersion();
 
 	return true;
+}
+
+void App::BindElements()
+{
+	Shader::Instance()->BindAttribute("vertexIn");
+	Shader::Instance()->BindAttribute("colorIn");
+	Shader::Instance()->BindAttribute("normalIn");
+	Shader::Instance()->BindAttribute("textureIn");
+
+	Shader::Instance()->BindUniform("model");
+	Shader::Instance()->BindUniform("view");
+	Shader::Instance()->BindUniform("projection");
+
+	Shader::Instance()->BindUniform("isLit");
+	Shader::Instance()->BindUniform("isTextured");
+	Shader::Instance()->BindUniform("cameraPosition");
+
+	Shader::Instance()->BindUniform("light.ambient");
+	Shader::Instance()->BindUniform("light.diffuse");
+	Shader::Instance()->BindUniform("light.specular");
+	Shader::Instance()->BindUniform("light.position");
+
+	Shader::Instance()->BindUniform("material.ambient");
+	Shader::Instance()->BindUniform("material.diffuse");
+	Shader::Instance()->BindUniform("material.specular");
+	Shader::Instance()->BindUniform("material.shininess");
 }
 
 
@@ -71,11 +103,11 @@ void App::InitObjects()
 
 	Texture::Load("Crate_1_Diffuse.png", "CRATE");
 
-	m_camera->CreatePerspView();
 	//m_camera->IsFlying(false);
-	m_camera->SetSensitivity(0.0f);
 	m_camera->SetSpeed(0.0f);
+	m_camera->SetSensitivity(0.0f);
 	m_camera->SetPosition(0.0f, 0.0f, 3.0f);
+	m_camera->CreatePerspView();
 	
 	m_cube->Create();
 	m_cube->IsLit(true);
@@ -102,15 +134,13 @@ void App::InitObjects()
 
 void App::Draw()
 {
-	auto& mainShader = *m_mainShader.get();
+	m_light->Draw();
+	m_light->SendToShader();
 
-	m_grid->Draw(mainShader);
-	
-	m_light->Draw(mainShader);
-	m_light->SendToShader(mainShader);
-
-	m_cube->Draw(mainShader);
+	m_cube->Draw();
+	m_grid->Draw();
 	//m_quad->Draw();
+
 	//m_model->Render();
 }
 
@@ -155,13 +185,13 @@ void App::Update()
 		}
 
 
-		auto& mainShader = *m_mainShader.get();
+		//auto& mainShader = *m_mainShader.get();
 
 		m_cube->GetTransform().SetRotation(pitch, yaw, 0.0f);
 		m_grid->GetTransform().SetRotation(pitch, yaw, 0.0f);
 		
 		m_camera->Update();
-		m_camera->SendToShader(mainShader);
+		m_camera->SendToShader();
 		
 		// Encapsulates draw calls from other game objects
 		Draw();
@@ -201,6 +231,8 @@ void App::Update()
 
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();
+
+		m_isProgramRunning = !exitApp;
 	}
 }
 
@@ -213,6 +245,9 @@ void App::Shutdown()
 
 	m_model->Unload();
 
-	m_mainShader->Destroy();
+	//m_mainShader->Destroy();
+	Shader::Instance()->DetachShaders();
+	Shader::Instance()->DestroyShaders();
+	Shader::Instance()->DestroyProgram();
 	Screen::Instance()->Shutdown();
 }

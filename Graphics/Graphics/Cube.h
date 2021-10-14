@@ -21,7 +21,8 @@ public:
 
 	virtual void Create();
 	virtual void Update() {}
-	virtual void Draw(const Shader& shader);
+	//virtual void Draw(const Shader& shader);
+	virtual void Draw();
 	virtual void Destroy();
 
 

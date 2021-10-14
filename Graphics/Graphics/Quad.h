@@ -18,8 +18,9 @@ public:
 
 	virtual void Create();
 	virtual void Destroy();
-	virtual void Draw(const Shader& shader);
 	virtual void Update() {}
+	/*virtual void Draw(const Shader& shader);*/
+	virtual void Draw();
 
 	void SetDimension(GLfloat width, GLfloat height);
 	void SetColor(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha = 1.0f);

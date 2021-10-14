@@ -5,15 +5,11 @@
 
 FPSCamera::FPSCamera()
 {
-	m_sensitivity = 0.0f;
+	m_yaw = -90.0f;
 	m_isFlying = true;
 	m_sensitivity = 0.0f;
 }
 
-FPSCamera::~FPSCamera()
-{
-
-}
 
 void FPSCamera::IsFlying(bool flag)
 {
@@ -27,9 +23,6 @@ void FPSCamera::SetSensitivity(GLfloat sensitivity)
 
 void FPSCamera::Update()
 {
-	float mouseLastPosX = Input::Instance()->GetMousePosition().x;
-	float mouseLastPosY = Input::Instance()->GetMousePosition().y;
-
 	m_yaw += Input::Instance()->GetMouseMotion().x;
 	m_pitch -= Input::Instance()->GetMouseMotion().y;
 

@@ -50,7 +50,7 @@ public:
 	void SetTransmittance(const glm::vec3& transmittance);
 	void SetTransmittance(GLfloat r, GLfloat g, GLfloat b);
 
-	void SendToShader(const Shader& shader);
+	void SendToShader();
 
 private:
 

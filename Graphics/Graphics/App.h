@@ -21,6 +21,7 @@ public:
 
 	App();
 	bool InitScreenAndShaders();
+	void BindElements();
 
 	int GetTotalTime();
 	int GetElapsedTime();
@@ -42,6 +43,6 @@ private:
 	std::unique_ptr<FPSCamera> m_camera;
 
 	std::unique_ptr<Shader> m_mainShader;
-	std::unique_ptr<Shader> m_lightShader;
+	//std::unique_ptr<Shader> m_lightShader;
 
 };

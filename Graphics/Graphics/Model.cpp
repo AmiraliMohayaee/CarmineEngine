@@ -421,24 +421,24 @@ bool Model::Load(const std::string& filename, const std::string& texture)
     return true;
 }
 
-void Model::Render(const Shader& shader)
+void Model::Render()
 {
-    shader.SendData("isLit", m_isLit);
-    shader.SendData("isTextured", m_isTextured);
+    Shader::Instance()->SendUniformData("isLit", m_isLit);
+    Shader::Instance()->SendUniformData("isTextured", m_isTextured);
 
     m_modelMatrix = glm::mat4(1.0f);
     //m_modelMatrix = glm::scale(m_modelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 
-    shader.SendData("model", m_modelMatrix);
+    Shader::Instance()->SendUniformData("model", m_modelMatrix);
 
-    m_materials.back().SendToShader(shader);
+    m_materials.back().SendToShader();
 
     if (m_isTextured)
     {
         //m_ambientTexture.Bind();
         m_diffuseTexture.Bind();
-       // m_specularTexture.Bind();
-       // m_normalTexture.Bind();
+        // m_specularTexture.Bind();
+        // m_normalTexture.Bind();
     }
 
     for (size_t i = 0; i < m_buffers.size(); i++)
@@ -450,7 +450,6 @@ void Model::Render(const Shader& shader)
     m_diffuseTexture.UnBind();
     //m_specularTexture.UnBind();
     //m_normalTexture.UnBind();
-
 }
 
 void Model::Unload()
@@ -480,10 +479,12 @@ void Model::FillBuffers()
         buffer.Create(m_meshes[i].indices.size(), true);
 
         buffer.LinkEBO();
-        //buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::FLOAT);
-        //buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
-        //buffer.LinkVBO("textureIn", Buffer::TEXTURE_BUFFER, Buffer::UV, Buffer::FLOAT);
-        //buffer.LinkVBO("normalIn", Buffer::NORMAL_BUFFER, Buffer::XYZ, Buffer::FLOAT);
+        buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::FLOAT);
+        buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
+        buffer.LinkVBO("textureIn", Buffer::TEXTURE_BUFFER, Buffer::UV, Buffer::FLOAT);
+        buffer.LinkVBO("normalIn", Buffer::NORMAL_BUFFER, Buffer::XYZ, Buffer::FLOAT);
+
+
 
         buffer.FillEBO(m_meshes[i].indices.data(), m_meshes[i].indices.size() * sizeof(GLuint), Buffer::SINGLE);
         buffer.FillVBO(Buffer::VERTEX_BUFFER, &m_meshes[i].vertices[0].x, m_meshes[i].vertices.size() * sizeof(glm::vec3), Buffer::SINGLE);

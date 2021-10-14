@@ -66,32 +66,53 @@ void Quad::Destroy()
 	m_texture.Unload("CRATE");
 }
 
-void Quad::Draw(const Shader& shader)
+//void Quad::Draw(const Shader& shader)
+//{
+//	shader.SendData("isLit", m_isLit);
+//	shader.SendData("isTextured", m_isTextured);
+//	shader.SendData("model", m_transform.GetMatrix());
+//
+//	m_buffer.LinkVBO(shader.GetAttributeID("vertexIn"), Buffer::VERTEX_BUFFER, Buffer::XYZ);
+//	m_buffer.LinkVBO(shader.GetAttributeID("colorIn"), Buffer::COLOR_BUFFER, Buffer::RGB);
+//	m_buffer.LinkVBO(shader.GetAttributeID("textureIn"), Buffer::TEXTURE_BUFFER, Buffer::UV);
+//
+//	m_material.SendToShader(shader);
+//
+//	if (m_isTextured)
+//	{
+//		m_texture.Bind();
+//	}
+//		
+//	m_buffer.Render(Buffer::TRIANGLES);
+//	
+//	if (m_isTextured)
+//	{
+//		m_texture.UnBind();
+//
+//	}
+//}
+
+
+void Quad::Draw()
 {
-	shader.SendData("isLit", m_isLit);
-	shader.SendData("isTextured", m_isTextured);
-	shader.SendData("model", m_transform.GetMatrix());
+	Shader::Instance()->SendUniformData("isLit", m_isLit);
+	Shader::Instance()->SendUniformData("isTextured", m_isTextured);
+	Shader::Instance()->SendUniformData("model", m_transform.GetMatrix());
 
-	m_buffer.LinkVBO(shader.GetAttributeID("vertexIn"), Buffer::VERTEX_BUFFER, Buffer::XYZ);
-	m_buffer.LinkVBO(shader.GetAttributeID("colorIn"), Buffer::COLOR_BUFFER, Buffer::RGB);
-	m_buffer.LinkVBO(shader.GetAttributeID("textureIn"), Buffer::TEXTURE_BUFFER, Buffer::UV);
-
-	m_material.SendToShader(shader);
+	m_material.SendToShader();
 
 	if (m_isTextured)
 	{
 		m_texture.Bind();
 	}
-		
+
 	m_buffer.Render(Buffer::TRIANGLES);
-	
+
 	if (m_isTextured)
 	{
 		m_texture.UnBind();
-
 	}
 }
-
 
 void Quad::SetDimension(GLfloat width, GLfloat height)
 {

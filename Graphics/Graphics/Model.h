@@ -58,7 +58,7 @@ class Model
 public:
 	bool Load(const std::string& filename);
 	bool Load(const std::string& filename, const std::string& texture);
-	void Render(const Shader& shader);
+	void Render();
 	void Unload();
 
 	void IsTextured(bool flag);

@@ -8,14 +8,14 @@ class FPSCamera : public Camera
 public:
 
 	FPSCamera();
-	~FPSCamera();
+	~FPSCamera() {}
 
 	void IsFlying(bool flag);
 	void SetSensitivity(GLfloat sensitivity);
 
 	virtual void Create() {}
 	virtual void Destroy() {}
-	virtual void Draw(const Shader& shader) {}
+	virtual void Draw() {}
 	virtual void Update();
 
 private:

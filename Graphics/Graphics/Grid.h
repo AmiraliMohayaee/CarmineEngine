@@ -18,7 +18,8 @@ public:
 	void Create();
 	void Destroy();
 
-	void Draw(const Shader& shader);
+	/*void Draw(const Shader& shader);*/
+	void Draw();
 	void Update() {}
 	
 
