@@ -13,7 +13,7 @@ public:
 
 	Cube(GLfloat width = 1.0f, GLfloat height = 1.0f, GLfloat depth = 1.0f,
 		GLfloat r = 1.0f, GLfloat g = 1.0f, GLfloat b = 1.0f, GLfloat alpha = 1.0f);
-	~Cube();
+	virtual ~Cube() {}
 
 	void SetDimension(const glm::vec3& dimensions);
 	void SetDimension(GLfloat width, GLfloat height, GLfloat depth);
@@ -21,10 +21,8 @@ public:
 
 	virtual void Create();
 	virtual void Update() {}
-	//virtual void Draw(const Shader& shader);
 	virtual void Draw();
 	virtual void Destroy();
-
 
 private:
 

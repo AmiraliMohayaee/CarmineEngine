@@ -4,7 +4,6 @@
 #include "Buffer.h"
 #include "Object.h"
 
-
 class Grid : public Object
 {
 public:
@@ -17,11 +16,8 @@ public:
 
 	void Create();
 	void Destroy();
-
-	/*void Draw(const Shader& shader);*/
 	void Draw();
 	void Update() {}
-	
 
 private:
 

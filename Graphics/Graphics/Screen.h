@@ -1,12 +1,8 @@
 #pragma once
 
 #include "glad.h"
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_sdl.h"
-#include "imgui/imgui_impl_opengl3.h"
 #include <SDL.h>
 #include <iostream>
-
 
 struct Position
 {
@@ -22,7 +18,6 @@ struct Color
 	float b = 0.0f;
 };
 
-
 class Screen
 {
 public:
@@ -32,11 +27,12 @@ public:
 	bool InitScreen();
 
 	void ClearBuffer();
-	void StartUI();
-	void RenderUI();
 	void SwapBuffer();
 	void Shutdown();
 
+	void StartUI();
+	void RenderUI();
+	
 	const int GetScreenWidth();
 	const int GetScreenHeight();
 
@@ -66,4 +62,3 @@ private:
 	int m_oGLMinorVersion;
 	int m_isFullScreen;
 };
-

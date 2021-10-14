@@ -17,7 +17,6 @@ bool Material::LoadMaterials(const std::string& filename)
 		return false;
 	}
 
-
 	std::fstream file(s_rootFolderMaterial + filename, std::ios_base::in);
 
 	//If your application breaks here it means that the material file could 
@@ -377,13 +376,4 @@ void Material::SendToShader()
 	Shader::Instance()->SendUniformData("material.diffuse", m_diffuse.x, m_diffuse.y, m_diffuse.z);
 	Shader::Instance()->SendUniformData("material.specular", m_specular.x, m_specular.y, m_specular.z);
 	Shader::Instance()->SendUniformData("material.shininess", m_shininess);
-
 }
-
-//void Material::SendToShader(const Shader& shader)
-//{
-//	shader.SendData("material.ambient", m_ambient);
-//	shader.SendData("material.diffuse", m_diffuse);
-//	shader.SendData("material.specular", m_specular);
-//	shader.SendData("material.shininess", m_shininess);
-//}

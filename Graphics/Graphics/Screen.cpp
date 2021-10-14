@@ -2,7 +2,10 @@
 #include <fstream>
 #include <string>
 
-#define IMGUI_IMPL_OPENGL_LOADER_GLAD2
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_sdl.h"
+#include "imgui/imgui_impl_opengl3.h"
+
 
 
 Screen::Screen()
@@ -189,10 +192,11 @@ bool Screen::InitScreen()
 	glEnable(GL_DEPTH_TEST);
 
 
-	//Setting up Dear Imgui Context
+	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();	(void)io;
+	//ImGui::SetCurrentContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
 	ImGui::StyleColorsDark();
 
@@ -200,7 +204,6 @@ bool Screen::InitScreen()
 	const char* glsl_version = "#version 460";
 	ImGui_ImplSDL2_InitForOpenGL(window, context);
 	ImGui_ImplOpenGL3_Init(glsl_version);
-
 
 	return true;
 }
@@ -234,7 +237,6 @@ void Screen::SwapBuffer()
 
 void Screen::Shutdown()
 {
-	// Shutting down Imgui Specific context first
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();

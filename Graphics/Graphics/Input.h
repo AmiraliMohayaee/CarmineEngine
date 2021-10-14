@@ -51,6 +51,7 @@ public:
 	static Input* Instance();
 
 public:
+
 	void Update();
 	
 	// Checks the 
@@ -63,7 +64,7 @@ public:
 	bool IsLeftButtonDown() const;
 	bool IsRightButtonDown() const;
 	bool IsMiddleButtonDown() const;
-	
+
 	int GetKeyPressed();
 	
 	bool KeyPressed();

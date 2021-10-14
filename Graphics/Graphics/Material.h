@@ -5,8 +5,6 @@
 #include <vector>
 #include <glm.hpp>
 #include "glad.h"
-#include "Shader.h"
-
 
 class Material
 {

@@ -437,8 +437,8 @@ void Model::Render()
     {
         //m_ambientTexture.Bind();
         m_diffuseTexture.Bind();
-        // m_specularTexture.Bind();
-        // m_normalTexture.Bind();
+       // m_specularTexture.Bind();
+       // m_normalTexture.Bind();
     }
 
     for (size_t i = 0; i < m_buffers.size(); i++)
@@ -450,6 +450,7 @@ void Model::Render()
     m_diffuseTexture.UnBind();
     //m_specularTexture.UnBind();
     //m_normalTexture.UnBind();
+
 }
 
 void Model::Unload()
@@ -483,8 +484,6 @@ void Model::FillBuffers()
         buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
         buffer.LinkVBO("textureIn", Buffer::TEXTURE_BUFFER, Buffer::UV, Buffer::FLOAT);
         buffer.LinkVBO("normalIn", Buffer::NORMAL_BUFFER, Buffer::XYZ, Buffer::FLOAT);
-
-
 
         buffer.FillEBO(m_meshes[i].indices.data(), m_meshes[i].indices.size() * sizeof(GLuint), Buffer::SINGLE);
         buffer.FillVBO(Buffer::VERTEX_BUFFER, &m_meshes[i].vertices[0].x, m_meshes[i].vertices.size() * sizeof(glm::vec3), Buffer::SINGLE);

@@ -21,8 +21,8 @@ public:
 	GLuint GetID();
 	bool GetTexture(const std::string& textureID, Texture& texture);
 
-	void Bind();
-	void UnBind();
+	void Bind(); 
+	void UnBind(); 
 
 
 
