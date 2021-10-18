@@ -166,7 +166,6 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
-    <ClCompile Include="MathUtilities.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Quad.cpp" />
     <ClCompile Include="RigidBody.cpp" />
@@ -176,6 +175,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Tools.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
@@ -200,7 +200,6 @@
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
-    <ClInclude Include="MathUtilities.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="RigidBody.h" />
@@ -210,6 +209,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Tools.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\main.frag" />
