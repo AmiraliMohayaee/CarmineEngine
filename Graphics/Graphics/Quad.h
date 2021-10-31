@@ -6,25 +6,21 @@
 #include "Texture.h"
 #include "Material.h"
 
-
-
 class Quad : public Object
 {
 public:
 
-	Quad(GLfloat width = 1.0f, GLfloat height = 1.0f, 
+	Quad(GLfloat width = 1.0f, GLfloat height = 1.0f,
 		GLfloat r = 1.0f, GLfloat g = 1.0f, GLfloat b = 1.0f, GLfloat alpha = 1.0f);
-	~Quad() {}
+	virtual ~Quad() {}
 
 	virtual void Create();
 	virtual void Destroy();
-	virtual void Update() {}
-	/*virtual void Draw(const Shader& shader);*/
 	virtual void Draw();
+	virtual void Update() {}
 
 	void SetDimension(GLfloat width, GLfloat height);
 	void SetColor(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha = 1.0f);
-
 
 private:
 

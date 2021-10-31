@@ -51,8 +51,8 @@ bool Model::Load(const std::string& filename)
             if (subStrings[0] == "v")
             {
                 rawMesh.vertices.push_back(glm::vec3(std::stof(subStrings[1]),
-                                                     std::stof(subStrings[2]),
-                                                     std::stof(subStrings[3])));
+                    std::stof(subStrings[2]),
+                    std::stof(subStrings[3])));
                 continue;
             }
 
@@ -60,7 +60,7 @@ bool Model::Load(const std::string& filename)
             if (subStrings[0] == "vt")
             {
                 rawMesh.UVs.push_back(glm::vec2(std::stof(subStrings[1]),
-                                                std::stof(subStrings[2])));
+                    std::stof(subStrings[2])));
                 continue;
             }
 
@@ -68,8 +68,8 @@ bool Model::Load(const std::string& filename)
             if (subStrings[0] == "vn")
             {
                 rawMesh.normals.push_back(glm::vec3(std::stof(subStrings[1]),
-                                                    std::stof(subStrings[2]),
-                                                    std::stof(subStrings[3])));
+                    std::stof(subStrings[2]),
+                    std::stof(subStrings[3])));
                 continue;
             }
 
@@ -450,6 +450,7 @@ void Model::Render()
     m_diffuseTexture.UnBind();
     //m_specularTexture.UnBind();
     //m_normalTexture.UnBind();
+
 }
 
 void Model::Unload()
@@ -483,8 +484,6 @@ void Model::FillBuffers()
         buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
         buffer.LinkVBO("textureIn", Buffer::TEXTURE_BUFFER, Buffer::UV, Buffer::FLOAT);
         buffer.LinkVBO("normalIn", Buffer::NORMAL_BUFFER, Buffer::XYZ, Buffer::FLOAT);
-
-
 
         buffer.FillEBO(m_meshes[i].indices.data(), m_meshes[i].indices.size() * sizeof(GLuint), Buffer::SINGLE);
         buffer.FillVBO(Buffer::VERTEX_BUFFER, &m_meshes[i].vertices[0].x, m_meshes[i].vertices.size() * sizeof(glm::vec3), Buffer::SINGLE);

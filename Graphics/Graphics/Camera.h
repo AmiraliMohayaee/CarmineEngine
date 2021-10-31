@@ -4,51 +4,41 @@
 #include <glm.hpp>
 #include "Object.h"
 
-
-const GLfloat FAR_CLIP = 1000.f;
+const GLfloat FAR_CLIP = 1000.0f;
 const GLfloat NEAR_CLIP = 0.001f;
 
 class Camera : public Object
 {
+
 public:
 
 	enum class Origin2D
 	{
 		TOP_LEFT,
-		BOTTOM_LEFT,
+		BOTTOM_LEFT
 	};
 
 	Camera();
-	virtual ~Camera();
+	virtual ~Camera() {}
 
-	const glm::vec3& GetCamPosition() const;
+	const glm::vec3& GetPosition() const;
 
 	void SetSpeed(GLfloat speed);
 	void SetFieldOfView(GLfloat fieldOfView);
 
+	void SetPosition(const glm::vec3& position);
 	void SetPosition(GLfloat x, GLfloat y, GLfloat z);
-	void SetPosition(glm::vec3 position);
 
 	void CreatePerspView();
 	void CreateOrthoView(Origin2D origin);
 
 	void Reset();
-	//void SendToShader(const Shader& shader);
 	void SendToShader();
 
 	virtual void Create() = 0;
 	virtual void Destroy() = 0;
-	//virtual void Draw(const Shader& shader) = 0;
 	virtual void Draw() = 0;
 	virtual void Update() = 0;
-
-
-	//void CameraMouseMovement(GLfloat mouseSensitivity);
-	//void CameraKeyboardMovement(GLfloat camMoveSpeed);
-
-	//void SetViewAndProJ();
-	//void UpdateCamera();
-
 
 protected:
 

@@ -3,8 +3,6 @@
 #include "Shader.h"
 #include "Input.h"
 
-
-
 Cube::Cube(GLfloat width, GLfloat height, GLfloat depth, GLfloat r, GLfloat g, GLfloat b, GLfloat alpha)
 {
 	m_dimension.x = width;
@@ -14,11 +12,6 @@ Cube::Cube(GLfloat width, GLfloat height, GLfloat depth, GLfloat r, GLfloat g, G
 	m_color.g = g;
 	m_color.b = b;
 	m_color.a = alpha;
-}
-
-Cube::~Cube()
-{
-
 }
 
 void Cube::SetDimension(GLfloat width, GLfloat height, GLfloat depth)
@@ -113,27 +106,27 @@ void Cube::Create()
 						  0.0f, 0.0f, 1.0f,
 						  0.0f, 0.0f, 1.0f,
 						  0.0f, 0.0f, 1.0f, // front face
-						  
+
 						  0.0f, 0.0f, -1.0f,
 						  0.0f, 0.0f, -1.0f,
 						  0.0f, 0.0f, -1.0f,
 						  0.0f, 0.0f, -1.0f, // back face
-						  
+
 						  -1.0f, 0.0f, 0.0f,
 						  -1.0f, 0.0f, 0.0f,
 						  -1.0f, 0.0f, 0.0f,
 						  -1.0f, 0.0f, 0.0f, // left face
-						  
+
 						  1.0f, 0.0f, 0.0f,
 						  1.0f, 0.0f, 0.0f,
 						  1.0f, 0.0f, 0.0f,
 						  1.0f, 0.0f, 0.0f, // right face
-						  
+
 						  0.0f, 1.0f, 0.0f,
 						  0.0f, 1.0f, 0.0f,
 						  0.0f, 1.0f, 0.0f,
 						  0.0f, 1.0f, 0.0f, // top face
-						  
+
 						  0.0f, -1.0f, 0.0f,
 						  0.0f, -1.0f, 0.0f,
 						  0.0f, -1.0f, 0.0f,
@@ -183,7 +176,7 @@ void Cube::Create()
 
 	m_texture.GetTexture("CRATE", m_texture);
 
-	m_material.SetMaterial("Chrome.mtl");
+	m_material.SetMaterial("Chrome");
 
 	m_buffer.Create(36, true);
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices));
@@ -210,8 +203,6 @@ void Cube::Draw()
 	Shader::Instance()->SendUniformData("isTextured", m_isTextured);
 	Shader::Instance()->SendUniformData("model", m_transform.GetMatrix());
 
-	
-
 	m_material.SendToShader();
 
 	if (m_isTextured)
@@ -224,6 +215,5 @@ void Cube::Draw()
 	if (m_isTextured)
 	{
 		m_texture.UnBind();
-
 	}
 }

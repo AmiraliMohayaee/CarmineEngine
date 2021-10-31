@@ -4,21 +4,18 @@
 #include <memory>
 #include "Screen.h"
 #include "Input.h"
-#include "FPSCamera.h"
+#include "Camera.h"
 #include "Cube.h"
 #include "Quad.h"
 #include "Debug.h"
 #include "Grid.h"
 #include "Light.h"
 #include "Model.h"
-#include "Shader.h"
-#include "Utility.h"
-
+#include "FPSCamera.h"
 
 class App
 {
 public:
-
 	App();
 	bool InitScreenAndShaders();
 	void BindElements();
@@ -26,10 +23,10 @@ public:
 	int GetTotalTime();
 	int GetElapsedTime();
 
+	void InitObjects();
 	void Draw();
 	void Update();
 	void Shutdown();
-	void InitObjects();
 
 
 private:
@@ -41,8 +38,5 @@ private:
 	std::unique_ptr<Light> m_light;
 	std::unique_ptr<Model> m_model;
 	std::unique_ptr<FPSCamera> m_camera;
-
-	std::unique_ptr<Shader> m_mainShader;
-	//std::unique_ptr<Shader> m_lightShader;
 
 };

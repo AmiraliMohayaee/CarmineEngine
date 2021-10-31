@@ -1,25 +1,21 @@
 #include "App.h"
-#include "Utility.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-
 App::App()
 {
 	m_isProgramRunning = true;
 
-	// TODO: Add asserts inside the functions to make sure they're loaded before the materials are use
 	Material::LoadMaterials("Materials.mat");
-	//Material::LoadMaterials("cube.mtl");
 
+	m_camera = std::make_unique<FPSCamera>();
 	m_cube = std::make_unique<Cube>();
 	m_grid = std::make_unique<Grid>();
-	m_quad = std::make_unique<Quad>();
 	m_model = std::make_unique<Model>();
-	m_camera = std::make_unique<FPSCamera>();
 	m_light = std::make_unique<Light>(0.0f, 3.0f, 0.0f);
+	m_quad = std::make_unique<Quad>();
 }
 
 bool App::InitScreenAndShaders()
@@ -63,10 +59,11 @@ bool App::InitScreenAndShaders()
 	}
 
 
-	//Debug::PrintGraphicsEngineVersion();
+	Debug::PrintGraphicsEngineVersion();
 
 	return true;
 }
+
 
 void App::BindElements()
 {
@@ -94,7 +91,6 @@ void App::BindElements()
 	Shader::Instance()->BindUniform("material.shininess");
 }
 
-
 void App::InitObjects()
 {
 	//////////////////////////////////////////
@@ -103,12 +99,13 @@ void App::InitObjects()
 
 	Texture::Load("Crate_1_Diffuse.png", "CRATE");
 
-	//m_camera->IsFlying(false);
+
+	//m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
 	m_camera->SetSpeed(0.0f);
 	m_camera->SetSensitivity(0.0f);
-	m_camera->SetPosition(0.0f, 0.0f, 3.0f);
+	m_camera->SetPosition(0.0f, 0.0f, 3.5f);
 	m_camera->CreatePerspView();
-	
+
 	m_cube->Create();
 	m_cube->IsLit(true);
 	m_cube->IsTextured(true);
@@ -116,18 +113,19 @@ void App::InitObjects()
 	m_light->Create();
 
 	//m_quad->Create();
-	//m_quad->IsLit(false);
+	//m_quad->IsLit(true);
 	//m_quad->IsTextured(true);
 
 	m_grid->SetupGridDimentions(4, 12, 1.0f, 1.0f, 1.0f, 1.0f);
 	//m_grid->CreateBuffers();
 
 
+
 	m_model->Load("Teapot.obj");
 	m_model->IsLit(false);
 	m_model->IsTextured(false);
-	
-	
+
+
 	// Error Catching Code
 	//GLError::GraphicsErrorCatch();
 }
@@ -165,8 +163,8 @@ void App::Update()
 			}
 		}
 
-		// Using mouse wheel to zoom in the camera
 		int wheelMotion = Input::Instance()->GetMouseWheelMotion();
+		//wheelMotion *= 0.1f;
 
 		static glm::vec3 camPos = m_camera->GetTransform().GetPosition();
 
@@ -177,22 +175,19 @@ void App::Update()
 
 		static GLfloat yaw = 0.0f;
 		static GLfloat pitch = 0.0f;
-		
+
 		if (Input::Instance()->IsLeftButtonDown())
 		{
 			yaw += Input::Instance()->GetMouseMotion().x;
 			pitch -= Input::Instance()->GetMouseMotion().y;
 		}
 
-
-		//auto& mainShader = *m_mainShader.get();
-
 		m_cube->GetTransform().SetRotation(pitch, yaw, 0.0f);
 		m_grid->GetTransform().SetRotation(pitch, yaw, 0.0f);
-		
+
 		m_camera->Update();
 		m_camera->SendToShader();
-		
+
 		// Encapsulates draw calls from other game objects
 		Draw();
 
@@ -227,8 +222,8 @@ void App::Update()
 
 
 		Screen::Instance()->RenderUI();
-		//====================================================================
 
+		//====================================================================
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();
 
@@ -245,7 +240,6 @@ void App::Shutdown()
 
 	m_model->Unload();
 
-	//m_mainShader->Destroy();
 	Shader::Instance()->DetachShaders();
 	Shader::Instance()->DestroyShaders();
 	Shader::Instance()->DestroyProgram();
