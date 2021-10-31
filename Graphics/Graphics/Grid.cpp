@@ -2,9 +2,8 @@
 
 Grid::Grid()
 {
-
+	m_color = glm::vec4(1.0f);
 }
-
 
 void Grid::SetupGridDimentions(int quadrants, int maxSize,
 	float red, float green, float blue, float alpha)
@@ -217,8 +216,8 @@ void Grid::Create()
 
 	m_buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::INT);
 	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
-}
 
+}
 
 void Grid::Destroy()
 {
