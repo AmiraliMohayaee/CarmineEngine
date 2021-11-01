@@ -9,7 +9,7 @@ public:
 
 	Sphere(GLfloat radius = 1.0f, GLuint sectors = 36, GLuint stacks = 18, GLfloat r = 1.0f,
 		GLfloat g = 1.0f, GLfloat b = 1.0f, GLfloat alpha = 1.0f);
-	~Sphere();
+	virtual ~Sphere() {}
 
 	void SetRadius(GLfloat radius);
 	void SetStackCount(GLint stacks);
@@ -22,10 +22,8 @@ public:
 
 	virtual void Create();
 	virtual void Destroy();
-	//virtual void Draw(const Shader& shader);
 	virtual void Draw();
 	virtual void Update() {}
-
 
 private:
 

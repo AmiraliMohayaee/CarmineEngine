@@ -44,7 +44,7 @@ bool App::InitScreenAndShaders()
 		return 0;
 	}
 
-	if (!Shader::Instance()->CompileShader("main.frag"))
+ 	if (!Shader::Instance()->CompileShader("main.frag"))
 	{
 		Debug::Log("Failed to compile shaders.");
 		return 0;
@@ -60,6 +60,7 @@ bool App::InitScreenAndShaders()
 
 
 	Debug::PrintGraphicsEngineVersion();
+
 
 	return true;
 }
@@ -85,7 +86,7 @@ void App::BindElements()
 	Shader::Instance()->BindUniform("light.specular");
 	Shader::Instance()->BindUniform("light.position");
 
-	Shader::Instance()->BindUniform("material.ambient");
+ 	Shader::Instance()->BindUniform("material.ambient");
 	Shader::Instance()->BindUniform("material.diffuse");
 	Shader::Instance()->BindUniform("material.specular");
 	Shader::Instance()->BindUniform("material.shininess");
@@ -118,7 +119,6 @@ void App::InitObjects()
 
 	m_grid->SetupGridDimentions(4, 12, 1.0f, 1.0f, 1.0f, 1.0f);
 	//m_grid->CreateBuffers();
-
 
 
 	m_model->Load("Teapot.obj");
@@ -167,7 +167,7 @@ void App::Update()
 		//wheelMotion *= 0.1f;
 
 		static glm::vec3 camPos = m_camera->GetTransform().GetPosition();
-
+		
 		camPos.z += wheelMotion;
 		m_camera->GetTransform().SetPosition(camPos);
 
@@ -190,7 +190,7 @@ void App::Update()
 
 		// Encapsulates draw calls from other game objects
 		Draw();
-
+		
 		//UI==================================================================
 		Screen::Instance()->StartUI();
 
@@ -198,7 +198,7 @@ void App::Update()
 		bool loadScene = false;
 		bool saveScene = false;
 		bool exitApp = false;
-
+	
 		if (ImGui::BeginMainMenuBar())
 		{
 			if (ImGui::BeginMenu("File"))
@@ -220,7 +220,7 @@ void App::Update()
 			ImGui::EndMainMenuBar();
 		}
 
-
+		
 		Screen::Instance()->RenderUI();
 
 		//====================================================================
