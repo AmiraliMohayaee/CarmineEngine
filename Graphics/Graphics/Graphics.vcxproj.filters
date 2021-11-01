@@ -52,23 +52,6 @@
     <Filter Include="Source Files\Objects\Scene">
       <UniqueIdentifier>{a117ff6f-4c8b-4ba8-ad02-ec52c473ff59}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Objects\SceneObjects">
-      <UniqueIdentifier>{0c2a1f5b-00b9-49c5-8ac4-9fecb5a78558}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects\GameObjects">
-      <UniqueIdentifier>{ebc433f5-3204-47ff-be4a-07957075dffc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects\Scene">
-      <UniqueIdentifier>{1ef43ef9-a227-4890-bb9b-964836c351f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Objects\Scene">
-      <UniqueIdentifier>{ad92d290-569e-4533-a085-36fa1cb9f7ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Objects\GameObjects">
-      <UniqueIdentifier>{70fb5dcf-65e5-4456-b044-e24982569b5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Objects\Objects">
-      <UniqueIdentifier>{a9d3a875-ea05-44a7-9320-41bc3399ffaf}</UniqueIdentifier>
     <Filter Include="Header Files\Objects\Primitives">
       <UniqueIdentifier>{02d15143-b171-45a3-b4cd-cbf90af924b6}</UniqueIdentifier>
     </Filter>
@@ -179,15 +162,6 @@
     <ClCompile Include="Utility.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Source Files\Objects\Scene</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Screen.h">
@@ -256,10 +230,6 @@
     <ClInclude Include="FPSCamera.h">
       <Filter>Header Files\Objects\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="imgui\imstb_truetype.h">
-      <Filter>Header Files\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imstb_textedit.h">
     <ClInclude Include="Object.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
@@ -289,13 +259,6 @@
     </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>Header Files\Core</Filter>
-    </ClInclude>
-
-    <ClInclude Include="imgui\imgui_impl_win32.h">
-      <Filter>Header Files\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

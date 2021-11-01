@@ -232,3 +232,17 @@ void Grid::Draw()
 
 	m_buffer.Render(Buffer::LINES);
 }
+
+//void Grid::Draw(const Shader& shader)
+//{
+//	shader.SendData("isLit", true);
+//	shader.SendData("isTextured", false);
+//	shader.SendData("model", m_transform.GetMatrix());
+//
+//	m_buffer.LinkVBO(shader.GetAttributeID("vertexIn"), Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::INT);
+//	m_buffer.LinkVBO(shader.GetAttributeID("colorIn"), Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
+//
+//
+//	m_buffer.Render(Buffer::LINES);
+//}
+
