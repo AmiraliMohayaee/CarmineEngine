@@ -28,12 +28,6 @@
     <Filter Include="Source Files\glad">
       <UniqueIdentifier>{8f89a964-ddfa-4bf1-a2d1-d85f448b4d00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Utility">
-      <UniqueIdentifier>{c0cc8951-7acf-47cb-bbc0-3f55fe0471f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility">
-      <UniqueIdentifier>{07d49b05-92e1-42ce-9fae-5bb676c0e1ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Components">
       <UniqueIdentifier>{bd80bbf7-e1f2-4ab3-9e30-219ae2fae272}</UniqueIdentifier>
     </Filter>
@@ -78,12 +72,6 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files\glad</Filter>
     </ClCompile>
-    <ClCompile Include="Debug.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="GLError.cpp">
-      <Filter>Source Files\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="App.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
@@ -92,9 +80,6 @@
     </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools.cpp">
-      <Filter>Source Files\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\Components</Filter>
@@ -176,12 +161,6 @@
     <ClInclude Include="khrplatform.h">
       <Filter>Header Files\glad</Filter>
     </ClInclude>
-    <ClInclude Include="Debug.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="GLError.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="App.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
@@ -190,9 +169,6 @@
     </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Tools.h">
-      <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Header Files\Components</Filter>
