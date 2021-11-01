@@ -51,7 +51,7 @@ bool Texture::Load(const std::string& filename, const std::string textureTag)
 	//	Debug::Log("Failed to generate Texture ID for ", textureTag);
 	//	return false;
 	//}
-
+	
 	SDL_Surface* textureData = nullptr;
 	textureData = IMG_Load((s_rootFolderTexture + filename).c_str());
 
@@ -72,28 +72,28 @@ bool Texture::Load(const std::string& filename, const std::string textureTag)
 
 	glBindTexture(GL_TEXTURE_2D, texture.m_ID);
 
-	Uint8* pixels = (Uint8*)textureData->pixels;
-	GLsizei width = textureData->w;
-	GLsizei height = textureData->h;
-	Uint8 depth = textureData->format->BytesPerPixel;
-	GLint format = ((depth == 4) ? GL_RGBA : GL_RGB);
+		Uint8* pixels = (Uint8*)textureData->pixels;
+		GLsizei width = textureData->w;
+		GLsizei height = textureData->h;
+		Uint8 depth = textureData->format->BytesPerPixel;
+		GLint format = ((depth == 4) ? GL_RGBA : GL_RGB);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-	// Additional environment texture setting that can be set in
-	// the future
-	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+		// Additional environment texture setting that can be set in
+		// the future
+		//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
-	// (target texture dimentions, mipmap level, image format(RGB/RGBA), width&height,
-	// image border, pixel data, pointer to pixel data
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
+		// (target texture dimentions, mipmap level, image format(RGB/RGBA), width&height,
+		// image border, pixel data, pointer to pixel data
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
 
-	glGenerateMipmap(GL_TEXTURE_2D);
-
+		glGenerateMipmap(GL_TEXTURE_2D);
+	
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	SDL_FreeSurface(textureData);
