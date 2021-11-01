@@ -2,9 +2,9 @@
 
 #include "Camera.h"
 
+
 class FPSCamera : public Camera
 {
-
 public:
 
 	FPSCamera();
@@ -24,3 +24,4 @@ private:
 	GLfloat m_sensitivity;
 
 };
+

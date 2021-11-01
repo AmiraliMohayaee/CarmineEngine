@@ -11,16 +11,19 @@ class Light : public Object
 public:
 
 	Light(GLfloat x = 0.0f, GLfloat y = 0.0f, GLfloat z = 0.0f);
-	virtual ~Light() {}
+	virtual ~Light() {};
 
 	virtual void Create();
-	virtual void Destroy();
+	//virtual void Draw(const Shader& shader);                 //for debug only!
+	virtual void Draw();
 	virtual void Update() {}
-	virtual void Draw();                 //for debug only!
+	virtual void Destroy();
 
 	void SendToShader();
 
 	void LightMovementControl(float cameraMoveSpeed);
+
+
 
 private:
 

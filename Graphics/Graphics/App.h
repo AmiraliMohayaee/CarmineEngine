@@ -8,7 +8,6 @@
 #include "Cube.h"
 #include "Quad.h"
 #include "Debug.h"
-#include "GLError.h"
 #include "Grid.h"
 #include "Light.h"
 #include "Model.h"

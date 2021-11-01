@@ -21,6 +21,8 @@ Input::Input()
 	m_mouseWheelMotion = 0;
 }
 
+
+
 // Used for testing inputs and checking both keycodes and
 // scancode recieved from a key press
 void Input::PassKeyboardMsgDown(SDL_KeyboardEvent* key)
@@ -150,66 +152,65 @@ void Input::Update()
 				m_mouseWheelMotion = events.wheel.y;
 			}
 
-			case SDL_MOUSEBUTTONUP:
-			{
-
-				switch (events.button.button)
-				{
-
-				case SDL_BUTTON_LEFT:
-				{
-					m_isLeftButtonDown = false;
-					break;
-				}
-
-				case SDL_BUTTON_RIGHT:
-				{
-					m_isRightButtonDown = false;
-					break;
-				}
-
-				case SDL_BUTTON_MIDDLE:
-				{
-					m_isMiddleButtonDown = false;
-					break;
-				}
-
-				}
-
-				break;
-
-			}
-
-			//a mouse button was clicked so check 
-			//which of the three buttons it was
+			// Checking which of the three main mouse
+			// buttons was pressed
 			case SDL_MOUSEBUTTONDOWN:
 			{
-
+				//Debug::Log("Mouse Button Down event detected.");
+				
 				switch (events.button.button)
 				{
 
-				case SDL_BUTTON_LEFT:
-				{
-					m_isLeftButtonDown = true;
-					break;
-				}
+					case SDL_BUTTON_LEFT:
+					{
+						m_isLeftButtonDown = true;
+						break;
+					}
 
-				case SDL_BUTTON_RIGHT:
-				{
-					m_isRightButtonDown = true;
-					break;
-				}
+					case SDL_BUTTON_RIGHT:
+					{
+						m_isRightButtonDown = true;
+						break;
+					}
 
-				case SDL_BUTTON_MIDDLE:
-				{
-					m_isMiddleButtonDown = true;
-					break;
-				}
+					case SDL_BUTTON_MIDDLE:
+					{
+						m_isMiddleButtonDown = true;
+						break;
+					}
 
 				}
 
 				break;
+			}
 
+			case SDL_MOUSEBUTTONUP:
+			{
+				//Debug::Log("Mouse Button is up");
+				switch (events.button.button)
+				{
+
+					case SDL_BUTTON_LEFT:
+					{
+						m_isLeftButtonDown = false;
+						break;
+					}
+
+					case SDL_BUTTON_RIGHT:
+					{
+						m_isRightButtonDown = false;
+						break;
+					}
+
+					case SDL_BUTTON_MIDDLE:
+					{
+						m_isMiddleButtonDown = false;
+						break;
+					}
+
+				}
+
+				break;
 			}
 		}
 	}
@@ -221,3 +222,4 @@ bool Input::IsXClicked()
 {
 	return m_isExiting;
 }
+

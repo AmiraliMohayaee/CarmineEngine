@@ -437,8 +437,8 @@ void Model::Render()
     {
         //m_ambientTexture.Bind();
         m_diffuseTexture.Bind();
-       // m_specularTexture.Bind();
-       // m_normalTexture.Bind();
+        // m_specularTexture.Bind();
+        // m_normalTexture.Bind();
     }
 
     for (size_t i = 0; i < m_buffers.size(); i++)
