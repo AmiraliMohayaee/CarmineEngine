@@ -8,9 +8,7 @@ App::App()
 {
 	m_isProgramRunning = true;
 
-	// TODO: Add asserts inside the functions to make sure they're loaded before the materials are use
 	Material::LoadMaterials("Materials.mat");
-	//Material::LoadMaterials("cube.mtl");
 
 	m_camera = std::make_unique<FPSCamera>();
 	m_cube = std::make_unique<Cube>();
@@ -60,8 +58,9 @@ bool App::InitScreenAndShaders()
 		return 0;
 	}
 
-	
-	//Debug::PrintGraphicsEngineVersion();
+
+	Debug::PrintGraphicsEngineVersion();
+
 
 	return true;
 }
@@ -101,7 +100,7 @@ void App::InitObjects()
 
 	Texture::Load("Crate_1_Diffuse.png", "CRATE");
 
-	
+
 	//m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
 	m_camera->SetSpeed(0.0f);
 	m_camera->SetSensitivity(0.0f);
@@ -121,13 +120,12 @@ void App::InitObjects()
 	m_grid->SetupGridDimentions(4, 12, 1.0f, 1.0f, 1.0f, 1.0f);
 	//m_grid->CreateBuffers();
 
-	
-	
+
 	m_model->Load("Teapot.obj");
 	m_model->IsLit(false);
 	m_model->IsTextured(false);
-	
-	
+
+
 	// Error Catching Code
 	//GLError::GraphicsErrorCatch();
 }
@@ -165,7 +163,6 @@ void App::Update()
 			}
 		}
 
-		// Using mouse wheel to zoom in the camera
 		int wheelMotion = Input::Instance()->GetMouseWheelMotion();
 		//wheelMotion *= 0.1f;
 
@@ -187,7 +184,7 @@ void App::Update()
 
 		m_cube->GetTransform().SetRotation(pitch, yaw, 0.0f);
 		m_grid->GetTransform().SetRotation(pitch, yaw, 0.0f);
-		
+
 		m_camera->Update();
 		m_camera->SendToShader();
 

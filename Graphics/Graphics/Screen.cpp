@@ -44,7 +44,7 @@ bool Screen::InitScreen()
 	/////////////////////////////////////////////////////////
 	std::ifstream settingsFile;
 	settingsFile.open("Assets/Scripts/settings.txt", std::ios_base::in);
-	
+
 
 	if (settingsFile.fail())
 	{
@@ -158,7 +158,7 @@ bool Screen::InitScreen()
 		m_resolutionWidth, m_resolutionHeight,
 		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
-	
+
 
 	if (!window)
 	{

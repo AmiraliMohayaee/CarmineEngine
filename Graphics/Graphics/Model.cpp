@@ -51,8 +51,8 @@ bool Model::Load(const std::string& filename)
             if (subStrings[0] == "v")
             {
                 rawMesh.vertices.push_back(glm::vec3(std::stof(subStrings[1]),
-                                                     std::stof(subStrings[2]),
-                                                     std::stof(subStrings[3])));
+                    std::stof(subStrings[2]),
+                    std::stof(subStrings[3])));
                 continue;
             }
 
@@ -60,7 +60,7 @@ bool Model::Load(const std::string& filename)
             if (subStrings[0] == "vt")
             {
                 rawMesh.UVs.push_back(glm::vec2(std::stof(subStrings[1]),
-                                                std::stof(subStrings[2])));
+                    std::stof(subStrings[2])));
                 continue;
             }
 
@@ -68,8 +68,8 @@ bool Model::Load(const std::string& filename)
             if (subStrings[0] == "vn")
             {
                 rawMesh.normals.push_back(glm::vec3(std::stof(subStrings[1]),
-                                                    std::stof(subStrings[2]),
-                                                    std::stof(subStrings[3])));
+                    std::stof(subStrings[2]),
+                    std::stof(subStrings[3])));
                 continue;
             }
 

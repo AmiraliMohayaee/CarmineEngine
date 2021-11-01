@@ -96,8 +96,10 @@ void Camera::SendToShader()
 	Shader::Instance()->SendUniformData("projection", m_projectionMatrix);
 }
 
+// TODO: Retaining this implementation and removing later when complete
 //void Camera::SendToShader(const Shader& shader)
 //{
 //	shader.SendData("view", m_viewMatrix);
 //	shader.SendData("projection", m_projectionMatrix);
 //}
+

@@ -95,10 +95,14 @@ bool Shader::CompileShaders()
 
 	if (compileResult == GL_TRUE)
 	{
-		Debug::Log("Vertex Shader compilation successful.");
+		std::cout << "Vertex Shader created successfully." << std::endl;
 	}
 	else
 	{
+		Utility::Log(Utility::Destination::WindowsMessageBox,
+			"Vertex Shader compilation failed. Refer to console log for error.",
+			Utility::Severity::Failure);
+		
 		GLchar errorMessage[1000];
 		GLsizei bufferSize = 1000;
 
@@ -217,10 +221,14 @@ bool Shader::CompileShader(std::string filename)
 
 			if (compileResult == GL_TRUE)
 			{
-				Debug::Log("Vertex Shader compilation successful.");
+				std::cout << "Vertex Compilation successful." << std::endl;
 			}
 			else
 			{
+				Utility::Log(Utility::Destination::WindowsMessageBox,
+					"Vertex Shader compilation failed. Refer to console log for error.",
+					Utility::Severity::Failure);
+
 				GLchar errorMessage[1000];
 				GLsizei bufferSize = 1000;
 
@@ -252,6 +260,10 @@ bool Shader::CompileShader(std::string filename)
 			}
 			else
 			{
+				Utility::Log(Utility::Destination::WindowsMessageBox,
+					"Fragment Shader compilation failed. Refer to console log for error.",
+					Utility::Severity::Failure);
+
 				GLchar errorMessage[1000];
 				GLsizei bufferSize = 1000;
 

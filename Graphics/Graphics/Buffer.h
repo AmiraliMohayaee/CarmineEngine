@@ -15,7 +15,7 @@ public:
 		TRUE = GL_TRUE,
 		FALSE = GL_FALSE
 	};
-	
+
 	enum BufferType
 	{
 		VBO = GL_ARRAY_BUFFER,
