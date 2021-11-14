@@ -97,5 +97,5 @@ private:
 
 	glm::vec2 m_mouseMotion;
 	glm::vec2 m_mousePos;
-};
 
+};

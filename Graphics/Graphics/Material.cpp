@@ -1,9 +1,8 @@
 #include <assert.h>
 #include <fstream>
-#include "Debug.h"
+#include "Utility.h"
 #include "Material.h"
 #include "Shader.h"
-#include "Tools.h"
 
 std::string Material::s_rootFolderMaterial = "Assets/Materials/";
 std::map<std::string, Material> Material::s_materials;
@@ -26,7 +25,8 @@ bool Material::LoadMaterials(const std::string& filename)
 
 	if (!file)
 	{
-		Debug::Log("Error loading material file \"" + (s_rootFolderMaterial + filename) + "\"");
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Error loading material file \"" + (s_rootFolderMaterial + filename) + "\"");
 		return false;
 	}
 
@@ -44,18 +44,18 @@ bool Material::LoadMaterials(const std::string& filename)
 			//This means we have reached a block of material data
 			if (line[0] == '[')
 			{
-				Tools::RemoveCharacter(line, '[');
-				Tools::RemoveCharacter(line, ']');
+				Utility::RemoveCharacter(line, '[');
+				Utility::RemoveCharacter(line, ']');
 				material.SetName(line);
 			}
 
 			else
 			{
-				Tools::ParseString(line, subStrings_1, '=');
+				Utility::ParseString(line, subStrings_1, '=');
 
 				if (subStrings_1[0] == "ambient")
 				{
-					Tools::ParseString(subStrings_1[1], subStrings_2, ',');
+					Utility::ParseString(subStrings_1[1], subStrings_2, ',');
 					material.SetAmbient(std::stof(subStrings_2[0]),
 						std::stof(subStrings_2[1]),
 						std::stof(subStrings_2[2]));
@@ -63,7 +63,7 @@ bool Material::LoadMaterials(const std::string& filename)
 
 				if (subStrings_1[0] == "diffuse")
 				{
-					Tools::ParseString(subStrings_1[1], subStrings_2, ',');
+					Utility::ParseString(subStrings_1[1], subStrings_2, ',');
 					material.SetDiffuse(std::stof(subStrings_2[0]),
 						std::stof(subStrings_2[1]),
 						std::stof(subStrings_2[2]));
@@ -71,7 +71,7 @@ bool Material::LoadMaterials(const std::string& filename)
 
 				if (subStrings_1[0] == "specular")
 				{
-					Tools::ParseString(subStrings_1[1], subStrings_2, ',');
+					Utility::ParseString(subStrings_1[1], subStrings_2, ',');
 					material.SetSpecular(std::stof(subStrings_2[0]),
 						std::stof(subStrings_2[1]),
 						std::stof(subStrings_2[2]));
@@ -112,7 +112,8 @@ bool Material::LoadMaterials(std::vector<Material>& materials, const std::string
 
 	if (!file)
 	{
-		Debug::Log("Error loading material file \"" + (s_rootFolderMaterial + filename) + "\"");
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Error loading material file \"" + (s_rootFolderMaterial + filename) + "\"");
 		return false;
 	}
 
@@ -127,7 +128,7 @@ bool Material::LoadMaterials(std::vector<Material>& materials, const std::string
 		{
 
 			subStrings.clear();
-			Tools::ParseString(line, subStrings, ' ');
+			Utility::ParseString(line, subStrings, ' ');
 
 			//Add the material into the container. All properties from now will add to this
 			//material which is the start of a material grouping matching the OBJ grouping

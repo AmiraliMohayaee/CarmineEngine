@@ -2,7 +2,6 @@
 #include "Camera.h"
 #include "Screen.h"
 #include "Input.h"
-#include "Debug.h"
 #include "Shader.h"
 
 Camera::Camera()

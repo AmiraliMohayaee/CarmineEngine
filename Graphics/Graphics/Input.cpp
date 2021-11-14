@@ -1,5 +1,6 @@
 #include "Input.h"
-#include "Debug.h"
+#include <iostream>
+
 
 Input* Input::Instance()
 {
@@ -26,7 +27,7 @@ Input::Input()
 void Input::PassKeyboardMsgDown(SDL_KeyboardEvent* key)
 {
 	// Debug Checking of inputs
-	Debug::Log("Key Pressed!");
+	std::cout << "Key Pressed!" << std::endl;
 
 	m_keyPressed = key->keysym.scancode;
 
@@ -41,7 +42,7 @@ void Input::PassKeyboardMsgDown(SDL_KeyboardEvent* key)
 
 	if (m_keyPressed == KEY_W)
 	{
-		Debug::Log("Seems liek W, heh?");
+		std::cout << "Seems liek W, heh?" << std::endl;
 	}
 
 }

@@ -1,5 +1,4 @@
 #include "Cube.h"
-#include "Debug.h"
 #include "Shader.h"
 #include "Input.h"
 

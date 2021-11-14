@@ -24,31 +24,31 @@ bool App::InitScreenAndShaders()
 {
 	if (!Screen::Instance()->InitScreen())
 	{
-		Debug::Log("Failed to Initialize a screen. Check your settings file.");
+		std::cout << "Failed to Initialize a screen. Check your settings file." << std::endl;
 		return 0;
 	}
 
 	if (!Shader::Instance()->CreateProgram())
 	{
-		Debug::Log("Shader Program return a false result. Possile wrong linking.");
+		std::cout << "Shader Program return a false result. Possile wrong linking." << std::endl;
 		return 0;
 	}
 
 	if (!Shader::Instance()->CreateShaders())
 	{
-		Debug::Log("Failed to create shaders.");
+		std::cout << "Failed to create shaders." << std::endl;
 		return 0;
 	}
 
 	if (!Shader::Instance()->CompileShader("main.vert"))
 	{
-		Debug::Log("Failed to compile shaders.");
+		std::cout  <<"Failed to compile shaders." << std::endl;
 		return 0;
 	}
 
  	if (!Shader::Instance()->CompileShader("main.frag"))
 	{
-		Debug::Log("Failed to compile shaders.");
+		std::cout << "Failed to compile shaders." << std::endl;
 		return 0;
 	}
 
@@ -56,12 +56,9 @@ bool App::InitScreenAndShaders()
 
 	if (!Shader::Instance()->LinkProgram())
 	{
-		Debug::Log("Failed to link the shader program.");
+		std::cout << "Failed to link the shader program." << std::endl;
 		return 0;
 	}
-
-	
-	//Debug::PrintGraphicsEngineVersion();
 
 	return true;
 }
@@ -166,14 +163,15 @@ void App::Update()
 		}
 
 		// Using mouse wheel to zoom in the camera
-		int wheelMotion = Input::Instance()->GetMouseWheelMotion();
-		//wheelMotion *= 0.1f;
+		float wheelMotion = static_cast<float>(Input::Instance()->GetMouseWheelMotion());
+		wheelMotion *= 0.1;
 
 		static glm::vec3 camPos = m_camera->GetTransform().GetPosition();
 		
 		camPos.z += wheelMotion;
 		m_camera->GetTransform().SetPosition(camPos);
 
+		std::cout << camPos.z << std::endl;
 		std::cout << wheelMotion << std::endl;
 
 		static GLfloat yaw = 0.0f;
@@ -184,6 +182,7 @@ void App::Update()
 			yaw += Input::Instance()->GetMouseMotion().x;
 			pitch -= Input::Instance()->GetMouseMotion().y;
 		}
+
 
 		m_cube->GetTransform().SetRotation(pitch, yaw, 0.0f);
 		m_grid->GetTransform().SetRotation(pitch, yaw, 0.0f);

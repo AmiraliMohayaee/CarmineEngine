@@ -1,6 +1,6 @@
 #include "Shader.h"
 #include <fstream>
-#include "Debug.h"
+#include <iostream>
 #include <Windows.h>
 
 
@@ -33,14 +33,16 @@ bool Shader::CreateShaders()
 
 	if (!m_vertexShaderID)
 	{
-		Debug::Log("Failed to create the Vertex Shader.");
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Failed to create the Vertex Shader.");
 		system("pause");
 		return false;
 	}
 
 	if (!m_fragmentShaderID)
 	{
-		Debug::Log("Failed to create the Fragment Shader.");
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Failed to create the Fragment Shader.");
 		system("pause");
 		return false;
 	}
@@ -60,7 +62,8 @@ bool Shader::CompileShaders()
 
 	if (!file)
 	{
-		Debug::Log("Failed to open the vertex shader file.");
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Failed to open the vertex shader file.");
 		// add a system pause
 		return false;
 	}
@@ -95,7 +98,8 @@ bool Shader::CompileShaders()
 
 	if (compileResult == GL_TRUE)
 	{
-		Debug::Log("Vertex Shader compilation successful.");
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Vertex Shader compilation successful.");
 	}
 	else
 	{
@@ -104,7 +108,7 @@ bool Shader::CompileShaders()
 
 		glGetShaderInfoLog(m_vertexShaderID, bufferSize, &bufferSize, errorMessage);
 
-		Debug::Log(errorMessage);
+		std::cout << errorMessage << std::endl;
 	}
 
 	//=====================================================
@@ -117,7 +121,8 @@ bool Shader::CompileShaders()
 
 	if (!file2)
 	{
-		Debug::Log("Failed to open the fragment shader file.");
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Failed to open the fragment shader file.");
 		// add a system pause
 		return false;
 	}
@@ -152,7 +157,7 @@ bool Shader::CompileShaders()
 
 	if (compileResult2 == GL_TRUE)
 	{
-		Debug::Log("Fragment shader compilation successful.");
+		std::cout << "Fragment shader compilation successful." << std::endl;
 	}
 	else
 	{
@@ -161,7 +166,7 @@ bool Shader::CompileShaders()
 
 		glGetShaderInfoLog(m_fragmentShaderID, bufferSize, &bufferSize, errorMessage);
 
-		Debug::Log(errorMessage);
+		std::cout << errorMessage << std::endl;
 	}
 
 
@@ -181,7 +186,8 @@ bool Shader::CompileShader(std::string filename)
 
 	if (!file)
 	{
-		Debug::Log("Failed to read file");
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Failed to read file");
 	}
 
 	// Check for file format
@@ -217,7 +223,7 @@ bool Shader::CompileShader(std::string filename)
 
 			if (compileResult == GL_TRUE)
 			{
-				Debug::Log("Vertex Shader compilation successful.");
+				std::cout << "Vertex Shader compilation successful." << std::endl;
 			}
 			else
 			{
@@ -226,7 +232,7 @@ bool Shader::CompileShader(std::string filename)
 
 				glGetShaderInfoLog(m_vertexShaderID, bufferSize, &bufferSize, errorMessage);
 
-				Debug::Log(errorMessage);
+				std::cout << errorMessage << std::endl;
 			}
 		}
 
@@ -248,7 +254,7 @@ bool Shader::CompileShader(std::string filename)
 
 			if (compileResult == GL_TRUE)
 			{
-				Debug::Log("Fragment Shader compilation successful.");
+				std::cout << "Fragment Shader compilation successful." << std::endl;
 			}
 			else
 			{
@@ -257,7 +263,7 @@ bool Shader::CompileShader(std::string filename)
 
 				glGetShaderInfoLog(m_fragmentShaderID, bufferSize, &bufferSize, errorMessage);
 
-				Debug::Log(errorMessage);
+				std::cout << errorMessage << std::endl;
 			}
 		}
 	}
@@ -290,7 +296,7 @@ bool Shader::LinkProgram()
 
 	if (linkResult == GL_TRUE)
 	{
-		Debug::Log("Shader Program linked successfully");
+		std::cout << "Shader Program linked successfully" << std::endl;
 	}
 	else
 	{
@@ -299,7 +305,7 @@ bool Shader::LinkProgram()
 
 		glGetProgramInfoLog(m_shaderProgramID, bufferSize, &bufferSize, errorMessage);
 
-		Debug::Log(errorMessage);
+		std::cout << errorMessage <<  std::endl;
 	}
 	//=====================================================================================
 
@@ -326,7 +332,8 @@ const GLuint Shader::GetAttributeID(std::string attribute)
 		{
 			if (iterator->second == -1)
 			{
-				Debug::Log("Serach for shader attribute returned invalid: ", attribute);
+				// TODO: Change this to new Utility error log
+				//Debug::Log("Serach for shader attribute returned invalid: ", attribute);
 				return -1;
 			}
 
@@ -351,7 +358,8 @@ const GLuint Shader::GetUniformID(std::string variable)
 		{
 			if (iterator->second == -1)
 			{
-				Debug::Log("Serach for shader uniform returned invalid: ", variable);
+				// TODO: Change this to new Utility error log
+				//Debug::Log("Serach for shader uniform returned invalid: ", variable);
 
 				return -1;
 			}
@@ -378,7 +386,8 @@ void Shader::BindAttribute(std::string attribute)
 		{
 			// If the value already exists, then
 			// we do nothing
-			Debug::Log("Following Shader Attribute already exists: ", attribute);
+			// TODO: Change this to new Utility error log
+			//Debug::Log("Following Shader Attribute already exists: ", attribute);
 
 			return;
 		}
@@ -388,7 +397,8 @@ void Shader::BindAttribute(std::string attribute)
 
 	if (ID == -1)
 	{
-		Debug::Log("Attribute value inserted returning a negative value:", attribute);
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Attribute value inserted returning a negative value:", attribute);
 	}
 	
 	m_shaderAttributes[attribute] = ID;
@@ -414,7 +424,8 @@ void Shader::BindUniform(std::string uniform)
 
 	if (ID == -1)
 	{
-		Debug::Log("Uniform value inserted returning a negative value:", uniform);
+		// TODO: Change this to new Utility error log
+		// Debug::Log("Uniform value inserted returning a negative value:", uniform);
 	}
 
 

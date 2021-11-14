@@ -1,6 +1,5 @@
-#include "Debug.h"
 #include "Model.h"
-#include "Tools.h"
+#include "Utility.h"
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -17,7 +16,8 @@ bool Model::Load(const std::string& filename)
 
     if (!file)
     {
-        Debug::Log("Error loading model file \"" + (s_rootFolderModel + filename) + "\"");
+        // TODO: change this to the new Utility class
+        //Debug::Log("Error loading model file \"" + (s_rootFolderModel + filename) + "\"");
         return false;
     }
 
@@ -45,7 +45,7 @@ bool Model::Load(const std::string& filename)
         {
 
             std::vector<std::string> subStrings;
-            Tools::ParseString(lines[i], subStrings, ' ');
+            Utility::ParseString(lines[i], subStrings, ' ');
 
             //Vertices
             if (subStrings[0] == "v")
@@ -84,7 +84,7 @@ bool Model::Load(const std::string& filename)
                 {
                     VertexGroup vertexGroup;
                     std::vector<std::string> numbers;
-                    Tools::ParseString(subStrings[i], numbers, '/');
+                    Utility::ParseString(subStrings[i], numbers, '/');
 
                     vertexGroup.v = std::stoi(numbers[0]) - 1;
                     vertexGroup.t = std::stoi(numbers[1]) - 1;
@@ -221,7 +221,8 @@ bool Model::Load(const std::string& filename, const std::string& texture)
 
     if (!file)
     {
-        Debug::Log("Error loading model file \"" + (s_rootFolderModel + filename) + "\"");
+        // TODO: Change this to the new Utility error log
+        //Debug::Log("Error loading model file \"" + (s_rootFolderModel + filename) + "\"");
         return false;
     }
 
@@ -249,7 +250,7 @@ bool Model::Load(const std::string& filename, const std::string& texture)
         {
 
             std::vector<std::string> subStrings;
-            Tools::ParseString(lines[i], subStrings, ' ');
+            Utility::ParseString(lines[i], subStrings, ' ');
 
             //Vertices
             if (subStrings[0] == "v")
@@ -288,7 +289,7 @@ bool Model::Load(const std::string& filename, const std::string& texture)
                 {
                     VertexGroup vertexGroup;
                     std::vector<std::string> numbers;
-                    Tools::ParseString(subStrings[i], numbers, '/');
+                    Utility::ParseString(subStrings[i], numbers, '/');
 
                     vertexGroup.v = std::stoi(numbers[0]) - 1;
                     vertexGroup.t = std::stoi(numbers[1]) - 1;

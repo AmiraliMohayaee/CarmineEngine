@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include "Debug.h"
+
 
 // Globally initializing the texture map in static memory
 std::map<std::string, Texture>* Texture::s_textureMap = new std::map<std::string, Texture>;
@@ -19,12 +19,13 @@ Texture::~Texture()
 
 bool Texture::GetTexture(const std::string& textureID, Texture& texture)
 {
-	Debug::Log("Getting Texture object: ", textureID);
+	std::cout << "Getting Texture object: " << textureID << std::endl;
 	auto it = s_textureMap->find(textureID);
 
 	if (it == s_textureMap->end())
 	{
-		Debug::Log("Could not find texture object in texture container: ", textureID);
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Could not find texture object in texture container: ", textureID);
 		return false;
 	}
 
@@ -42,7 +43,8 @@ bool Texture::Load(const std::string& filename, const std::string textureTag)
 	// Checking if texture already exists in the map, so we don't load it twice
 	if (s_textureMap->find(textureTag) != s_textureMap->end())
 	{
-		Debug::Log("Texture already exists: ", textureTag);
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Texture already exists: ", textureTag);
 		return false;
 	}
 
@@ -57,7 +59,8 @@ bool Texture::Load(const std::string& filename, const std::string textureTag)
 
 	if (!textureData)
 	{
-		Debug::Log("Problem loading texture data: ", filename);
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Problem loading texture data: ", filename);
 		return false;
 	}
 
@@ -98,7 +101,7 @@ bool Texture::Load(const std::string& filename, const std::string textureTag)
 
 	SDL_FreeSurface(textureData);
 
-	Debug::Log("Texture File Loaded successfully: ", textureTag);
+	std::cout << "Texture File Loaded successfully: " << textureTag << std::endl;
 	texture.m_tag = textureTag;
 
 	s_textureMap->insert(std::pair<std::string, Texture>(textureTag, texture));
@@ -119,18 +122,19 @@ void Texture::Unload(const std::string& textureID)
 	{
 		glDeleteTextures(1, &(it->second.m_ID));
 		s_textureMap->erase(it);
-		Debug::Log(textureID + " removed");
+		std::cout << textureID + " removed" << std::endl;
 	}
 
 	else
 	{
-		Debug::Log(textureID + " not found in map");
+		// TODO: Change this to new Utility error log
+		//Debug::Log(textureID + " not found in map");
 	}
 }
 
 void Texture::Unload()
 {
-	Debug::Log("Clearing all loaded textures");
+	std::cout << "Clearing all loaded textures" << std::endl;
 
 	// Clears the entire container of all texture objects
 	s_textureMap->clear();
