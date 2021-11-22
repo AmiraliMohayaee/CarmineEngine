@@ -86,6 +86,10 @@ void Camera::Reset()
 	m_yaw = -90.0f;
 	m_speed = 0.0f;
 	m_fieldOfView = 45.0f;
+
+	// Set up perspective after reset otherwise it will
+	// be set to orthographic by default
+	CreatePerspView();
 }
 
 void Camera::SendToShader()

@@ -190,6 +190,11 @@ void App::Update()
 		m_camera->Update();
 		m_camera->SendToShader();
 
+		if (Input::Instance()->IsRightButtonDown())
+		{
+			m_camera->Reset();
+		}
+
 		// Encapsulates draw calls from other game objects
 		Draw();
 		
