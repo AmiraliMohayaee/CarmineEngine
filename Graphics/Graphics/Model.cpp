@@ -422,20 +422,29 @@ bool Model::Load(const std::string& filename, const std::string& texture)
     return true;
 }
 
-void Model::Render()
+void Model::Render(const Shader& shader)
 {
-    Shader::Instance()->SendUniformData("isLit", m_isLit);
-    Shader::Instance()->SendUniformData("isTextured", m_isTextured);
+    shader.SendData("isLit", m_isLit);
+    shader.SendData("isTextured", m_isTextured);
 
     m_modelMatrix = glm::mat4(1.0f);
     //m_modelMatrix = glm::scale(m_modelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 
-    Shader::Instance()->SendUniformData("model", m_modelMatrix);
+    shader.SendData("model", m_modelMatrix);
 
-    m_materials.back().SendToShader();
+    // Is it safe to create this buffer copy here too?
+    Buffer buffer;
+
+    buffer.LinkVBO(shader.GetAttributeID("vertexIn"), Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::FLOAT);
+    buffer.LinkVBO(shader.GetAttributeID("colorIn"), Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
+    buffer.LinkVBO(shader.GetAttributeID("textureIn"), Buffer::TEXTURE_BUFFER, Buffer::UV, Buffer::FLOAT);
+    buffer.LinkVBO(shader.GetAttributeID("normalIn"), Buffer::NORMAL_BUFFER, Buffer::XYZ, Buffer::FLOAT);
+
+    m_materials.back().SendToShader(shader);
 
     if (m_isTextured)
     {
+        // TODO: Figure out a way to bind different texture types
         //m_ambientTexture.Bind();
         m_diffuseTexture.Bind();
        // m_specularTexture.Bind();
@@ -447,6 +456,7 @@ void Model::Render()
         m_buffers[i].Render(Buffer::TRIANGLES);
     }
 
+    // TODO: Figure out a way to bind different texture types
     //m_ambientTexture.UnBind();
     m_diffuseTexture.UnBind();
     //m_specularTexture.UnBind();
@@ -481,10 +491,6 @@ void Model::FillBuffers()
         buffer.Create(m_meshes[i].indices.size(), true);
 
         buffer.LinkEBO();
-        buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::FLOAT);
-        buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
-        buffer.LinkVBO("textureIn", Buffer::TEXTURE_BUFFER, Buffer::UV, Buffer::FLOAT);
-        buffer.LinkVBO("normalIn", Buffer::NORMAL_BUFFER, Buffer::XYZ, Buffer::FLOAT);
 
         buffer.FillEBO(m_meshes[i].indices.data(), m_meshes[i].indices.size() * sizeof(GLuint), Buffer::SINGLE);
         buffer.FillVBO(Buffer::VERTEX_BUFFER, &m_meshes[i].vertices[0].x, m_meshes[i].vertices.size() * sizeof(glm::vec3), Buffer::SINGLE);

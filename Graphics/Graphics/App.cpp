@@ -10,7 +10,6 @@ App::App()
 
 	// TODO: Add asserts inside the functions to make sure they're loaded before the materials are use
 	Material::LoadMaterials("Materials.mat");
-	//Material::LoadMaterials("cube.mtl");
 
 	m_camera = std::make_unique<FPSCamera>();
 	m_cube = std::make_unique<Cube>();
@@ -28,67 +27,37 @@ bool App::InitScreenAndShaders()
 		return 0;
 	}
 
-	if (!Shader::Instance()->CreateProgram())
-	{
-		std::cout << "Shader Program return a false result. Possile wrong linking." << std::endl;
-		return 0;
-	}
+	m_mainShader = std::make_unique<Shader>();
 
-	if (!Shader::Instance()->CreateShaders())
-	{
-		std::cout << "Failed to create shaders." << std::endl;
-		return 0;
-	}
+	m_mainShader->Create("main.vert", "main.frag");
 
-	if (!Shader::Instance()->CompileShader("main.vert"))
-	{
-		std::cout  <<"Failed to compile shaders." << std::endl;
-		return 0;
-	}
+	m_mainShader->BindAttribute("vertexIn");
+	m_mainShader->BindAttribute("colorIn");
+	m_mainShader->BindAttribute("normalIn");
+	m_mainShader->BindAttribute("textureIn");
+	
+	m_mainShader->BindUniform("model");
+	m_mainShader->BindUniform("view");
+	m_mainShader->BindUniform("projection");
+	
+	m_mainShader->BindUniform("isLit");
+	m_mainShader->BindUniform("isTextured");
+	m_mainShader->BindUniform("cameraPosition");
+	
+	m_mainShader->BindUniform("light.ambient");
+	m_mainShader->BindUniform("light.diffuse");
+	m_mainShader->BindUniform("light.specular");
+	m_mainShader->BindUniform("light.position");
+	
+	m_mainShader->BindUniform("material.ambient");
+	m_mainShader->BindUniform("material.diffuse");
+	m_mainShader->BindUniform("material.specular");
+	m_mainShader->BindUniform("material.shininess");
 
- 	if (!Shader::Instance()->CompileShader("main.frag"))
-	{
-		std::cout << "Failed to compile shaders." << std::endl;
-		return 0;
-	}
-
-	Shader::Instance()->AttachShaders();
-
-	if (!Shader::Instance()->LinkProgram())
-	{
-		std::cout << "Failed to link the shader program." << std::endl;
-		return 0;
-	}
 
 	return true;
 }
 
-
-void App::BindElements()
-{
-	Shader::Instance()->BindAttribute("vertexIn");
-	Shader::Instance()->BindAttribute("colorIn");
-	Shader::Instance()->BindAttribute("normalIn");
-	Shader::Instance()->BindAttribute("textureIn");
-
-	Shader::Instance()->BindUniform("model");
-	Shader::Instance()->BindUniform("view");
-	Shader::Instance()->BindUniform("projection");
-
-	Shader::Instance()->BindUniform("isLit");
-	Shader::Instance()->BindUniform("isTextured");
-	Shader::Instance()->BindUniform("cameraPosition");
-
-	Shader::Instance()->BindUniform("light.ambient");
-	Shader::Instance()->BindUniform("light.diffuse");
-	Shader::Instance()->BindUniform("light.specular");
-	Shader::Instance()->BindUniform("light.position");
-
- 	Shader::Instance()->BindUniform("material.ambient");
-	Shader::Instance()->BindUniform("material.diffuse");
-	Shader::Instance()->BindUniform("material.specular");
-	Shader::Instance()->BindUniform("material.shininess");
-}
 
 void App::InitObjects()
 {
@@ -131,18 +100,18 @@ void App::InitObjects()
 
 void App::Draw()
 {
-	m_light->Draw();
-	m_light->SendToShader();
+	auto& mainShader = *m_mainShader.get();
 
-	m_cube->Draw();
-	m_grid->Draw();
-	//m_quad->Draw();
+	m_light->Draw(mainShader);
+	m_light->SendToShader(mainShader);
 
-	//m_model->Render();
+	m_cube->Draw(mainShader);
+	m_grid->Draw(mainShader);
 }
 
 void App::Update()
 {
+
 	while (m_isProgramRunning)
 	{
 		// Clearing the buffer
@@ -177,18 +146,29 @@ void App::Update()
 		static GLfloat yaw = 0.0f;
 		static GLfloat pitch = 0.0f;
 
-		if (Input::Instance()->IsLeftButtonDown())
+		// Making an instance of InGui IO to disallow mouse click
+		// and movement when using UI elements
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+		if (!io.WantCaptureMouse)
 		{
-			yaw += Input::Instance()->GetMouseMotion().x;
-			pitch -= Input::Instance()->GetMouseMotion().y;
+
+			if (Input::Instance()->IsLeftButtonDown())
+			{
+				yaw += Input::Instance()->GetMouseMotion().x;
+				pitch -= Input::Instance()->GetMouseMotion().y;
+			}
+
 		}
 
 
 		m_cube->GetTransform().SetRotation(pitch, yaw, 0.0f);
 		m_grid->GetTransform().SetRotation(pitch, yaw, 0.0f);
 		
+		auto& mainShader = *m_mainShader.get();
+
 		m_camera->Update();
-		m_camera->SendToShader();
+		m_camera->SendToShader(mainShader);
 
 		if (Input::Instance()->IsRightButtonDown())
 		{
@@ -217,11 +197,26 @@ void App::Update()
 				ImGui::EndMenu();
 			}
 
+			if (ImGui::BeginMenu("Add"))
+			{
+				ImGui::MenuItem("Shapes", nullptr, nullptr);
+				ImGui::EndMenu();
+			}
+
 			if (ImGui::BeginMenu("Help"))
 			{
 				ImGui::MenuItem("Tutorial", nullptr, &newScene);
 				ImGui::MenuItem("About...", nullptr, &newScene);
 				ImGui::EndMenu();
+			}
+
+			
+			if (ImGui::Begin("Window"))
+			{
+				ImGui::Text("Hello World.");
+				ImGui::Checkbox("Exit Appllication", &exitApp);
+				//ImGui::SliderFloat("Size", &m_camera->GetTransform().GetPosition().z, 0.3f, 2.0f);
+				ImGui::End();
 			}
 
 			ImGui::EndMainMenuBar();
@@ -247,8 +242,16 @@ void App::Shutdown()
 
 	m_model->Unload();
 
-	Shader::Instance()->DetachShaders();
-	Shader::Instance()->DestroyShaders();
-	Shader::Instance()->DestroyProgram();
+	m_mainShader->Destroy();
 	Screen::Instance()->Shutdown();
+}
+
+void App::MenuInput()
+{
+
+}
+
+void App::ManageUI()
+{
+
 }

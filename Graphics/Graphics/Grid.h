@@ -16,7 +16,7 @@ public:
 
 	void Create();
 	void Destroy();
-	void Draw();
+	void Draw(const Shader& shader);
 	void Update() {}
 
 private:

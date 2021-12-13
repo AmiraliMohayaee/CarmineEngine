@@ -11,22 +11,23 @@
 #include "Light.h"
 #include "Model.h"
 #include "FPSCamera.h"
+#include "Shader.h"
+
 
 class App
 {
 public:
 	App();
 	bool InitScreenAndShaders();
-	void BindElements();
 
-	int GetTotalTime();
-	int GetElapsedTime();
 
 	void InitObjects();
 	void Draw();
 	void Update();
 	void Shutdown();
 
+	void MenuInput();
+	void ManageUI();
 
 private:
 	bool m_isProgramRunning;
@@ -38,4 +39,6 @@ private:
 	std::unique_ptr<Model> m_model;
 	std::unique_ptr<FPSCamera> m_camera;
 
+	std::unique_ptr<Shader> m_mainShader;
+	std::unique_ptr<Shader> m_lightShader;
 };

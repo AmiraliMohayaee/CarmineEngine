@@ -80,12 +80,12 @@ void Buffer::LinkEBO()
 	glBindVertexArray(0);
 }
 
-void Buffer::LinkVBO(const std::string& attribute, VBOType bufferType, ComponentType componentType, DataType dataType)
+void Buffer::LinkVBO(GLuint attributeID, VBOType bufferType, ComponentType componentType, DataType dataType)
 {
 	glBindVertexArray(m_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[bufferType]);
-	glVertexAttribPointer(Shader::Instance()->GetAttributeID(attribute), componentType, dataType, GL_FALSE, 0, nullptr);
-	glEnableVertexAttribArray(Shader::Instance()->GetAttributeID(attribute));
+	glVertexAttribPointer(attributeID, componentType, dataType, GL_FALSE, 0, nullptr);
+	glEnableVertexAttribArray(attributeID);
 	glBindVertexArray(0);
 }
 

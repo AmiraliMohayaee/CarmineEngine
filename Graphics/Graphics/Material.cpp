@@ -371,10 +371,10 @@ void Material::SetTransmittance(GLfloat r, GLfloat g, GLfloat b)
 	m_transmittance.b = b;
 }
 
-void Material::SendToShader()
+void Material::SendToShader(const Shader& shader)
 {
-	Shader::Instance()->SendUniformData("material.ambient", m_ambient.x, m_ambient.y, m_ambient.z);
-	Shader::Instance()->SendUniformData("material.diffuse", m_diffuse.x, m_diffuse.y, m_diffuse.z);
-	Shader::Instance()->SendUniformData("material.specular", m_specular.x, m_specular.y, m_specular.z);
-	Shader::Instance()->SendUniformData("material.shininess", m_shininess);
+	shader.SendData("material.ambient", m_ambient);
+	shader.SendData("material.diffuse", m_diffuse);
+	shader.SendData("material.specular", m_specular);
+	shader.SendData("material.shininess", m_shininess);
 }

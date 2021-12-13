@@ -3,6 +3,7 @@
 #include "Buffer.h"
 #include "Model.h"
 #include "RigidBody.h"
+#include "Shader.h"
 #include "Transform.h"
 #include <gtc\matrix_transform.hpp>
 
@@ -17,7 +18,7 @@ public:
 
 	virtual void Create() = 0;
 	virtual void Destroy() = 0;
-	virtual void Draw() = 0;
+	virtual void Draw(const Shader& shader) = 0;
 	virtual void Update() = 0;
 
 public:

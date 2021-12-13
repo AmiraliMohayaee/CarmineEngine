@@ -1,10 +1,11 @@
 #pragma once
 
 #include <map>
+#include "glad.h"
 #include <string>
 #include <vector>
 #include <glm.hpp>
-#include "glad.h"
+#include "Shader.h"
 
 
 class Material
@@ -49,7 +50,7 @@ public:
 	void SetTransmittance(const glm::vec3& transmittance);
 	void SetTransmittance(GLfloat r, GLfloat g, GLfloat b);
 
-	void SendToShader();
+	void SendToShader(const Shader& shader);
 
 private:
 

@@ -2,6 +2,7 @@
 #include "FPSCamera.h"
 #include "Input.h"
 
+
 FPSCamera::FPSCamera()
 {
 	m_yaw = -90.0f;

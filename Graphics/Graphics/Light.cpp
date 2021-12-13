@@ -19,38 +19,41 @@ void Light::Create()
 	GLfloat color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	m_buffer.Create(1, false);
-	m_buffer.LinkVBO("vertexIn", Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::FLOAT);
-	m_buffer.LinkVBO("colorIn", Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
 
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices));
 	m_buffer.FillVBO(Buffer::COLOR_BUFFER, color, sizeof(color));
 }
 
-void Light::Draw()
+void Light::Draw(const Shader& shader)
 {
 	Buffer::SetPointSize(5.0f);
 	
-	Shader::Instance()->SendUniformData("isLit", false);
-	Shader::Instance()->SendUniformData("isTextured", false);
-	Shader::Instance()->SendUniformData("model", m_transform.GetMatrix());
+	shader.SendData("isLit", false);
+	shader.SendData("isTextured", false);
+	shader.SendData("model", m_transform.GetMatrix());
 
+	m_buffer.LinkVBO(shader.GetAttributeID("vertexIn"), Buffer::VERTEX_BUFFER, Buffer::XYZ);
+	m_buffer.LinkVBO(shader.GetAttributeID("colorIn"), Buffer::COLOR_BUFFER, Buffer::RGBA);
+	
 	m_buffer.Render(Buffer::POINTS);
 
 	LightMovementControl(0.1f);
 }
 
-void Light::SendToShader()
+void Light::SendToShader(const Shader& shader)
 {
-	Shader::Instance()->SendUniformData("light.ambient", m_ambient.r, m_ambient.g, m_ambient.b);
-	Shader::Instance()->SendUniformData("light.diffuse", m_diffuse.r, m_diffuse.g, m_diffuse.b);
-	Shader::Instance()->SendUniformData("light.specular", m_specular.r, m_specular.g, m_specular.b);
-	Shader::Instance()->SendUniformData("light.position", m_transform.GetPosition().x, m_transform.GetPosition().y, m_transform.GetPosition().z);
+	shader.SendData("light.ambient", m_ambient);
+	shader.SendData("light.diffuse", m_diffuse);
+	shader.SendData("light.specular", m_specular);
+	shader.SendData("light.position", m_transform.GetPosition());
 }
 
 void Light::Destroy()
 {
 	m_buffer.Destroy();
 }
+
+
 
 void Light::LightMovementControl(float cameraMoveSpeed)
 {

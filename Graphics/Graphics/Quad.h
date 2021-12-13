@@ -16,7 +16,7 @@ public:
 
 	virtual void Create();
 	virtual void Destroy();
-	virtual void Draw();
+	virtual void Draw(const Shader& shader);
 	virtual void Update() {}
 
 	void SetDimension(GLfloat width, GLfloat height);

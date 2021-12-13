@@ -1,8 +1,9 @@
-#include <gtc\matrix_transform.hpp>
-#include "Camera.h"
-#include "Screen.h"
 #include "Input.h"
 #include "Shader.h"
+#include "Camera.h"
+#include "Screen.h"
+#include <gtc\matrix_transform.hpp>
+
 
 Camera::Camera()
 {
@@ -92,15 +93,9 @@ void Camera::Reset()
 	CreatePerspView();
 }
 
-void Camera::SendToShader()
-{
-	Shader::Instance()->SendUniformData("view", m_viewMatrix);
-	//Shader::Instance()->SendUniformData("model", m_transform.GetMatrix());
-	Shader::Instance()->SendUniformData("projection", m_projectionMatrix);
-}
 
-//void Camera::SendToShader(const Shader& shader)
-//{
-//	shader.SendData("view", m_viewMatrix);
-//	shader.SendData("projection", m_projectionMatrix);
-//}
+void Camera::SendToShader(const Shader& shader)
+{
+	shader.SendData("view", m_viewMatrix);
+	shader.SendData("projection", m_projectionMatrix);
+}

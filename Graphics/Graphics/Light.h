@@ -16,9 +16,9 @@ public:
 	virtual void Create();
 	virtual void Destroy();
 	virtual void Update() {}
-	virtual void Draw();                 //for debug only!
+	virtual void Draw(const Shader& shader);               //for debug only!
 
-	void SendToShader();
+	void SendToShader(const Shader& shader);
 
 	void LightMovementControl(float cameraMoveSpeed);
 
