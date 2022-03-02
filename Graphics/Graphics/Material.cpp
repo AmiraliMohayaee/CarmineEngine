@@ -26,7 +26,9 @@ bool Material::LoadMaterials(const std::string& filename)
 	if (!file)
 	{
 		// TODO: Change this to new Utility error log
-		//Debug::Log("Error loading material file \"" + (s_rootFolderMaterial + filename) + "\"");
+		Utility::Log(Utility::Destination::WindowsMessageBox, 
+			"Material file \"" + (s_rootFolderMaterial + filename) + "\"\n\n",
+			Utility::Severity::Failure);
 		return false;
 	}
 
@@ -38,13 +40,13 @@ bool Material::LoadMaterials(const std::string& filename)
 	while (!file.eof())
 	{
 		std::getline(file, line);
-
-		if (!line.empty())
 		{
+				Utility::RemoveCharacter(line, '[');
+
+			if (!line.empty())
+			{
 			//This means we have reached a block of material data
 			if (line[0] == '[')
-			{
-				Utility::RemoveCharacter(line, '[');
 				Utility::RemoveCharacter(line, ']');
 				material.SetName(line);
 			}
