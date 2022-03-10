@@ -147,7 +147,7 @@ bool Model::Load(const std::string& filename)
                 if (!Material::LoadMaterials(subStrings[1], subStrings[1]))
                 {
                     Material material;
-                    material.SetMaterial("Gold");
+                   // material.SetMaterial("Gold");
                     m_materials.push_back(material);
                 }
 
@@ -163,7 +163,7 @@ bool Model::Load(const std::string& filename)
     if (m_materials.empty())
     {
         Material material;
-        material.SetMaterial("Gold");
+      //  material.SetMaterial("Gold");
         m_materials.push_back(material);
     }
 
@@ -352,7 +352,7 @@ bool Model::Load(const std::string& filename, const std::string& texture)
                 if (!Material::LoadMaterials(subStrings[1], subStrings[1]))
                 {
                     Material material;
-                    material.SetMaterial("Chrome");
+                   // material.SetMaterial("Chrome");
                     m_materials.push_back(material);
                 }
 
@@ -370,7 +370,7 @@ bool Model::Load(const std::string& filename, const std::string& texture)
     if (m_materials.empty())
     {
         Material material;
-        material.SetMaterial("Chrome");
+        //material.SetMaterial("Chrome");
         m_materials.push_back(material);
     }
 

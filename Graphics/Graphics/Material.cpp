@@ -305,6 +305,11 @@ void Material::SetName(const std::string& name)
 	m_name = name;
 }
 
+//void Material::SetMaterial(const std::string& name)
+//{
+//
+//}
+
 bool Material::IsTextured() const
 {
 	return m_isTextured;

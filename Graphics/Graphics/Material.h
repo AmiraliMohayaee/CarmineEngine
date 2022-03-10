@@ -27,7 +27,7 @@ public:
 	const std::string& GetSpecularMap() const;
 
 	void SetName(const std::string& name);
-	void SetMaterial(const std::string& name);
+	//void SetMaterial(const std::string& name);
 
 	bool IsTextured() const;
 

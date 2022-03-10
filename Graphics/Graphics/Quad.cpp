@@ -46,7 +46,7 @@ void Quad::Create()
 	// TODO - Remove hardcoded texture name
 	m_texture.GetTexture("CRATE", m_texture);
 
-	m_material.SetMaterial("Chrome");
+	//m_material.SetMaterial("Chrome");
 
 	m_buffer.Create(6, true);
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices));
