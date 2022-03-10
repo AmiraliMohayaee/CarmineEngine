@@ -13,10 +13,12 @@ class Material
 
 public:
 
-	static bool LoadMaterials(const std::string& filename);
-	static bool LoadMaterials(std::vector<Material>& materials, const std::string& filename);
+	//static bool LoadMaterials(const std::string& filename);
+	static bool LoadMaterials(const std::string& tag, const std::string& filename);
+	static bool Unloading(const std::string& tag);
+	static void SetRootFolder(const std::string& rootFolder);
 
-	Material();
+	Material(const std::string& tag, const std::string& filename);
 
 	const std::string& GetName() const;
 	const std::string& GetNormalMap() const;
@@ -26,6 +28,8 @@ public:
 
 	void SetName(const std::string& name);
 	void SetMaterial(const std::string& name);
+
+	bool IsTextured() const;
 
 	void SetNormalMap(const std::string& normalMap);
 	void SetAmbientMap(const std::string& ambientMap);
@@ -54,10 +58,15 @@ public:
 
 private:
 
-	static std::string s_rootFolderMaterial;
-	static std::map<std::string, Material> s_materials;
+	bool m_isTextured;
 
+	static std::string s_rootFolder;
+	static std::map<std::string, std::vector<Material>> s_materialGroups;
+
+	std::string m_tag;
 	std::string m_name;
+	std::vector<Material> m_group;
+
 	GLfloat m_shininess;
 	GLfloat m_refractiveIndex;
 

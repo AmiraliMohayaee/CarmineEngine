@@ -4,108 +4,108 @@
 #include "Material.h"
 #include "Shader.h"
 
-std::string Material::s_rootFolderMaterial = "Assets/Materials/";
-std::map<std::string, Material> Material::s_materials;
+std::string Material::s_rootFolder = "Assets/Materials/";
+std::map<std::string, std::vector<Material>> Material::s_materialGroups;
 
 //This function will load a .mat file with a set of 
 //pre-defined materials in there for default settings
-bool Material::LoadMaterials(const std::string& filename)
-{
-	if (filename.empty())
-	{
-		return false;
-	}
-
-	std::fstream file(s_rootFolderMaterial + filename, std::ios_base::in);
-
-	//If your application breaks here it means that the material file could 
-	//not be loaded. Possible causes can be a corrupt or missing file. It
-	//could also be that the filename and/or path are incorrectly spelt.
-	assert(file);
-
-	if (!file)
-	{
-		// TODO: Change this to new Utility error log
-		Utility::Log(Utility::Destination::WindowsMessageBox, 
-			"Material file \"" + (s_rootFolderMaterial + filename) + "\"\n\n",
-			Utility::Severity::Failure);
-		return false;
-	}
-
-	std::string line;
-	Material material;
-	std::vector<std::string> subStrings_1;
-	std::vector<std::string> subStrings_2;
-
-	while (!file.eof())
-	{
-		std::getline(file, line);
-		{
-				Utility::RemoveCharacter(line, '[');
-
-			if (!line.empty())
-			{
-			//This means we have reached a block of material data
-			if (line[0] == '[')
-				Utility::RemoveCharacter(line, ']');
-				material.SetName(line);
-			}
-
-			else
-			{
-				Utility::ParseString(line, subStrings_1, '=');
-
-				if (subStrings_1[0] == "ambient")
-				{
-					Utility::ParseString(subStrings_1[1], subStrings_2, ',');
-					material.SetAmbient(std::stof(subStrings_2[0]),
-						std::stof(subStrings_2[1]),
-						std::stof(subStrings_2[2]));
-				}
-
-				if (subStrings_1[0] == "diffuse")
-				{
-					Utility::ParseString(subStrings_1[1], subStrings_2, ',');
-					material.SetDiffuse(std::stof(subStrings_2[0]),
-						std::stof(subStrings_2[1]),
-						std::stof(subStrings_2[2]));
-				}
-
-				if (subStrings_1[0] == "specular")
-				{
-					Utility::ParseString(subStrings_1[1], subStrings_2, ',');
-					material.SetSpecular(std::stof(subStrings_2[0]),
-						std::stof(subStrings_2[1]),
-						std::stof(subStrings_2[2]));
-				}
-
-				if (subStrings_1[0] == "shininess")
-				{
-					material.SetShininess(std::stof(subStrings_1[1]) * 128.0f);
-					s_materials[material.GetName()] = material;
-				}
-
-			}
-
-			subStrings_1.clear();
-			subStrings_2.clear();
-		}
-	}
-
-	file.close();
-	return true;
-}
+//bool Material::LoadMaterials(const std::string& filename)
+//{
+//
+//	if (filename.empty())
+//	{
+//		return false;
+//	}
+//
+//	std::fstream file(s_rootFolderMaterial + filename, std::ios_base::in);
+//
+//	//If your application breaks here it means that the material file could 
+//	//not be loaded. Possible causes can be a corrupt or missing file. It
+//	//could also be that the filename and/or path are incorrectly spelt.
+//	assert(file);
+//
+//	if (!file)
+//	{
+//		Utility::Log(Utility::Destination::WindowsMessageBox, 
+//			"Material file \"" + (s_rootFolderMaterial + filename) + "\"\n\n",
+//			Utility::Severity::Failure);
+//		return false;
+//	}
+//
+//	std::string line;
+//	Material material;
+//
+//
+//
+//	std::vector<std::string> subStrings_1;
+//	std::vector<std::string> subStrings_2;
+//
+//	while (!file.eof())
+//	{
+//		std::getline(file, line);
+//		{
+//				Utility::RemoveCharacter(line, '[');
+//
+//			if (!line.empty())
+//			{
+//			//This means we have reached a block of material data
+//			if (line[0] == '[')
+//				Utility::RemoveCharacter(line, ']');
+//				material.SetName(line);
+//			}
+//
+//			else
+//			{
+//				Utility::ParseString(line, subStrings_1, '=');
+//
+//				if (subStrings_1[0] == "ambient")
+//				{
+//					Utility::ParseString(subStrings_1[1], subStrings_2, ',');
+//					material.SetAmbient(std::stof(subStrings_2[0]),
+//						std::stof(subStrings_2[1]),
+//						std::stof(subStrings_2[2]));
+//				}
+//
+//				if (subStrings_1[0] == "diffuse")
+//				{
+//					Utility::ParseString(subStrings_1[1], subStrings_2, ',');
+//					material.SetDiffuse(std::stof(subStrings_2[0]),
+//						std::stof(subStrings_2[1]),
+//						std::stof(subStrings_2[2]));
+//				}
+//
+//				if (subStrings_1[0] == "specular")
+//				{
+//					Utility::ParseString(subStrings_1[1], subStrings_2, ',');
+//					material.SetSpecular(std::stof(subStrings_2[0]),
+//						std::stof(subStrings_2[1]),
+//						std::stof(subStrings_2[2]));
+//				}
+//
+//				if (subStrings_1[0] == "shininess")
+//				{
+//					material.SetShininess(std::stof(subStrings_1[1]) * 128.0f);
+//					s_materials[material.GetName()] = material;
+//				}
+//
+//			}
+//
+//			subStrings_1.clear();
+//			subStrings_2.clear();
+//		}
+//	}
+//
+//	file.close();
+//	return true;
+//}
 
 //This function will load a .mtl file and store 
 //all materials into the passed material container
-bool Material::LoadMaterials(std::vector<Material>& materials, const std::string& filename)
+bool Material::LoadMaterials(const std::string& tag, const std::string& filename)
 {
-	if (filename.empty())
-	{
-		return false;
-	}
 
-	std::fstream file(s_rootFolderMaterial + filename, std::ios_base::in);
+	assert(s_materialGroups.find(tag) == s_materialGroups.end());
+	std::fstream file(s_rootFolder + filename, std::ios_base::in);
 
 	//If your application breaks here it means that the material file could 
 	//not be loaded. Possible causes can be a corrupt or missing file. It
@@ -114,8 +114,9 @@ bool Material::LoadMaterials(std::vector<Material>& materials, const std::string
 
 	if (!file)
 	{
-		// TODO: Change this to new Utility error log
-		//Debug::Log("Error loading material file \"" + (s_rootFolderMaterial + filename) + "\"");
+		Utility::Log(Utility::Destination::WindowsMessageBox,
+			"Error loading material file \"" + (s_rootFolder + filename) + "\"\n\n",
+			Utility::Severity::Failure);
 		return false;
 	}
 
@@ -237,8 +238,19 @@ bool Material::LoadMaterials(std::vector<Material>& materials, const std::string
 	return true;
 }
 
-Material::Material()
+bool Material::Unloading(const std::string& tag)
 {
+	return false;
+}
+
+void Material::SetRootFolder(const std::string& rootFolder)
+{
+	s_rootFolder = rootFolder;
+}
+
+Material::Material(const std::string& tag, const std::string& filename)
+{
+	m_isTextured = false;
 	m_shininess = 1.0f;
 	m_refractiveIndex = 0.0f;
 	m_ambient = glm::vec3(0.0f);
@@ -246,6 +258,18 @@ Material::Material()
 	m_specular = glm::vec3(0.0f);
 	m_emission = glm::vec3(0.0f);
 	m_transmittance = glm::vec3(1.0f);
+
+	if (!filename.empty())
+	{
+		LoadMaterials(filename);
+		// set the group tag for material
+	}
+
+	if (!tag.empty())
+	{ 
+		// set the group tag for material
+	}
+
 }
 
 const std::string& Material::GetName() const
@@ -278,9 +302,9 @@ void Material::SetName(const std::string& name)
 	m_name = name;
 }
 
-void Material::SetMaterial(const std::string& name)
+bool Material::IsTextured() const
 {
-	*this = s_materials[name];
+	return m_isTextured;
 }
 
 void Material::SetNormalMap(const std::string& normalMap)
