@@ -74,24 +74,25 @@ void App::InitObjects()
 	m_camera->SetPosition(0.0f, 0.0f, 3.5f);
 	m_camera->CreatePerspView();
 
-	m_cube->Create();
-	m_cube->IsLit(true);
-	m_cube->IsTextured(true);
+	//m_cube->Create();
+	//m_cube->IsLit(true);
+	//m_cube->IsTextured(true);
 
-	m_light->Create();
+	//m_light->Create();
 
 	//m_quad->Create();
 	//m_quad->IsLit(true);
 	//m_quad->IsTextured(true);
 
-	m_grid->SetupGridDimentions(4, 12, 1.0f, 1.0f, 1.0f, 1.0f);
+	m_grid->Create();
+	//m_grid->SetupGridDimentions(4, 12, 1.0f, 1.0f, 1.0f, 1.0f);
 	//m_grid->CreateBuffers();
 
 	
 	
-	m_model->Load("Teapot.obj");
-	m_model->IsLit(false);
-	m_model->IsTextured(false);
+	//m_model->Load("Teapot.obj");
+	//m_model->IsLit(false);
+	//m_model->IsTextured(false);
 	
 	
 	// Error Catching Code
@@ -102,10 +103,15 @@ void App::Draw()
 {
 	auto& mainShader = *m_mainShader.get();
 
-	m_light->Draw(mainShader);
-	m_light->SendToShader(mainShader);
+	mainShader.Use();
 
-	m_cube->Draw(mainShader);
+	//m_light->Draw(mainShader);
+	//m_light->SendToShader(mainShader);
+
+	//m_camera->Reset();
+	m_camera->SendToShader(mainShader);
+
+	//m_cube->Draw(mainShader);
 	m_grid->Draw(mainShader);
 }
 
@@ -162,7 +168,7 @@ void App::Update()
 		}
 
 
-		m_cube->GetTransform().SetRotation(pitch, yaw, 0.0f);
+		//m_cube->GetTransform().SetRotation(pitch, yaw, 0.0f);
 		m_grid->GetTransform().SetRotation(pitch, yaw, 0.0f);
 		
 		auto& mainShader = *m_mainShader.get();
