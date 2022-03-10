@@ -18,7 +18,7 @@ public:
 	static bool Unloading(const std::string& tag);
 	static void SetRootFolder(const std::string& rootFolder);
 
-	Material(const std::string& tag, const std::string& filename);
+	Material(const std::string& tag = "", const std::string& filename = "");
 
 	const std::string& GetName() const;
 	const std::string& GetNormalMap() const;
