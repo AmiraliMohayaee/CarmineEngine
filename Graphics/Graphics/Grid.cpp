@@ -36,8 +36,8 @@ void Grid::SetupGridDimentions(int quadrants, int maxSize,
 	{
 		// gridline vertices - negative X
 		GLint vertices[] = { -SIZE + i, 0, SIZE,	// first vertex
-							 -SIZE + i, 0, -SIZE	// second vertex
-		};
+							 -SIZE + i, 0, -SIZE };	// second vertex
+		
 
 		// gridline colors
 		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
@@ -56,8 +56,8 @@ void Grid::SetupGridDimentions(int quadrants, int maxSize,
 	{
 		// gridline vertices - positive X
 		GLint vertices[] = { 0 + i, 0, SIZE,	// first vertex
-							 0 + i, 0, -SIZE	// second vertex
-		};
+							 0 + i, 0, -SIZE };	// second vertex
+		
 
 		// gridline colors
 		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
@@ -75,8 +75,8 @@ void Grid::SetupGridDimentions(int quadrants, int maxSize,
 	{
 		// gridline vertices - positive X
 		GLint vertices[] = { -SIZE, 0, -SIZE + i,	// first vertex
-							  SIZE, 0, -SIZE + i	// second vertex
-		};
+							  SIZE, 0, -SIZE + i };	// second vertex
+		
 
 		// gridline colors
 		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
@@ -94,8 +94,8 @@ void Grid::SetupGridDimentions(int quadrants, int maxSize,
 	{
 		// gridline vertices - positive X
 		GLint vertices[] = { -SIZE, 0, 0 + i,	// first vertex
-							  SIZE, 0, 0 + i	// second vertex
-		};
+							  SIZE, 0, 0 + i };	// second vertex
+		
 
 		// gridline colors
 		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
@@ -140,8 +140,8 @@ void Grid::Create()
 	{
 		// gridline vertices - negative X
 		GLint vertices[] = { -SIZE + i, 0, SIZE,	// first vertex
-							 -SIZE + i, 0, -SIZE	// second vertex
-		};
+							 -SIZE + i, 0, -SIZE };	// second vertex
+		
 
 		// gridline colors
 		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
@@ -160,8 +160,8 @@ void Grid::Create()
 	{
 		// gridline vertices - positive X
 		GLint vertices[] = { 0 + i, 0, SIZE,	// first vertex
-							 0 + i, 0, -SIZE	// second vertex
-		};
+							 0 + i, 0, -SIZE };	// second vertex
+	
 
 		// gridline colors
 		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
@@ -179,8 +179,8 @@ void Grid::Create()
 	{
 		// gridline vertices - positive X
 		GLint vertices[] = { -SIZE, 0, -SIZE + i,	// first vertex
-							  SIZE, 0, -SIZE + i	// second vertex
-		};
+							  SIZE, 0, -SIZE + i }; // second vertex
+	
 
 		// gridline colors
 		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
@@ -198,8 +198,8 @@ void Grid::Create()
 	{
 		// gridline vertices - positive X
 		GLint vertices[] = { -SIZE, 0, 0 + i,	// first vertex
-							  SIZE, 0, 0 + i	// second vertex
-		};
+							  SIZE, 0, 0 + i };	// second vertex
+		
 
 		// gridline colors
 		GLfloat colors[] = { m_color.r, m_color.g, m_color.b, m_color.a,
@@ -224,7 +224,7 @@ void Grid::Destroy()
 
 void Grid::Draw(const Shader& shader)
 {
-	shader.SendData("isLit", true);
+	shader.SendData("isLit", false);
 	shader.SendData("isTextured", false);
 	shader.SendData("model", m_transform.GetMatrix());
 

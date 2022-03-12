@@ -6,6 +6,7 @@
 #include <vector>
 #include <glm.hpp>
 #include "Shader.h"
+#include "Texture.h"
 
 
 class Material
@@ -13,21 +14,21 @@ class Material
 
 public:
 
-	//static bool LoadMaterials(const std::string& filename);
 	static bool LoadMaterials(const std::string& tag, const std::string& filename);
 	static bool Unloading(const std::string& tag);
 	static void SetRootFolder(const std::string& rootFolder);
 
 	Material(const std::string& tag, const std::string& filename);
+	~Material() {}
 
+	const std::string& GetTag() const;
 	const std::string& GetName() const;
-	const std::string& GetNormalMap() const;
-	const std::string& GetAmbientMap() const;
-	const std::string& GetDiffuseMap() const;
-	const std::string& GetSpecularMap() const;
+	const Texture& GetNormalMap() const;
+	const Texture& GetAmbientMap() const;
+	const Texture& GetDiffuseMap() const;
+	const Texture& GetSpecularMap() const;
 
 	void SetName(const std::string& name);
-	void SetMaterial(const std::string& name);
 
 	bool IsTextured() const;
 
@@ -60,9 +61,6 @@ private:
 
 	bool m_isTextured;
 
-	static std::string s_rootFolder;
-	static std::map<std::string, std::vector<Material>> s_materialGroups;
-
 	std::string m_tag;
 	std::string m_name;
 	std::vector<Material> m_group;
@@ -70,10 +68,10 @@ private:
 	GLfloat m_shininess;
 	GLfloat m_refractiveIndex;
 
-	std::string m_normalMap;
-	std::string m_ambientMap;
-	std::string m_diffuseMap;
-	std::string m_specularMap;
+	Texture m_normalMap;
+	Texture m_ambientMap;
+	Texture m_diffuseMap;
+	Texture m_specularMap;
 
 	glm::vec3 m_ambient;
 	glm::vec3 m_diffuse;
@@ -81,4 +79,6 @@ private:
 	glm::vec3 m_emission;
 	glm::vec3 m_transmittance;
 
+	static std::string s_rootFolder;
+	static std::map<std::string, std::vector<Material>> s_materialGroups;
 };

@@ -7,98 +7,6 @@
 std::string Material::s_rootFolder = "Assets/Materials/";
 std::map<std::string, std::vector<Material>> Material::s_materialGroups;
 
-//This function will load a .mat file with a set of 
-//pre-defined materials in there for default settings
-//bool Material::LoadMaterials(const std::string& filename)
-//{
-//
-//	if (filename.empty())
-//	{
-//		return false;
-//	}
-//
-//	std::fstream file(s_rootFolderMaterial + filename, std::ios_base::in);
-//
-//	//If your application breaks here it means that the material file could 
-//	//not be loaded. Possible causes can be a corrupt or missing file. It
-//	//could also be that the filename and/or path are incorrectly spelt.
-//	assert(file);
-//
-//	if (!file)
-//	{
-//		Utility::Log(Utility::Destination::WindowsMessageBox, 
-//			"Material file \"" + (s_rootFolderMaterial + filename) + "\"\n\n",
-//			Utility::Severity::Failure);
-//		return false;
-//	}
-//
-//	std::string line;
-//	Material material;
-//
-//
-//
-//	std::vector<std::string> subStrings_1;
-//	std::vector<std::string> subStrings_2;
-//
-//	while (!file.eof())
-//	{
-//		std::getline(file, line);
-//		{
-//				Utility::RemoveCharacter(line, '[');
-//
-//			if (!line.empty())
-//			{
-//			//This means we have reached a block of material data
-//			if (line[0] == '[')
-//				Utility::RemoveCharacter(line, ']');
-//				material.SetName(line);
-//			}
-//
-//			else
-//			{
-//				Utility::ParseString(line, subStrings_1, '=');
-//
-//				if (subStrings_1[0] == "ambient")
-//				{
-//					Utility::ParseString(subStrings_1[1], subStrings_2, ',');
-//					material.SetAmbient(std::stof(subStrings_2[0]),
-//						std::stof(subStrings_2[1]),
-//						std::stof(subStrings_2[2]));
-//				}
-//
-//				if (subStrings_1[0] == "diffuse")
-//				{
-//					Utility::ParseString(subStrings_1[1], subStrings_2, ',');
-//					material.SetDiffuse(std::stof(subStrings_2[0]),
-//						std::stof(subStrings_2[1]),
-//						std::stof(subStrings_2[2]));
-//				}
-//
-//				if (subStrings_1[0] == "specular")
-//				{
-//					Utility::ParseString(subStrings_1[1], subStrings_2, ',');
-//					material.SetSpecular(std::stof(subStrings_2[0]),
-//						std::stof(subStrings_2[1]),
-//						std::stof(subStrings_2[2]));
-//				}
-//
-//				if (subStrings_1[0] == "shininess")
-//				{
-//					material.SetShininess(std::stof(subStrings_1[1]) * 128.0f);
-//					s_materials[material.GetName()] = material;
-//				}
-//
-//			}
-//
-//			subStrings_1.clear();
-//			subStrings_2.clear();
-//		}
-//	}
-//
-//	file.close();
-//	return true;
-//}
-
 //This function will load a .mtl file and store 
 //all materials into the passed material container
 bool Material::LoadMaterials(const std::string& tag, const std::string& filename)
@@ -120,6 +28,10 @@ bool Material::LoadMaterials(const std::string& tag, const std::string& filename
 		return false;
 	}
 
+	Material material;
+	//material.m_tag = tag;
+	//material.m_group.reserve(5);
+
 	std::string line;
 	std::vector<std::string> subStrings;
 
@@ -137,8 +49,8 @@ bool Material::LoadMaterials(const std::string& tag, const std::string& filename
 			//material which is the start of a material grouping matching the OBJ grouping
 			if (subStrings[0] == "newmtl")
 			{
-				materials.push_back(Material());
-				materials.back().SetName(subStrings[1]);
+				material.group.push_back(Material());
+				material.back().SetName(subStrings[1]);
 				continue;
 			}
 
@@ -235,6 +147,9 @@ bool Material::LoadMaterials(const std::string& tag, const std::string& filename
 
 	}
 
+	file.close();
+	s_materialGroups[tag] = material.m_group;
+
 	return true;
 }
 
@@ -261,7 +176,7 @@ Material::Material(const std::string& tag, const std::string& filename)
 
 	if (!filename.empty())
 	{
-		LoadMaterials(filename);
+		LoadMaterials(tag, filename);
 		// set the group tag for material
 	}
 
@@ -272,27 +187,32 @@ Material::Material(const std::string& tag, const std::string& filename)
 
 }
 
+const std::string& Material::GetTag() const
+{
+	// TODO: insert return statement here
+}
+
 const std::string& Material::GetName() const
 {
 	return m_name;
 }
 
-const std::string& Material::GetNormalMap() const
+const Texture& Material::GetNormalMap() const
 {
 	return m_normalMap;
 }
 
-const std::string& Material::GetAmbientMap() const
+const Texture& Material::GetAmbientMap() const
 {
 	return m_ambientMap;
 }
 
-const std::string& Material::GetDiffuseMap() const
+const Texture& Material::GetDiffuseMap() const
 {
 	return m_diffuseMap;
 }
 
-const std::string& Material::GetSpecularMap() const
+const Texture& Material::GetSpecularMap() const
 {
 	return m_specularMap;
 }
