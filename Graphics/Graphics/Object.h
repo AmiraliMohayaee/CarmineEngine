@@ -20,6 +20,7 @@ public:
 	virtual void Destroy() = 0;
 	virtual void Draw(const Shader& shader) = 0;
 	virtual void Update() = 0;
+	virtual void SendToShader(const Shader& shader) {}
 
 public:
 

@@ -69,9 +69,10 @@ void App::InitObjects()
 
 	
 	//m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
-	m_camera->SetSpeed(0.0f);
-	m_camera->SetSensitivity(0.0f);
-	m_camera->SetPosition(0.0f, 0.0f, 3.5f);
+	m_camera->SetSpeed(0.5f);
+	m_camera->SetSensitivity(1.0f);
+	//m_camera->SetPosition(0.0f, 3.0f, 10.0f);
+	m_camera->GetTransform().SetPosition(0.0f, 3.0f, 10.0f);
 	m_camera->CreatePerspView();
 
 	//m_cube->Create();
@@ -110,7 +111,7 @@ void App::Draw()
 	//m_light->SendToShader(mainShader);
 
 	//m_camera->Reset();
-	m_camera->SendToShader(mainShader);
+	//m_camera->SendToShader(mainShader);
 
 	//m_cube->Draw(mainShader);
 	m_grid->Draw(mainShader);
@@ -139,16 +140,15 @@ void App::Update()
 		}
 
 		// Using mouse wheel to zoom in the camera
-		float wheelMotion = static_cast<float>(Input::Instance()->GetMouseWheelMotion());
-		wheelMotion *= 0.1f;
+		auto wheelMotion = Input::Instance()->GetMouseWheelMotion();
+		//wheelMotion *= 0.1f;
 
-		static glm::vec3 camPos = m_camera->GetTransform().GetPosition();
-		
-		camPos.z += wheelMotion;
-		m_camera->GetTransform().SetPosition(camPos);
+		static auto cameraPosition = m_camera->GetTransform().GetPosition();
+		cameraPosition.z -= wheelMotion;
+		m_camera->GetTransform().SetPosition(cameraPosition);
 
-		std::cout << camPos.z << std::endl;
-		std::cout << wheelMotion << std::endl;
+		//std::cout << camPos.z << std::endl;
+		//std::cout << wheelMotion << std::endl;
 
 		static GLfloat yaw = 0.0f;
 		static GLfloat pitch = 0.0f;
@@ -174,7 +174,7 @@ void App::Update()
 		
 		auto& mainShader = *m_mainShader.get();
 
-		m_camera->Update();
+		//m_camera->Update();
 		m_camera->SendToShader(mainShader);
 
 		if (Input::Instance()->IsRightButtonDown())
