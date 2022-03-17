@@ -88,7 +88,8 @@ void App::InitObjects()
 	//m_grid->SetupGridDimentions(4, 12, 1.0f, 1.0f, 1.0f, 1.0f);
 	//m_grid->CreateBuffers();
 
-	
+	ImGui::GetIO().Fonts->AddFontFromFileTTF("Assets/Fonts/Quikhand.ttf", 24);
+	ImGui::GetIO().Fonts->Build();
 	
 	//m_model->Load("Teapot.obj");
 	//m_model->IsLit(false);
