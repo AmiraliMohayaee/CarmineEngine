@@ -124,10 +124,12 @@ void App::Update()
 
 		// Checking for inputs 
 		Input::Instance()->Update();
+
 		if (Input::Instance()->IsXClicked())
 		{
 			m_isProgramRunning = false;
 		}
+
 		if (Input::Instance()->KeyPressed() == true)
 		{
 			if (Input::Instance()->GetKeyPressed() == KEY_ESC)
@@ -219,7 +221,7 @@ void App::Update()
 			if (ImGui::Begin("Window"))
 			{
 				ImGui::Text("Hello World.");
-				ImGui::Checkbox("Exit Appllication", &exitApp);
+				//ImGui::Checkbox("Exit Appllication", &exitApp);
 				//ImGui::SliderFloat("Size", &m_camera->GetTransform().GetPosition().z, 0.3f, 2.0f);
 				ImGui::End();
 			}
@@ -234,7 +236,7 @@ void App::Update()
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();
 
-		m_isProgramRunning = !exitApp;
+		//m_isProgramRunning = !exitApp;
 	}
 }
 
