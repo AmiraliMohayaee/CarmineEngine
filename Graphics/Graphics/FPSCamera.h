@@ -22,6 +22,7 @@ public:
 private:
 
 	bool m_isFlying;
+	glm::vec3 m_forward;
 	GLfloat m_sensitivity;
 
 };

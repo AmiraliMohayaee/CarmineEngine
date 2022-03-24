@@ -56,6 +56,7 @@ typedef std::vector<VertexGroup> Face;
 class Model
 {
 public:
+
 	bool Load(const std::string& filename);
 	bool Load(const std::string& filename, const std::string& texture);
 	void Render(const Shader& shader);

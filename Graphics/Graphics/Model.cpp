@@ -144,10 +144,9 @@ bool Model::Load(const std::string& filename)
             if (subStrings[0] == "mtllib")
             {
                 //If the material file could not be loaded we load in a default material
-                if (!Material::LoadMaterials(m_materials, subStrings[1]))
+                if (!Material::LoadMaterials(subStrings[1], subStrings[1]))
                 {
                     Material material;
-                    material.SetMaterial("Gold");
                     m_materials.push_back(material);
                 }
 
@@ -163,7 +162,6 @@ bool Model::Load(const std::string& filename)
     if (m_materials.empty())
     {
         Material material;
-        material.SetMaterial("Gold");
         m_materials.push_back(material);
     }
 
@@ -349,10 +347,9 @@ bool Model::Load(const std::string& filename, const std::string& texture)
             if (subStrings[0] == "mtllib")
             {
                 //If the material file could not be loaded we load in a default material
-                if (!Material::LoadMaterials(m_materials, subStrings[1]))
+                if (!Material::LoadMaterials(subStrings[1], subStrings[1]))
                 {
                     Material material;
-                    material.SetMaterial("Chrome");
                     m_materials.push_back(material);
                 }
 

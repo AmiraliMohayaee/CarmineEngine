@@ -29,7 +29,7 @@ bool App::InitScreenAndShaders()
 
 	m_mainShader = std::make_unique<Shader>();
 
-	m_mainShader->Create("main.vert", "main.frag");
+	m_mainShader->Create("Default.vert", "Default.frag");
 
 	m_mainShader->BindAttribute("vertexIn");
 	m_mainShader->BindAttribute("colorIn");
@@ -65,12 +65,14 @@ void App::InitObjects()
 	// Initializing Viewing Grid and Camera
 	//////////////////////////////////////////
 
-	Texture::Load("Crate_1_Diffuse.png", "CRATE");
+	//Texture::Load("Crate_1_Diffuse.png", "CRATE");
 
+	// Loading in Font into Imgui directly from a file
+	ImGui::GetIO().Fonts->AddFontFromFileTTF("Assets/Fonts/KindlyRewind-BOon.ttf", 12);
 	
 	//m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
-	m_camera->SetSpeed(0.0f);
-	m_camera->SetSensitivity(0.0f);
+	m_camera->SetSpeed(0.5f);
+	m_camera->SetSensitivity(1.0f);
 	m_camera->SetPosition(0.0f, 0.0f, 3.5f);
 	m_camera->CreatePerspView();
 
@@ -135,16 +137,16 @@ void App::Update()
 		}
 
 		// Using mouse wheel to zoom in the camera
-		float wheelMotion = static_cast<float>(Input::Instance()->GetMouseWheelMotion());
-		wheelMotion *= 0.1f;
+		auto wheelMotion = Input::Instance()->GetMouseWheelMotion();
+		//wheelMotion *= 0.1f;
 
-		static glm::vec3 camPos = m_camera->GetTransform().GetPosition();
+		static auto cameraPosition = m_camera->GetTransform().GetPosition();
 		
-		camPos.z += wheelMotion;
-		m_camera->GetTransform().SetPosition(camPos);
+		cameraPosition.z += wheelMotion;
+		m_camera->GetTransform().SetPosition(cameraPosition);
 
-		std::cout << camPos.z << std::endl;
-		std::cout << wheelMotion << std::endl;
+		//std::cout << cameraPosition.z << std::endl;
+		//std::cout << wheelMotion << std::endl;
 
 		static GLfloat yaw = 0.0f;
 		static GLfloat pitch = 0.0f;

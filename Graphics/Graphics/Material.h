@@ -18,24 +18,27 @@ public:
 	static bool Unloading(const std::string& tag);
 	static void SetRootFolder(const std::string& rootFolder);
 
-	Material(const std::string& tag, const std::string& filename);
+	Material(const std::string& tag = "", const std::string& filename = "");
 	~Material() {}
 
 	const std::string& GetTag() const;
 	const std::string& GetName() const;
+
 	const Texture& GetNormalMap() const;
 	const Texture& GetAmbientMap() const;
 	const Texture& GetDiffuseMap() const;
 	const Texture& GetSpecularMap() const;
 
 	void SetName(const std::string& name);
+	void SetGroup(const std::string& tag);
 
 	bool IsTextured() const;
 
-	void SetNormalMap(const std::string& normalMap);
-	void SetAmbientMap(const std::string& ambientMap);
-	void SetDiffuseMap(const std::string& diffuseMap);
-	void SetSpecularMap(const std::string& specularMap);
+	void LoadNormalMap(const std::string& tag, const std::string& filename);
+	void LoadAmbientMap(const std::string& tag, const std::string& filename);
+	void LoadDiffuseMap(const std::string& tag, const std::string& filename);
+	void LoadSpecularMap(const std::string& tag, const std::string& filename);
+
 
 	void SetShininess(GLfloat shininess);
 	void SetRefractiveIndex(GLfloat refractiveIndex);
@@ -55,6 +58,8 @@ public:
 	void SetTransmittance(const glm::vec3& transmittance);
 	void SetTransmittance(GLfloat r, GLfloat g, GLfloat b);
 
+	void SetMaterial(const std::string& name);
+
 	void SendToShader(const Shader& shader);
 
 private:
@@ -65,19 +70,19 @@ private:
 	std::string m_name;
 	std::vector<Material> m_group;
 
-	GLfloat m_shininess;
-	GLfloat m_refractiveIndex;
+	GLfloat m_shininess{ 1.0f };
+	GLfloat m_refractiveIndex{ 0.0f };
 
 	Texture m_normalMap;
 	Texture m_ambientMap;
 	Texture m_diffuseMap;
 	Texture m_specularMap;
 
-	glm::vec3 m_ambient;
-	glm::vec3 m_diffuse;
-	glm::vec3 m_specular;
-	glm::vec3 m_emission;
-	glm::vec3 m_transmittance;
+	glm::vec3 m_ambient{ 0.0f };
+	glm::vec3 m_diffuse{ 0.0f };
+	glm::vec3 m_specular{ 0.0f };
+	glm::vec3 m_emission{ 0.0f };
+	glm::vec3 m_transmittance{ 1.0f };
 
 	static std::string s_rootFolder;
 	static std::map<std::string, std::vector<Material>> s_materialGroups;

@@ -17,6 +17,7 @@ bool Material::LoadMaterials(const std::string& tag, const std::string& filename
 
 	//If your application breaks here it means that the material file could 
 	//not be loaded. Possible causes can be a corrupt or missing file. It
+	//not be loaded. Possible causes can be a corrupt or missing file. It
 	//could also be that the filename and/or path are incorrectly spelt.
 	assert(file);
 
@@ -49,15 +50,15 @@ bool Material::LoadMaterials(const std::string& tag, const std::string& filename
 			//material which is the start of a material grouping matching the OBJ grouping
 			if (subStrings[0] == "newmtl")
 			{
-				material.group.push_back(Material());
-				material.back().SetName(subStrings[1]);
+				material.m_group.push_back(Material());
+				material.m_group.back().SetName(subStrings[1]);
 				continue;
 			}
 
 			//Ambient RGB values
 			if (subStrings[0] == "Ka")
 			{
-				materials.back().SetAmbient(std::stof(subStrings[1]),
+				material.m_group.back().SetAmbient(std::stof(subStrings[1]),
 					std::stof(subStrings[2]),
 					std::stof(subStrings[3]));
 				continue;
@@ -66,7 +67,7 @@ bool Material::LoadMaterials(const std::string& tag, const std::string& filename
 			//Diffuse RGB values
 			if (subStrings[0] == "Kd")
 			{
-				materials.back().SetDiffuse(std::stof(subStrings[1]),
+				material.m_group.back().SetDiffuse(std::stof(subStrings[1]),
 					std::stof(subStrings[2]),
 					std::stof(subStrings[3]));
 				continue;
@@ -75,7 +76,7 @@ bool Material::LoadMaterials(const std::string& tag, const std::string& filename
 			//Specular RGB values
 			if (subStrings[0] == "Ks")
 			{
-				materials.back().SetSpecular(std::stof(subStrings[1]),
+				material.m_group.back().SetSpecular(std::stof(subStrings[1]),
 					std::stof(subStrings[2]),
 					std::stof(subStrings[3]));
 				continue;
@@ -85,7 +86,7 @@ bool Material::LoadMaterials(const std::string& tag, const std::string& filename
 			//energy falling on a surface to that transmitted through it
 			if (subStrings[0] == "Kt")
 			{
-				materials.back().SetTransmittance(std::stof(subStrings[1]),
+				material.m_group.back().SetTransmittance(std::stof(subStrings[1]),
 					std::stof(subStrings[2]),
 					std::stof(subStrings[3]));
 				continue;
@@ -94,7 +95,7 @@ bool Material::LoadMaterials(const std::string& tag, const std::string& filename
 			//Emission RGB values
 			if (subStrings[0] == "Ke")
 			{
-				materials.back().SetEmission(std::stof(subStrings[1]),
+				material.m_group.back().SetEmission(std::stof(subStrings[1]),
 					std::stof(subStrings[2]),
 					std::stof(subStrings[3]));
 				continue;
@@ -104,42 +105,42 @@ bool Material::LoadMaterials(const std::string& tag, const std::string& filename
 			//bending of light when passing from one medium into another
 			if (subStrings[0] == "Ni")
 			{
-				materials.back().SetRefractiveIndex(std::stof(subStrings[1]));
+				material.m_group.back().SetRefractiveIndex(std::stof(subStrings[1]));
 				continue;
 			}
 
 			//Specular exponent or shininess value (possible 0 - 1000)
 			if (subStrings[0] == "Ns")
 			{
-				materials.back().SetShininess(std::stof(subStrings[1]));
+				material.m_group.back().SetShininess(std::stof(subStrings[1]));
 				continue;
 			}
 
 			//Ambient texture file
 			if (subStrings[0] == "map_Ka")
 			{
-				materials.back().SetAmbientMap(subStrings[1]);
+				material.m_group.back().LoadAmbientMap(subStrings[1], subStrings[1]);
 				continue;
 			}
 
 			//Diffuse texture file
 			if (subStrings[0] == "map_Kd")
 			{
-				materials.back().SetDiffuseMap(subStrings[1]);
+				material.m_group.back().LoadDiffuseMap(subStrings[1], subStrings[1]);
 				continue;
 			}
 
 			//Specular texture file
 			if (subStrings[0] == "map_Ks")
 			{
-				materials.back().SetSpecularMap(subStrings[1]);
+				material.m_group.back().LoadSpecularMap(subStrings[1], subStrings[1]);
 				continue;
 			}
 
 			//Normal texture file
 			if (subStrings[0] == "map_Ns" || subStrings[0] == "bump")
 			{
-				materials.back().SetNormalMap(subStrings[1]);
+				material.m_group.back().LoadNormalMap(subStrings[1], subStrings[1]);
 				continue;
 			}
 
@@ -177,12 +178,12 @@ Material::Material(const std::string& tag, const std::string& filename)
 	if (!filename.empty())
 	{
 		LoadMaterials(tag, filename);
-		// set the group tag for material
+		SetGroup(tag);
 	}
 
-	if (!tag.empty())
+	else if (!tag.empty())
 	{ 
-		// set the group tag for material
+		SetGroup(tag);
 	}
 
 }
@@ -222,29 +223,49 @@ void Material::SetName(const std::string& name)
 	m_name = name;
 }
 
+void Material::SetGroup(const std::string& tag)
+{
+	auto it = s_materialGroups.find(tag);
+	assert(it != s_materialGroups.end());
+	m_group = it->second;
+}
+
+void Material::SetMaterial(const std::string& name)
+{
+
+}
+
 bool Material::IsTextured() const
 {
 	return m_isTextured;
 }
 
-void Material::SetNormalMap(const std::string& normalMap)
+void Material::LoadNormalMap(const std::string& tag, const std::string& filename)
 {
-	m_normalMap = normalMap;
+	m_normalMap.Load(tag, filename);
+	m_normalMap.SetTexture(tag);
+	m_isTextured = true;
 }
 
-void Material::SetAmbientMap(const std::string& ambientMap)
+void Material::LoadAmbientMap(const std::string& tag, const std::string& filename)
 {
-	m_ambientMap = ambientMap;
+	m_ambientMap.Load(tag, filename);
+	m_ambientMap.SetTexture(tag);
+	m_isTextured = true;
 }
 
-void Material::SetDiffuseMap(const std::string& diffuseMap)
+void Material::LoadDiffuseMap(const std::string& tag, const std::string& filename)
 {
-	m_diffuseMap = diffuseMap;
+	m_diffuseMap.Load(tag, filename);
+	m_diffuseMap.SetTexture(tag);
+	m_isTextured = true;
 }
 
-void Material::SetSpecularMap(const std::string& specularMap)
+void Material::LoadSpecularMap(const std::string& tag, const std::string& filename)
 {
-	m_specularMap = specularMap;
+	m_specularMap.Load(tag, filename);
+	m_specularMap.SetTexture(tag);
+	m_isTextured = true;
 }
 
 void Material::SetShininess(GLfloat shininess)

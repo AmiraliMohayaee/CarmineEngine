@@ -175,7 +175,7 @@ void Cube::Create()
 
 	m_texture.GetTexture("CRATE", m_texture);
 
-	m_material.SetMaterial("Chrome");
+	//m_material.SetMaterial("Chrome");
 
 	m_buffer.Create(36, true);
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices));

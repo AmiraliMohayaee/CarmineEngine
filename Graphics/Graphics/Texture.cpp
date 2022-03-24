@@ -1,4 +1,5 @@
 #include "Texture.h"
+#include <assert.h>
 
 
 // Globally initializing the texture map in static memory
@@ -14,6 +15,7 @@ Texture::Texture()
 
 Texture::~Texture()
 {
+
 }
 
 
@@ -31,6 +33,13 @@ bool Texture::GetTexture(const std::string& textureID, Texture& texture)
 
 	texture = it->second;
 	return true;
+}
+
+void Texture::SetTexture(const std::string& tag)
+{
+	auto it = s_textureMap.find(tag);
+	assert(it != s_textureMap.end());
+	*this = it->second;
 }
 
 void Texture::Bind()
