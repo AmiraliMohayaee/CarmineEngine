@@ -75,9 +75,9 @@ void App::InitObjects()
 	m_camera->GetTransform().SetPosition(0.0f, 3.0f, 10.0f);
 	m_camera->CreatePerspView();
 
-	//m_cube->Create();
-	//m_cube->IsLit(true);
-	//m_cube->IsTextured(true);
+	m_cube->Create();
+	m_cube->IsLit(true);
+	m_cube->IsTextured(true);
 
 	//m_light->Create();
 
@@ -113,7 +113,7 @@ void App::Draw()
 	//m_camera->Reset();
 	//m_camera->SendToShader(mainShader);
 
-	//m_cube->Draw(mainShader);
+	m_cube->Draw(mainShader);
 	m_grid->Draw(mainShader);
 }
 
@@ -223,7 +223,7 @@ void App::Update()
 			if (ImGui::Begin("Window"))
 			{
 				ImGui::Text("Hello World.");
-				//ImGui::Checkbox("Exit Appllication", &exitApp);
+				ImGui::Checkbox("Exit Appllication", &exitApp);
 				//ImGui::SliderFloat("Size", &m_camera->GetTransform().GetPosition().z, 0.3f, 2.0f);
 				ImGui::End();
 			}
@@ -238,7 +238,7 @@ void App::Update()
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();
 
-		//m_isProgramRunning = !exitApp;
+		m_isProgramRunning = !exitApp;
 	}
 }
 
