@@ -173,7 +173,7 @@ void Cube::Create()
 	};
 
 
-	m_texture.GetTexture("CRATE", m_texture);
+	//m_texture.GetTexture("CRATE", m_texture);
 
 	//m_material.SetMaterial("Chrome");
 
@@ -204,7 +204,7 @@ void Cube::Draw(const Shader& shader)
 	m_buffer.LinkVBO(shader.GetAttributeID("normalIn"), Buffer::NORMAL_BUFFER, Buffer::XYZ);
 	m_buffer.LinkVBO(shader.GetAttributeID("textureIn"), Buffer::TEXTURE_BUFFER, Buffer::UV);
 
-	m_material.SendToShader(shader);
+	//m_material.SendToShader(shader);
 
 	if (m_isTextured)
 	{
@@ -215,6 +215,6 @@ void Cube::Draw(const Shader& shader)
 
 	if (m_isTextured)
 	{
-		m_texture.UnBind();
+		m_texture.Unbind();
 	}
 }

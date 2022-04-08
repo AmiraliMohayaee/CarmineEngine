@@ -12,33 +12,33 @@ class Object
 
 public:
 
-	Object();
-	Object(const Transform& transform);
+
+	Object(Object* parent = nullptr);
 	virtual ~Object() = 0 {}
 
-	virtual void Create() = 0;
-	virtual void Destroy() = 0;
-	virtual void Draw(const Shader& shader) = 0;
-	virtual void Update() = 0;
+	bool IsLit() const;
+	bool IsAlive() const;
+	bool IsActive() const;
+	bool IsVisible() const;
+	bool IsTextured() const;
 
-public:
-
-	bool IsVisible();
-	bool IsAlive();
-	bool IsActive(); 
-	bool IsTexture();
-	bool IsLit();
-	
-	void IsVisible(bool flag);
+	void IsLit(bool flag);
 	void IsAlive(bool flag);
 	void IsActive(bool flag);
+	void IsVisible(bool flag);
 	void IsTextured(bool flag);
-	void IsLit(bool flag);
 
-public:
+	GLuint GetPriority() const;
+	const std::string& GetTag();
 
 	Transform& GetTransform();
-	void SetTransform(const Transform& transform);
+
+	void SetPriority(GLuint priority);
+	void SetTag(const std::string& tag);
+
+	virtual void Render(Shader& shader) = 0;
+	virtual void Update(GLfloat deltaTime) = 0;
+	virtual void SendToShader(Shader& shader) = 0;
 
 protected:
 
@@ -48,6 +48,11 @@ protected:
 	bool m_isVisible;
 	bool m_isTextured;
 
+	Object* m_parent;
+	std::string m_tag;
+	glm::vec4 m_color;
+	GLuint m_priority;
 	Transform m_transform;
+	glm::mat3 m_normalMatrix;
 
 };

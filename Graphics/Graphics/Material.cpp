@@ -1,49 +1,41 @@
 #include <assert.h>
 #include <fstream>
-#include "Utility.h"
 #include "Material.h"
 #include "Shader.h"
+#include "Utility.h"
 
 std::string Material::s_rootFolder = "Assets/Materials/";
 std::map<std::string, std::vector<Material>> Material::s_materialGroups;
-
-//This function will load a .mtl file and store 
-//all materials into the passed material container
-bool Material::LoadMaterials(const std::string& tag, const std::string& filename)
+//======================================================================================================
+bool Material::Load(const std::string& tag, const std::string& filename)
 {
-
 	assert(s_materialGroups.find(tag) == s_materialGroups.end());
 	std::fstream file(s_rootFolder + filename, std::ios_base::in);
-
-	//If your application breaks here it means that the material file could 
-	//not be loaded. Possible causes can be a corrupt or missing file. It
-	//not be loaded. Possible causes can be a corrupt or missing file. It
-	//could also be that the filename and/or path are incorrectly spelt.
-	assert(file);
 
 	if (!file)
 	{
 		Utility::Log(Utility::Destination::WindowsMessageBox,
-			"Error loading material file \"" + (s_rootFolder + filename) + "\"\n\n",
-			Utility::Severity::Failure);
+			"Error loading material file \"" + (s_rootFolder + filename) + "\"\n\n"
+			"Possible causes could be a corrupt or missing file. Another reason could be "
+			"that the filename and/or path are incorrectly spelt.", Utility::Severity::Failure);
 		return false;
 	}
 
 	Material material;
-	//material.m_tag = tag;
-	//material.m_group.reserve(5);
+	material.m_tag = tag;
+	material.m_group.reserve(5);
 
 	std::string line;
 	std::vector<std::string> subStrings;
+	subStrings.reserve(5);
 
 	while (!file.eof())
 	{
 		getline(file, line);
+		subStrings.clear();
 
 		if (!line.empty())
 		{
-
-			subStrings.clear();
 			Utility::ParseString(line, subStrings, ' ');
 
 			//Add the material into the container. All properties from now will add to this
@@ -143,27 +135,54 @@ bool Material::LoadMaterials(const std::string& tag, const std::string& filename
 				material.m_group.back().LoadNormalMap(subStrings[1], subStrings[1]);
 				continue;
 			}
-
 		}
-
 	}
 
 	file.close();
 	s_materialGroups[tag] = material.m_group;
-
 	return true;
 }
-
-bool Material::Unloading(const std::string& tag)
+//======================================================================================================
+void Material::Unload(const std::string& tag)
 {
-	return false;
-}
+	if (!tag.empty())
+	{
+		auto it = s_materialGroups.find(tag);
+		assert(it != s_materialGroups.end());
 
+		for (const auto& material : it->second)
+		{
+			Texture::Unload(material.GetAmbientMap().GetTag());
+			Texture::Unload(material.GetDiffuseMap().GetTag());
+			Texture::Unload(material.GetSpecularMap().GetTag());
+			Texture::Unload(material.GetNormalMap().GetTag());
+		}
+
+		s_materialGroups.erase(it);
+	}
+
+	else
+	{
+		for (auto& material : s_materialGroups)
+		{
+			for (const auto& mat : material.second)
+			{
+				Texture::Unload(mat.GetAmbientMap().GetTag());
+				Texture::Unload(mat.GetDiffuseMap().GetTag());
+				Texture::Unload(mat.GetSpecularMap().GetTag());
+				Texture::Unload(mat.GetNormalMap().GetTag());
+			}
+		}
+
+		s_materialGroups.clear();
+	}
+}
+//======================================================================================================
 void Material::SetRootFolder(const std::string& rootFolder)
 {
 	s_rootFolder = rootFolder;
 }
-
+//======================================================================================================
 Material::Material(const std::string& tag, const std::string& filename)
 {
 	m_isTextured = false;
@@ -177,169 +196,170 @@ Material::Material(const std::string& tag, const std::string& filename)
 
 	if (!filename.empty())
 	{
-		LoadMaterials(tag, filename);
+		Load(tag, filename);
 		SetGroup(tag);
 	}
 
 	else if (!tag.empty())
-	{ 
+	{
 		SetGroup(tag);
 	}
-
 }
-
+//======================================================================================================
 const std::string& Material::GetTag() const
 {
-	// TODO: insert return statement here
+	return m_tag;
 }
-
+//======================================================================================================
 const std::string& Material::GetName() const
 {
 	return m_name;
 }
-
+//======================================================================================================
 const Texture& Material::GetNormalMap() const
 {
 	return m_normalMap;
 }
-
+//======================================================================================================
 const Texture& Material::GetAmbientMap() const
 {
 	return m_ambientMap;
 }
-
+//======================================================================================================
 const Texture& Material::GetDiffuseMap() const
 {
 	return m_diffuseMap;
 }
-
+//======================================================================================================
 const Texture& Material::GetSpecularMap() const
 {
 	return m_specularMap;
 }
-
+//======================================================================================================
+const std::vector<Material>& Material::GetGroup() const
+{
+	return m_group;
+}
+//======================================================================================================
 void Material::SetName(const std::string& name)
 {
 	m_name = name;
 }
-
+//======================================================================================================
 void Material::SetGroup(const std::string& tag)
 {
 	auto it = s_materialGroups.find(tag);
 	assert(it != s_materialGroups.end());
 	m_group = it->second;
 }
-
-void Material::SetMaterial(const std::string& name)
-{
-
-}
-
+//======================================================================================================
 bool Material::IsTextured() const
 {
 	return m_isTextured;
 }
-
+//======================================================================================================
 void Material::LoadNormalMap(const std::string& tag, const std::string& filename)
 {
 	m_normalMap.Load(tag, filename);
 	m_normalMap.SetTexture(tag);
 	m_isTextured = true;
 }
-
+//======================================================================================================
 void Material::LoadAmbientMap(const std::string& tag, const std::string& filename)
 {
 	m_ambientMap.Load(tag, filename);
 	m_ambientMap.SetTexture(tag);
 	m_isTextured = true;
 }
-
+//======================================================================================================
 void Material::LoadDiffuseMap(const std::string& tag, const std::string& filename)
 {
 	m_diffuseMap.Load(tag, filename);
 	m_diffuseMap.SetTexture(tag);
 	m_isTextured = true;
 }
-
+//======================================================================================================
 void Material::LoadSpecularMap(const std::string& tag, const std::string& filename)
 {
 	m_specularMap.Load(tag, filename);
 	m_specularMap.SetTexture(tag);
 	m_isTextured = true;
 }
-
+//======================================================================================================
 void Material::SetShininess(GLfloat shininess)
 {
 	m_shininess = shininess;
 }
-
+//======================================================================================================
 void Material::SetRefractiveIndex(GLfloat refractiveIndex)
 {
 	m_refractiveIndex = refractiveIndex;
 }
-
+//======================================================================================================
 void Material::SetAmbient(const glm::vec3& ambient)
 {
 	m_ambient = ambient;
 }
-
+//======================================================================================================
 void Material::SetAmbient(GLfloat r, GLfloat g, GLfloat b)
 {
 	m_ambient.r = r;
 	m_ambient.g = g;
 	m_ambient.b = b;
 }
-
+//======================================================================================================
 void Material::SetDiffuse(const glm::vec3& diffuse)
 {
 	m_diffuse = diffuse;
 }
-
+//======================================================================================================
 void Material::SetDiffuse(GLfloat r, GLfloat g, GLfloat b)
 {
 	m_diffuse.r = r;
 	m_diffuse.g = g;
 	m_diffuse.b = b;
 }
-
+//======================================================================================================
 void Material::SetSpecular(const glm::vec3& specular)
 {
 	m_specular = specular;
 }
-
+//======================================================================================================
 void Material::SetSpecular(GLfloat r, GLfloat g, GLfloat b)
 {
 	m_specular.r = r;
 	m_specular.g = g;
 	m_specular.b = b;
 }
-
+//======================================================================================================
 void Material::SetEmission(const glm::vec3& emission)
 {
 	m_emission = emission;
 }
-
+//======================================================================================================
 void Material::SetEmission(GLfloat r, GLfloat g, GLfloat b)
 {
 	m_emission.r = r;
 	m_emission.g = g;
 	m_emission.b = b;
 }
-
+//======================================================================================================
 void Material::SetTransmittance(const glm::vec3& transmittance)
 {
 	m_transmittance = transmittance;
 }
-
+//======================================================================================================
 void Material::SetTransmittance(GLfloat r, GLfloat g, GLfloat b)
 {
 	m_transmittance.r = r;
 	m_transmittance.g = g;
 	m_transmittance.b = b;
 }
-
-void Material::SendToShader(const Shader& shader)
+//======================================================================================================
+void Material::SendToShader(Shader& shader)
 {
+	//TODO - Need to tag each material
+	//assert(!m_tag.empty());
 	shader.SendData("material.ambient", m_ambient);
 	shader.SendData("material.diffuse", m_diffuse);
 	shader.SendData("material.specular", m_specular);

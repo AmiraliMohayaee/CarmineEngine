@@ -9,7 +9,7 @@ App::App()
 	m_isProgramRunning = true;
 
 	// TODO: Add asserts inside the functions to make sure they're loaded before the materials are use
-	Material::LoadMaterials("Defaults", "Materials.mat");
+	Material::Load("Defaults", "Materials.mat");
 
 	m_camera = std::make_unique<FPSCamera>();
 	m_cube = std::make_unique<Cube>();

@@ -1,92 +1,92 @@
 #include "Object.h"
 #include "Shader.h"
 
-
-Object::Object()
+//======================================================================================================
+Object::Object(Object* parent)
 {
+	m_priority = 0;
+	m_parent = parent;
+
 	m_isLit = false;
 	m_isAlive = true;
 	m_isActive = true;
 	m_isVisible = true;
 	m_isTextured = false;
+
+	m_normalMatrix = glm::mat3(1.0f);
 }
-
-Object::Object(const Transform& transform)
-{
-	m_isLit = false;
-	m_isAlive = true;
-	m_isActive = true;
-	m_isVisible = true;
-	m_isTextured = false;
-	m_transform = transform;
-}
-
-//void Object::Draw()
-//{
-//	// TODO - find a way to remove the hard-coded shader variable names
-//	//Shader::Instance()->SendUniformData("isLit", m_isLit);
-//	//Shader::Instance()->SendUniformData("isTextured", m_isTextured);
-//	//Shader::Instance()->SendUniformData("model", m_transform.GetMatrix());
-//
-//}
-
-
-bool Object::IsVisible()
-{
-	return m_isVisible;
-}
-
-bool Object::IsAlive()
-{
-	return m_isAlive;
-}
-
-bool Object::IsActive()
-{
-	return m_isActive;
-}
-
-bool Object::IsTexture()
-{
-	return m_isTextured;
-}
-
-bool Object::IsLit()
+//======================================================================================================
+bool Object::IsLit() const
 {
 	return m_isLit;
 }
-
-void Object::IsVisible(bool flag)
+//======================================================================================================
+bool Object::IsAlive() const
 {
-	m_isVisible = flag;
+	return m_isAlive;
 }
-
-void Object::IsAlive(bool flag)
+//======================================================================================================
+bool Object::IsActive() const
 {
-	m_isAlive = flag;
+	return m_isActive;
 }
-
-void Object::IsActive(bool flag)
+//======================================================================================================
+bool Object::IsVisible() const
 {
-	m_isActive = flag;
+	return m_isVisible;
 }
-
-void Object::IsTextured(bool flag)
+//======================================================================================================
+bool Object::IsTextured() const
 {
-	m_isTextured = flag;
+	return m_isTextured;
 }
-
+//======================================================================================================
 void Object::IsLit(bool flag)
 {
 	m_isLit = flag;
 }
-
-void Object::SetTransform(const Transform& transform)
+//======================================================================================================
+void Object::IsAlive(bool flag)
 {
-	m_transform = transform;
+	m_isAlive = flag;
 }
-
+//======================================================================================================
+void Object::IsActive(bool flag)
+{
+	m_isActive = flag;
+}
+//======================================================================================================
+void Object::IsVisible(bool flag)
+{
+	m_isVisible = flag;
+}
+//======================================================================================================
+void Object::IsTextured(bool flag)
+{
+	m_isTextured = flag;
+}
+//======================================================================================================
+GLuint Object::GetPriority() const
+{
+	return m_priority;
+}
+//======================================================================================================
+const std::string& Object::GetTag()
+{
+	return m_tag;
+}
+//======================================================================================================
 Transform& Object::GetTransform()
 {
 	return m_transform;
+}
+//======================================================================================================
+void Object::SetPriority(GLuint priority)
+{
+	m_priority = priority;
+}
+//======================================================================================================
+void Object::SetTag(const std::string& tag)
+{
+	m_tag = tag;
 }

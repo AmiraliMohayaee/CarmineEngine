@@ -3,540 +3,522 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <unordered_map>
 
 #include "Shader.h"
 
 
-std::string Model::s_rootFolderModel = "Assets/Models/";
-
-
-bool Model::Load(const std::string& filename)
+std::string Model::s_rootFolder = "Assets/Models/";
+std::map<std::string, Model> Model::s_models;
+//======================================================================================================
+bool Model::Load(const std::string& tag,
+	const std::string& filename,
+	bool isNormalized,
+	const std::string& defaultMaterial)
 {
-    std::fstream file(s_rootFolderModel + filename, std::ios_base::in);
+	assert(s_models.find(tag) == s_models.end());
+	std::fstream file(s_rootFolder + filename, std::ios_base::in);
 
-    if (!file)
-    {
-        // TODO: change this to the new Utility class
-        //Debug::Log("Error loading model file \"" + (s_rootFolderModel + filename) + "\"");
-        return false;
-    }
+	if (!file)
+	{
+		Utility::Log(Utility::Destination::WindowsMessageBox,
+			"Error loading model file \"" + (s_rootFolder + filename) + "\"\n\n"
+			"Possible causes could be a corrupt or missing file. Another reason could be "
+			"that the filename and/or path are incorrectly spelt.", Utility::Severity::Failure);
+		return false;
+	}
 
-    std::string line;
-    std::vector<std::string> lines;
+	Mesh rawMesh;
+	std::string lastMaterialName;
 
-    while (!file.eof())
-    {
-        std::getline(file, line);
-        lines.push_back(line);
-    }
+	std::string line;
+	std::string lastName;
+	std::vector<Face> faces;
 
-    file.close();
+	std::vector<std::string> subStrings;
+	subStrings.reserve(10);
 
-    Mesh rawMesh;
-    Material lastMaterial;
-    std::string lastName;
-    std::vector<Face> faces;
+	Model model;
+	model.m_tag = tag;
 
-    //Loop through all raw lines of data and break up the data into meaningful segments
-    for (size_t i = 0; i < lines.size(); i++)
-    {
+	while (!file.eof())
+	{
+		std::getline(file, line);
+		subStrings.clear();
 
-        if (!lines[i].empty() && lines[i][0] != '#')
-        {
+		//Only process data that is not blank or intended to be a comment
+		if (!line.empty() && line[0] != '#')
+		{
+			Utility::ParseString(line, subStrings, ' ');
 
-            std::vector<std::string> subStrings;
-            Utility::ParseString(lines[i], subStrings, ' ');
+			//Vertex data
+			if (subStrings[0] == "v")
+			{
+				rawMesh.vertices.push_back(glm::vec3(std::stof(subStrings[1]),
+					std::stof(subStrings[2]),
+					std::stof(subStrings[3])));
+				continue;
+			}
 
-            //Vertices
-            if (subStrings[0] == "v")
-            {
-                rawMesh.vertices.push_back(glm::vec3(std::stof(subStrings[1]),
-                                                     std::stof(subStrings[2]),
-                                                     std::stof(subStrings[3])));
-                continue;
-            }
+			//Normal data
+			if (subStrings[0] == "vn")
+			{
+				rawMesh.normals.push_back(glm::vec3(std::stof(subStrings[1]),
+					std::stof(subStrings[2]),
+					std::stof(subStrings[3])));
+				continue;
+			}
 
-            //UVs
-            if (subStrings[0] == "vt")
-            {
-                rawMesh.UVs.push_back(glm::vec2(std::stof(subStrings[1]),
-                                                std::stof(subStrings[2])));
-                continue;
-            }
+			//Texture coordinate data
+			if (subStrings[0] == "vt")
+			{
+				rawMesh.textureCoords.push_back(glm::vec2(std::stof(subStrings[1]),
+					std::stof(subStrings[2])));
+				continue;
+			}
 
-            //Normals
-            if (subStrings[0] == "vn")
-            {
-                rawMesh.normals.push_back(glm::vec3(std::stof(subStrings[1]),
-                                                    std::stof(subStrings[2]),
-                                                    std::stof(subStrings[3])));
-                continue;
-            }
+			//This is the line of face indices that contains data in 'v/t/n v/t/n v/t/n' format
+			//This data together will make up a polygon face or triangle using the vtn indices
+			//The data will be stored as v = subString[1], t = subString[2] and n = subString[3] 
+			if (subStrings[0] == "f")
+			{
+				Face face;
+				std::vector<std::string> numbers;
+				numbers.reserve(10);
 
-            //This is the line of face indices that contains data in 'v/t/n v/t/n v/t/n' format
-            //This data together will make up a polygon face or triangle using the vtn indices
-            //The data will be stored as v = subString[1], t = subString[2] and n = subString[3] 
-            if (subStrings[0] == "f")
-            {
-                Face face;
+				//Parse face indices into individual index numbers so 1/2/3 becomes 1, 2 and 3
+				//We subtract 1 because the index values in the .obj file are not zero-based
+				for (int i = 1; i <= 3; i++)
+				{
+					numbers.clear();
+					VertexGroup vertexGroup;
+					Utility::ParseString(subStrings[i], numbers, '/');
 
-                for (size_t i = 1; i <= 3; i++)
-                {
-                    VertexGroup vertexGroup;
-                    std::vector<std::string> numbers;
-                    Utility::ParseString(subStrings[i], numbers, '/');
+					vertexGroup.v = std::stoi(numbers[0]) - 1;
 
-                    vertexGroup.v = std::stoi(numbers[0]) - 1;
-                    vertexGroup.t = std::stoi(numbers[1]) - 1;
-                    vertexGroup.n = std::stoi(numbers[2]) - 1;
+					if (vertexGroup.v < 0)
+					{
+						vertexGroup.v = rawMesh.vertices.size() + (vertexGroup.v + 1);
+					}
 
-                    face.push_back(vertexGroup);
-                }
+					//Some .obj files do not contain texture coordinate data 
+					//so only add a texture index if there is one present
+					if (numbers.size() > 2)
+					{
+						vertexGroup.t = std::stoi(numbers[1]) - 1;
+						vertexGroup.n = std::stoi(numbers[2]) - 1;
 
-                faces.push_back(face);
-                continue;
-            }
+						if (vertexGroup.t < 0)
+						{
+							vertexGroup.t = rawMesh.textureCoords.size() + (vertexGroup.t + 1);
+						}
 
+						if (vertexGroup.n < 0)
+						{
+							vertexGroup.n = rawMesh.normals.size() + (vertexGroup.n + 1);
+						}
+					}
 
-            // Different files define groups as either 'g' or 'o'
-            if (subStrings[0] == "g" || subStrings[0] == "o")
-            {
-                if (!faces.empty())
-                {
-                    Mesh mesh;
-                    mesh.name = lastName;
-                    mesh.material = lastMaterial;
-                    SortVertexData(mesh, rawMesh, faces);
-                }
+					else
+					{
+						vertexGroup.n = std::stoi(numbers[2]) - 1;
 
-                lastName = subStrings[1];
-                faces.clear();
-                continue;
-            }
+						if (vertexGroup.n < 0)
+						{
+							vertexGroup.n = rawMesh.normals.size() + (vertexGroup.n + 1);
+						}
+					}
 
-            //These are the smoothing groups
-            if (subStrings[0] == "s")
-            {
-                //TODO
-            }
+					face.push_back(vertexGroup);
+				}
 
-            //This is the name of the material to use for the group 
-            //All materials are found in the subsequent .mtl file
-            if (subStrings[0] == "usemtl")
-            {
-                if (!m_materials.empty())
-                {
-                    for (size_t i = 0; i < m_materials.size(); ++i)
-                    {
-                        if (m_materials[i].GetName() == subStrings[1])
-                        {
-                            lastMaterial = m_materials[i];
-                            break;
-                        }
-                    }
-                }
+				faces.push_back(face);
+				continue;
+			}
 
-                continue;
-            }
+			//This is the name of the material to use for the group 
+			//All materials are found in the subsequent .mtl file
+			if (subStrings[0] == "usemtl")
+			{
+				if (!model.m_material.GetGroup().empty())
+				{
+					for (const auto& material : model.m_material.GetGroup())
+					{
+						if (material.GetName() == subStrings[1])
+						{
+							lastMaterialName = subStrings[1];
+							break;
+						}
+					}
+				}
 
-            //This indicates the name of the .mtl file to use for the mesh 
-            //group. All materials are found in the subsequent material file 
-            if (subStrings[0] == "mtllib")
-            {
-                //If the material file could not be loaded we load in a default material
-                if (!Material::LoadMaterials(subStrings[1], subStrings[1]))
-                {
-                    Material material;
-                    m_materials.push_back(material);
-                }
+				continue;
+			}
 
-                continue;
-            }
+			//This indicates the name of the .mtl file to use for the mesh 
+			//group. All materials are found in the subsequent material file
+			//Note that sometimes the material file might not be found
+			if (subStrings[0] == "mtllib")
+			{
+				model.m_material.Load(subStrings[1], subStrings[1]);
+				model.m_material.SetGroup(subStrings[1]);
+				continue;
+			}
 
-        }
-    }
+			//This indicates mesh groups or objects within 
+			//the model which will make up the final model 
+			if (subStrings[0] == "g" || subStrings[0] == "o")
+			{
+				//Go through all previously loaded faces 
+				//and build a mesh from the previous group
+				if (!faces.empty())
+				{
+					Mesh mesh;
 
-    //Check if any materials were loaded because there may be a 'mtllib' 
-    //statement missing. This means that no materials, not even default 
-    //ones are loaded so as a last resort, we add a default material
-    if (m_materials.empty())
-    {
-        Material material;
-        m_materials.push_back(material);
-    }
+					mesh.vertices.reserve(rawMesh.vertices.size());
+					mesh.textureCoords.reserve(rawMesh.textureCoords.size());
+					mesh.normals.reserve(rawMesh.normals.size());
 
-    //Otherwise we loop through all loaded materials and check
-    //if any textures are required for the ADS lighting model
-    else
-    {
-        for (size_t i = 0; i < m_materials.size(); i++)
-        {
-            Texture temp;
+					mesh.name = lastName;
+					mesh.materialName = lastMaterialName;
+					SortVertexData(mesh, rawMesh, faces);
+					model.m_meshes.push_back(mesh);
+				}
 
-            if (temp.Load(m_materials[i].GetAmbientMap(), m_materials[i].GetAmbientMap()))
-            {
-                m_ambientTexture = temp;
-                m_ambientTexture.GetTexture(m_materials[i].GetAmbientMap(), m_ambientTexture);
-            }
+				//Make a note of the group name for the next mesh group
+				lastName = subStrings[1];
+				faces.clear();
 
-            if (temp.Load(m_materials[i].GetDiffuseMap(), m_materials[i].GetDiffuseMap()))
-            {
-                m_diffuseTexture = temp;
-                m_diffuseTexture.GetTexture(m_materials[i].GetDiffuseMap(), m_diffuseTexture);
-            }
+				//TODO - Find a way to clear data that's 
+				//no longer required from the raw mesh 
+				//Not sure why this does not work?
+				//rawMesh.vertices.clear();
+				//rawMesh.textureCoords.clear();
+				//rawMesh.normals.clear();
 
-            if (temp.Load(m_materials[i].GetSpecularMap(), m_materials[i].GetSpecularMap()))
-            {
-                m_specularTexture = temp;
-                m_specularTexture.GetTexture(m_materials[i].GetSpecularMap(), m_specularTexture);
-            }
+				continue;
+			}
 
-            if (temp.Load(m_materials[i].GetNormalMap(), m_materials[i].GetNormalMap()))
-            {
-                m_normalTexture = temp;
-                m_normalTexture.GetTexture(m_materials[i].GetNormalMap(), m_normalTexture);
-            }
-        }
-    }
+			//These are the smoothing groups
+			if (subStrings[0] == "s")
+			{
+				//TODO
+				continue;
+			}
+		}
+	}
 
-    //We do one more final clean-up of the raw data because v/t/n data is
-    //usually read in AFTER a group name so the final data group needs sorting
-    if (!faces.empty())
-    {
-        Mesh mesh;
-        mesh.name = lastName;
-        mesh.material = lastMaterial;
-        SortVertexData(mesh, rawMesh, faces);
-    }
+	file.close();
 
-    FillBuffers();
-    return true;
+	//We do one more final clean-up of the raw data because v/t/n data is
+	//usually read in AFTER a group name so the final data group needs sorting
+	if (!faces.empty())
+	{
+		Mesh mesh;
+		mesh.name = lastName;
+
+		mesh.materialName = lastMaterialName;
+		SortVertexData(mesh, rawMesh, faces);
+		model.m_meshes.push_back(mesh);
+	}
+
+	//Check if any materials were loaded because there may be a 'mtllib' 
+	//statement missing. This means that no materials, not even default 
+	//ones are loaded so as a last resort, we add a default material
+	if (model.m_material.GetGroup().empty())
+	{
+		model.m_material.SetGroup("Defaults");
+
+		for (auto& mesh : model.m_meshes)
+		{
+			mesh.materialName = defaultMaterial;
+		}
+	}
+
+	//Make sure the model has a normalized width, height and depth if required
+	if (isNormalized)
+	{
+		Normalize(model);
+	}
+
+	//Get the new max lengths
+
+	glm::vec3 minValues = glm::vec3(0.0f);
+	glm::vec3 maxValues = glm::vec3(0.0f);
+
+	for (const auto& mesh : model.m_meshes)
+	{
+		for (const auto& vertex : mesh.vertices)
+		{
+			maxValues = glm::max(maxValues, vertex);
+			minValues = glm::min(minValues, vertex);
+		}
+	}
+
+	model.m_dimension = maxValues - minValues;
+
+	FillBuffers(model);
+	s_models[tag] = model;
+	return true;
 }
-
-bool Model::Load(const std::string& filename, const std::string& texture)
+//======================================================================================================
+Model::Model(const std::string& tag,
+	const std::string& filename,
+	bool isNormalized,
+	const std::string& defaultMaterial)
 {
-    std::fstream file(s_rootFolderModel + filename, std::ios_base::in);
+	m_dimension = glm::vec3(0.0f);
 
-    if (!file)
-    {
-        // TODO: Change this to the new Utility error log
-        //Debug::Log("Error loading model file \"" + (s_rootFolderModel + filename) + "\"");
-        return false;
-    }
+	if (!filename.empty())
+	{
+		Load(tag, filename, isNormalized, defaultMaterial);
+		SetModel(tag);
+	}
 
-    std::string line;
-    std::vector<std::string> lines;
-
-    while (!file.eof())
-    {
-        std::getline(file, line);
-        lines.push_back(line);
-    }
-
-    file.close();
-
-    Mesh rawMesh;
-    Material lastMaterial;
-    std::string lastName;
-    std::vector<Face> faces;
-
-    //Loop through all raw lines of data and break up the data into meaningful segments
-    for (size_t i = 0; i < lines.size(); i++)
-    {
-
-        if (!lines[i].empty() && lines[i][0] != '#')
-        {
-
-            std::vector<std::string> subStrings;
-            Utility::ParseString(lines[i], subStrings, ' ');
-
-            //Vertices
-            if (subStrings[0] == "v")
-            {
-                rawMesh.vertices.push_back(glm::vec3(std::stof(subStrings[1]),
-                    std::stof(subStrings[2]),
-                    std::stof(subStrings[3])));
-                continue;
-            }
-
-            //UVs
-            if (subStrings[0] == "vt")
-            {
-                rawMesh.UVs.push_back(glm::vec2(std::stof(subStrings[1]),
-                    std::stof(subStrings[2])));
-                continue;
-            }
-
-            //Normals
-            if (subStrings[0] == "vn")
-            {
-                rawMesh.normals.push_back(glm::vec3(std::stof(subStrings[1]),
-                    std::stof(subStrings[2]),
-                    std::stof(subStrings[3])));
-                continue;
-            }
-
-            //This is the line of face indices that contains data in 'v/t/n v/t/n v/t/n' format
-            //This data together will make up a polygon face or triangle using the vtn indices
-            //The data will be stored as v = subString[1], t = subString[2] and n = subString[3] 
-            if (subStrings[0] == "f")
-            {
-                Face face;
-
-                for (size_t i = 1; i <= 3; i++)
-                {
-                    VertexGroup vertexGroup;
-                    std::vector<std::string> numbers;
-                    Utility::ParseString(subStrings[i], numbers, '/');
-
-                    vertexGroup.v = std::stoi(numbers[0]) - 1;
-                    vertexGroup.t = std::stoi(numbers[1]) - 1;
-                    vertexGroup.n = std::stoi(numbers[2]) - 1;
-
-                    face.push_back(vertexGroup);
-                }
-
-                faces.push_back(face);
-                continue;
-            }
-
-
-            // Different files define groups as either 'g' or 'o'
-            if (subStrings[0] == "g" || subStrings[0] == "o")
-            {
-                if (!faces.empty())
-                {
-                    Mesh mesh;
-                    mesh.name = lastName;
-                    mesh.material = lastMaterial;
-                    SortVertexData(mesh, rawMesh, faces);
-                }
-
-                lastName = subStrings[1];
-                faces.clear();
-                continue;
-            }
-
-            //These are the smoothing groups
-            if (subStrings[0] == "s")
-            {
-                //TODO
-            }
-
-            //This is the name of the material to use for the group 
-            //All materials are found in the subsequent .mtl file
-            if (subStrings[0] == "usemtl")
-            {
-                if (!m_materials.empty())
-                {
-                    for (size_t i = 0; i < m_materials.size(); ++i)
-                    {
-                        if (m_materials[i].GetName() == subStrings[1])
-                        {
-                            lastMaterial = m_materials[i];
-                            break;
-                        }
-                    }
-                }
-
-                continue;
-            }
-
-            //This indicates the name of the .mtl file to use for the mesh 
-            //group. All materials are found in the subsequent material file 
-            if (subStrings[0] == "mtllib")
-            {
-                //If the material file could not be loaded we load in a default material
-                if (!Material::LoadMaterials(subStrings[1], subStrings[1]))
-                {
-                    Material material;
-                    m_materials.push_back(material);
-                }
-
-                continue;
-            }
-
-        }
-    }
-
-
-
-    //Check if any materials were loaded because there may be a 'mtllib' 
-    //statement missing. This means that no materials, not even default 
-    //ones are loaded so as a last resort, we add a default material
-    if (m_materials.empty())
-    {
-        Material material;
-        material.SetMaterial("Chrome");
-        m_materials.push_back(material);
-    }
-
-    //Otherwise we loop through all loaded materials and check
-    //if any textures are required for the ADS lighting model
-    else
-    {
-        for (size_t i = 0; i < m_materials.size(); i++)
-        {
-            Texture temp;
-
-            if (temp.Load(m_materials[i].GetAmbientMap(), m_materials[i].GetAmbientMap()))
-            {
-                m_ambientTexture = temp;
-                m_ambientTexture.GetTexture(m_materials[i].GetAmbientMap(), m_ambientTexture);
-            }
-
-            if (temp.Load(m_materials[i].GetDiffuseMap(), m_materials[i].GetDiffuseMap()))
-            {
-                m_diffuseTexture = temp;
-                m_diffuseTexture.GetTexture(m_materials[i].GetDiffuseMap(), m_diffuseTexture);
-            }
-
-            if (temp.Load(m_materials[i].GetSpecularMap(), m_materials[i].GetSpecularMap()))
-            {
-                m_specularTexture = temp;
-                m_specularTexture.GetTexture(m_materials[i].GetSpecularMap(), m_specularTexture);
-            }
-
-            if (temp.Load(m_materials[i].GetNormalMap(), m_materials[i].GetNormalMap()))
-            {
-                m_normalTexture = temp;
-                m_normalTexture.GetTexture(m_materials[i].GetNormalMap(), m_normalTexture);
-            }
-        }
-    }
-
-    //We do one more final clean-up of the raw data because v/t/n data is
-    //usually read in AFTER a group name so the final data group needs sorting
-    if (!faces.empty())
-    {
-        Mesh mesh;
-        mesh.name = lastName;
-        mesh.material = lastMaterial;
-        SortVertexData(mesh, rawMesh, faces);
-    }
-
-    FillBuffers();
-    return true;
+	else if (!tag.empty())
+	{
+		SetModel(tag);
+	}
 }
-
-void Model::Render(const Shader& shader)
+//======================================================================================================
+const glm::vec3& Model::GetDimension() const
 {
-    shader.SendData("isLit", m_isLit);
-    shader.SendData("isTextured", m_isTextured);
-
-    m_modelMatrix = glm::mat4(1.0f);
-    //m_modelMatrix = glm::scale(m_modelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-
-    shader.SendData("model", m_modelMatrix);
-
-    // Is it safe to create this buffer copy here too?
-    Buffer buffer;
-
-    buffer.LinkVBO(shader.GetAttributeID("vertexIn"), Buffer::VERTEX_BUFFER, Buffer::XYZ, Buffer::FLOAT);
-    buffer.LinkVBO(shader.GetAttributeID("colorIn"), Buffer::COLOR_BUFFER, Buffer::RGBA, Buffer::FLOAT);
-    buffer.LinkVBO(shader.GetAttributeID("textureIn"), Buffer::TEXTURE_BUFFER, Buffer::UV, Buffer::FLOAT);
-    buffer.LinkVBO(shader.GetAttributeID("normalIn"), Buffer::NORMAL_BUFFER, Buffer::XYZ, Buffer::FLOAT);
-
-    m_materials.back().SendToShader(shader);
-
-    if (m_isTextured)
-    {
-        // TODO: Figure out a way to bind different texture types
-        //m_ambientTexture.Bind();
-        m_diffuseTexture.Bind();
-       // m_specularTexture.Bind();
-       // m_normalTexture.Bind();
-    }
-
-    for (size_t i = 0; i < m_buffers.size(); i++)
-    {
-        m_buffers[i].Render(Buffer::TRIANGLES);
-    }
-
-    // TODO: Figure out a way to bind different texture types
-    //m_ambientTexture.UnBind();
-    m_diffuseTexture.UnBind();
-    //m_specularTexture.UnBind();
-    //m_normalTexture.UnBind();
-
+	return m_dimension;
 }
-
-void Model::Unload()
+//======================================================================================================
+void Model::SetModel(const std::string& tag)
 {
-    for (size_t i = 0; i < m_buffers.size(); i++)
-    {
-        m_buffers[i].Destroy();
-    }
+	auto it = s_models.find(tag);
+	assert(it != s_models.end());
+	*this = it->second;
 }
-
-void Model::IsLit(bool flag)
+//======================================================================================================
+void Model::SetColor(const glm::vec4& color)
 {
-    m_isLit = flag;
+	SetColor(color.r, color.g, color.b, color.a);
 }
-
-void Model::IsTextured(bool flag)
+//======================================================================================================
+void Model::SetColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 {
-    m_isTextured = flag;
-}
+	auto count = 0;
+	for (auto& mesh : m_meshes)
+	{
+		for (auto& color : mesh.colors)
+		{
+			glm::vec4 newColor(r, g, b, a);
+			color = newColor;
+		}
 
-void Model::FillBuffers()
+		m_buffers[count++].FillVBO(Buffer::VBO::ColorBuffer, &mesh.colors[0].x,
+			mesh.colors.size() * sizeof(glm::vec4));
+	}
+}
+//======================================================================================================
+void Model::FillBuffers(Model& model)
 {
-    for (size_t i = 0; i < m_meshes.size(); i++)
-    {
-        Buffer buffer;
+	//We have to create separate buffer objects if the .obj file data has separate groups
+	//because of how the indices have been set up. Single group models will use one buffer
+	//We can use one buffer for all data but then the indices have to be calculated differently
+	for (auto& mesh : model.m_meshes)
+	{
+		//TODO - Need to label each buffer object properly
+		static auto count = 0;
 
-        buffer.Create(m_meshes[i].indices.size(), true);
+		Buffer buffer("Mesh_" + std::to_string(count++), mesh.indices.size(), true);
 
-        buffer.LinkEBO();
+		buffer.FillEBO(&mesh.indices[0], mesh.indices.size() * sizeof(GLuint));
+		buffer.FillVBO(Buffer::VBO::VertexBuffer,
+			&mesh.vertices[0].x, mesh.vertices.size() * sizeof(glm::vec3));
+		buffer.FillVBO(Buffer::VBO::NormalBuffer,
+			&mesh.normals[0].x, mesh.normals.size() * sizeof(glm::vec3));
 
-        buffer.FillEBO(m_meshes[i].indices.data(), m_meshes[i].indices.size() * sizeof(GLuint), Buffer::SINGLE);
-        buffer.FillVBO(Buffer::VERTEX_BUFFER, &m_meshes[i].vertices[0].x, m_meshes[i].vertices.size() * sizeof(glm::vec3), Buffer::SINGLE);
+		//Fill the color buffer with a default white color 
+		//For each vertex in the mesh there is a color value
+		for (const auto& vertex : mesh.vertices)
+		{
+			glm::vec4 color(1.0f, 1.0f, 1.0f, 1.0f);
+			mesh.colors.push_back(color);
+		}
 
-        for (size_t j = 0; j < m_meshes[i].vertices.size(); j++)
-        {
-            glm::vec4 color(1.0f, 1.0f, 1.0f, 1.0f);
-            m_meshes[i].colors.push_back(color);
-        }
+		buffer.FillVBO(Buffer::VBO::ColorBuffer,
+			&mesh.colors[0].x, mesh.colors.size() * sizeof(glm::vec4));
 
-        buffer.FillVBO(Buffer::COLOR_BUFFER, &m_meshes[i].colors[0].x, m_meshes[i].colors.size() * sizeof(glm::vec4), Buffer::SINGLE);
-        buffer.FillVBO(Buffer::TEXTURE_BUFFER, &m_meshes[i].UVs[0].x, m_meshes[i].UVs.size() * sizeof(glm::vec2), Buffer::SINGLE);
-        buffer.FillVBO(Buffer::NORMAL_BUFFER, &m_meshes[i].normals[0].x, m_meshes[i].normals.size() * sizeof(glm::vec3), Buffer::SINGLE);
+		if (!mesh.textureCoords.empty())
+		{
+			buffer.FillVBO(Buffer::VBO::TextureBuffer,
+				&mesh.textureCoords[0].x, mesh.textureCoords.size() * sizeof(glm::vec2));
+		}
 
-        m_buffers.push_back(buffer);
-    }
+		model.m_buffers.push_back(buffer);
+	}
 }
-
+//======================================================================================================
 void Model::SortVertexData(Mesh& newMesh, const Mesh& oldMesh, const std::vector<Face>& faces)
 {
-    GLuint count = 0;
-    std::map<VertexGroup, GLuint> map;
+	GLuint count = 0;
+	std::unordered_map<VertexGroup, GLuint, HashFunction> map;
 
-    for (size_t i = 0; i < faces.size(); i++)
-    {
+	//Because the .obj file does not have any EBO data or any indices
+	//this needs to be manually created. The raw .obj data will consist
+	//of different amounts of vertex, UV and normal data. To use an EBO
+	//we need to make sure the v/t/n VBO buffer sizes are all equal
+	for (const auto& face : faces)
+	{
+		//We need to loop through all three v/t/n groupings for each face
+		//because all three v/t/n groupings together make up a face triangle
+		//We then see if the grouping is already in the map because groupings
+		//can duplicate in the .obj. For example we could have 2/2/2 in the
+		//.obj file multiple times, so we don't want to store duplicates
+		for (auto i = 0; i < 3; i++)
+		{
+			auto it = map.find(face[i]);
 
-        for (size_t j = 0; j < 3; j++)
-        {
+			if (it == map.end())
+			{
+				glm::vec3 v = oldMesh.vertices[face[i].v];
+				newMesh.vertices.push_back(v);
 
-            auto it = map.find(faces[i][j]);
+				//Some .obj files do not have texture coordinates 
+				if (!oldMesh.textureCoords.empty())
+				{
+					newMesh.textureCoords.push_back(oldMesh.textureCoords[face[i].t]);
+				}
 
-            if (it == map.end())
-            {
-                newMesh.vertices.push_back(oldMesh.vertices[faces[i][j].v]);
-                newMesh.UVs.push_back(oldMesh.UVs[faces[i][j].t]);
-                newMesh.normals.push_back(oldMesh.normals[faces[i][j].n]);
-                newMesh.indices.push_back(count);
+				newMesh.normals.push_back(oldMesh.normals[face[i].n]);
+				newMesh.indices.push_back(count);
 
-                map[faces[i][j]] = count++;
-            }
+				map[face[i]] = count;
 
-            else
-            {
-                newMesh.indices.push_back(it->second);
-            }
+				count++;
 
-        }
+				if (count % 10 == 0)
+				{
+					map.clear();
+				}
+			}
 
-    }
+			else
+			{
+				newMesh.indices.push_back(it->second);
+			}
+		}
+	}
+}
+//======================================================================================================
+void Model::Render(Shader& shader)
+{
+	assert(!m_tag.empty());
 
-    m_meshes.push_back(newMesh);
+	m_normalMatrix = glm::inverse(glm::mat3(m_transform.GetMatrix()));
+	shader.SendData("normal", m_normalMatrix, true);
+	shader.SendData("model", m_transform.GetMatrix());
+
+	auto count = 0;
+	for (auto& mesh : m_meshes)
+	{
+		m_buffers[count].LinkEBO();
+		m_buffers[count].LinkVBO(shader.GetAttributeID("vertexIn"),
+			Buffer::VBO::VertexBuffer, Buffer::ComponentSize::XYZ, Buffer::DataType::FloatData);
+		m_buffers[count].LinkVBO(shader.GetAttributeID("colorIn"),
+			Buffer::VBO::ColorBuffer, Buffer::ComponentSize::RGBA, Buffer::DataType::FloatData);
+		m_buffers[count].LinkVBO(shader.GetAttributeID("textureIn"),
+			Buffer::VBO::TextureBuffer, Buffer::ComponentSize::UV, Buffer::DataType::FloatData);
+		m_buffers[count].LinkVBO(shader.GetAttributeID("normalIn"),
+			Buffer::VBO::NormalBuffer, Buffer::ComponentSize::XYZ, Buffer::DataType::FloatData);
+
+		Material material;
+
+		for (auto mat : m_material.GetGroup())
+		{
+			if (mat.GetName() == mesh.materialName)
+			{
+				material = mat;
+				break;
+			}
+		}
+
+		material.SendToShader(shader);
+
+		if (material.IsTextured())
+		{
+			shader.SendData("isTextured", true);
+			material.GetDiffuseMap().Bind();
+		}
+
+		else
+		{
+			shader.SendData("isTextured", false);
+		}
+
+		m_buffers[count++].Render(Buffer::RenderMode::Triangles);
+	}
+}
+//======================================================================================================
+void Model::Unload(const std::string& tag)
+{
+	if (!tag.empty())
+	{
+		auto it = s_models.find(tag);
+		assert(it != s_models.end());
+
+		for (auto& buffer : it->second.m_buffers)
+		{
+			Buffer::Destroy(buffer.GetTag());
+		}
+
+		Material::Unload(it->second.m_material.GetTag());
+		s_models.erase(it);
+	}
+
+	else
+	{
+		for (auto& model : s_models)
+		{
+			for (auto& buffer : model.second.m_buffers)
+			{
+				Buffer::Destroy(buffer.GetTag());
+			}
+
+			Material::Unload(model.second.m_material.GetTag());
+		}
+
+		s_models.clear();
+	}
+}
+//======================================================================================================
+void Model::SetRootFolder(const std::string& rootFolder)
+{
+	s_rootFolder = rootFolder;
+}
+//======================================================================================================
+void Model::Normalize(Model& model)
+{
+	glm::vec3 minValues = glm::vec3(0.0f);
+	glm::vec3 maxValues = glm::vec3(0.0f);
+
+	for (const auto& mesh : model.m_meshes)
+	{
+		for (const auto& vertex : mesh.vertices)
+		{
+			maxValues = glm::max(maxValues, vertex);
+			minValues = glm::min(minValues, vertex);
+		}
+	}
+
+	glm::vec3 length = maxValues - minValues;
+
+	if (length == glm::vec3(0.0f))
+	{
+		return;
+	}
+
+	auto fraction = (1.0f / glm::max(glm::max(length.x, length.y), length.z));
+
+	for (auto& mesh : model.m_meshes)
+	{
+		for (auto& vertex : mesh.vertices)
+		{
+			vertex *= fraction;
+		}
+	}
 }
