@@ -1,12 +1,12 @@
 #pragma once
 
 #include <map>
+#include "glad.h"
 #include <string>
 #include <vector>
-#include "glad.h"
 #include <glm.hpp>
 #include "Shader.h"
-#include "Texture.h"
+
 
 class Material
 {
@@ -18,25 +18,22 @@ public:
 	static void SetRootFolder(const std::string& rootFolder);
 
 	Material(const std::string& tag = "", const std::string& filename = "");
-	~Material() {}
 
-	const std::string& GetTag() const;
 	const std::string& GetName() const;
-	const Texture& GetNormalMap() const;
-	const Texture& GetAmbientMap() const;
-	const Texture& GetDiffuseMap() const;
-	const Texture& GetSpecularMap() const;
-	const std::vector<Material>& GetGroup() const;
+	const std::string& GetNormalMap() const;
+	const std::string& GetAmbientMap() const;
+	const std::string& GetDiffuseMap() const;
+	const std::string& GetSpecularMap() const;
 
 	void SetName(const std::string& name);
-	void SetGroup(const std::string& tag);
+	//void SetMaterial(const std::string& name);
 
 	bool IsTextured() const;
 
-	void LoadNormalMap(const std::string& tag, const std::string& filename);
-	void LoadAmbientMap(const std::string& tag, const std::string& filename);
-	void LoadDiffuseMap(const std::string& tag, const std::string& filename);
-	void LoadSpecularMap(const std::string& tag, const std::string& filename);
+	void SetNormalMap(const std::string& normalMap);
+	void SetAmbientMap(const std::string& ambientMap);
+	void SetDiffuseMap(const std::string& diffuseMap);
+	void SetSpecularMap(const std::string& specularMap);
 
 	void SetShininess(GLfloat shininess);
 	void SetRefractiveIndex(GLfloat refractiveIndex);
@@ -56,7 +53,7 @@ public:
 	void SetTransmittance(const glm::vec3& transmittance);
 	void SetTransmittance(GLfloat r, GLfloat g, GLfloat b);
 
-	void SendToShader(Shader& shader);
+	void SendToShader(const Shader& shader);
 
 private:
 
@@ -68,18 +65,15 @@ private:
 	GLfloat m_shininess;
 	GLfloat m_refractiveIndex;
 
-	Texture m_normalMap;
-	Texture m_ambientMap;
-	Texture m_diffuseMap;
-	Texture m_specularMap;
+	std::string m_normalMap;
+	std::string m_ambientMap;
+	std::string m_diffuseMap;
+	std::string m_specularMap;
 
 	glm::vec3 m_ambient;
 	glm::vec3 m_diffuse;
 	glm::vec3 m_specular;
 	glm::vec3 m_emission;
 	glm::vec3 m_transmittance;
-
-	static std::string s_rootFolder;
-	static std::map<std::string, std::vector<Material>> s_materialGroups;
 
 };

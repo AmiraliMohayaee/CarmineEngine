@@ -98,6 +98,7 @@ void Input::Update()
 	// Resetting mouse motion perframe
 	m_mouseMotion.x = 0.0f;
 	m_mouseMotion.y = 0.0f;
+	m_mouseWheelMotion = 0;
 
 	// Setting up the event type for polling
 	SDL_Event events;

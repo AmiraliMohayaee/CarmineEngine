@@ -12,15 +12,15 @@ class Object
 
 public:
 
-
-	Object(Object* parent = nullptr);
+	Object();
+	Object(const Transform& transform);
 	virtual ~Object() = 0 {}
 
-	bool IsLit() const;
-	bool IsAlive() const;
-	bool IsActive() const;
-	bool IsVisible() const;
-	bool IsTextured() const;
+	virtual void Create() = 0;
+	virtual void Destroy() = 0;
+	virtual void Draw(const Shader& shader) = 0;
+	virtual void Update() = 0;
+	virtual void SendToShader(const Shader& shader) {}
 
 	void IsLit(bool flag);
 	void IsAlive(bool flag);
@@ -28,8 +28,7 @@ public:
 	void IsVisible(bool flag);
 	void IsTextured(bool flag);
 
-	GLuint GetPriority() const;
-	const std::string& GetTag();
+public:
 
 	Transform& GetTransform();
 

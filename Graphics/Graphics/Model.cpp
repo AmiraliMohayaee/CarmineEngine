@@ -155,25 +155,41 @@ bool Model::Load(const std::string& tag,
 				continue;
 			}
 
-			//This indicates the name of the .mtl file to use for the mesh 
-			//group. All materials are found in the subsequent material file
-			//Note that sometimes the material file might not be found
-			if (subStrings[0] == "mtllib")
-			{
-				model.m_material.Load(subStrings[1], subStrings[1]);
-				model.m_material.SetGroup(subStrings[1]);
-				continue;
-			}
+            //This indicates the name of the .mtl file to use for the mesh 
+            //group. All materials are found in the subsequent material file 
+            if (subStrings[0] == "mtllib")
+            {
+                //If the material file could not be loaded we load in a default material
+                if (!Material::LoadMaterials(subStrings[1], subStrings[1]))
+                {
+                    Material material;
+                   // material.SetMaterial("Gold");
+                    m_materials.push_back(material);
+                }
 
-			//This indicates mesh groups or objects within 
-			//the model which will make up the final model 
-			if (subStrings[0] == "g" || subStrings[0] == "o")
-			{
-				//Go through all previously loaded faces 
-				//and build a mesh from the previous group
-				if (!faces.empty())
-				{
-					Mesh mesh;
+                continue;
+            }
+
+        }
+    }
+
+    //Check if any materials were loaded because there may be a 'mtllib' 
+    //statement missing. This means that no materials, not even default 
+    //ones are loaded so as a last resort, we add a default material
+    if (m_materials.empty())
+    {
+        Material material;
+        material.SetMaterial("Gold");
+        m_materials.push_back(material);
+    }
+
+    //Otherwise we loop through all loaded materials and check
+    //if any textures are required for the ADS lighting model
+    else
+    {
+        for (size_t i = 0; i < m_materials.size(); i++)
+        {
+            Texture temp;
 
 					mesh.vertices.reserve(rawMesh.vertices.size());
 					mesh.textureCoords.reserve(rawMesh.textureCoords.size());
@@ -332,13 +348,17 @@ void Model::FillBuffers(Model& model)
 		buffer.FillVBO(Buffer::VBO::NormalBuffer,
 			&mesh.normals[0].x, mesh.normals.size() * sizeof(glm::vec3));
 
-		//Fill the color buffer with a default white color 
-		//For each vertex in the mesh there is a color value
-		for (const auto& vertex : mesh.vertices)
-		{
-			glm::vec4 color(1.0f, 1.0f, 1.0f, 1.0f);
-			mesh.colors.push_back(color);
-		}
+            //This indicates the name of the .mtl file to use for the mesh 
+            //group. All materials are found in the subsequent material file 
+            if (subStrings[0] == "mtllib")
+            {
+                //If the material file could not be loaded we load in a default material
+                if (!Material::LoadMaterials(m_materials, subStrings[1]))
+                {
+                    Material material;
+                    material.SetMaterial("Chrome");
+                    m_materials.push_back(material);
+                }
 
 		buffer.FillVBO(Buffer::VBO::ColorBuffer,
 			&mesh.colors[0].x, mesh.colors.size() * sizeof(glm::vec4));
@@ -349,14 +369,20 @@ void Model::FillBuffers(Model& model)
 				&mesh.textureCoords[0].x, mesh.textureCoords.size() * sizeof(glm::vec2));
 		}
 
-		model.m_buffers.push_back(buffer);
-	}
-}
-//======================================================================================================
-void Model::SortVertexData(Mesh& newMesh, const Mesh& oldMesh, const std::vector<Face>& faces)
-{
-	GLuint count = 0;
-	std::unordered_map<VertexGroup, GLuint, HashFunction> map;
+        }
+    }
+
+
+
+    //Check if any materials were loaded because there may be a 'mtllib' 
+    //statement missing. This means that no materials, not even default 
+    //ones are loaded so as a last resort, we add a default material
+    if (m_materials.empty())
+    {
+        Material material;
+        material.SetMaterial("Chrome");
+        m_materials.push_back(material);
+    }
 
 	//Because the .obj file does not have any EBO data or any indices
 	//this needs to be manually created. The raw .obj data will consist

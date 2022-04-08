@@ -22,9 +22,6 @@ bool Material::Load(const std::string& tag, const std::string& filename)
 	}
 
 	Material material;
-	material.m_tag = tag;
-	material.m_group.reserve(5);
-
 	std::string line;
 	std::vector<std::string> subStrings;
 	subStrings.reserve(5);
@@ -111,28 +108,28 @@ bool Material::Load(const std::string& tag, const std::string& filename)
 			//Ambient texture file
 			if (subStrings[0] == "map_Ka")
 			{
-				material.m_group.back().LoadAmbientMap(subStrings[1], subStrings[1]);
+				materials.back().SetAmbientMap(subStrings[1]);
 				continue;
 			}
 
 			//Diffuse texture file
 			if (subStrings[0] == "map_Kd")
 			{
-				material.m_group.back().LoadDiffuseMap(subStrings[1], subStrings[1]);
+				materials.back().SetDiffuseMap(subStrings[1]);
 				continue;
 			}
 
 			//Specular texture file
 			if (subStrings[0] == "map_Ks")
 			{
-				material.m_group.back().LoadSpecularMap(subStrings[1], subStrings[1]);
+				materials.back().SetSpecularMap(subStrings[1]);
 				continue;
 			}
 
 			//Normal texture file
 			if (subStrings[0] == "map_Ns" || subStrings[0] == "bump")
 			{
-				material.m_group.back().LoadNormalMap(subStrings[1], subStrings[1]);
+				materials.back().SetNormalMap(subStrings[1]);
 				continue;
 			}
 		}
@@ -158,8 +155,8 @@ void Material::Unload(const std::string& tag)
 			Texture::Unload(material.GetNormalMap().GetTag());
 		}
 
-		s_materialGroups.erase(it);
-	}
+	return true;
+}
 
 	else
 	{
@@ -196,8 +193,8 @@ Material::Material(const std::string& tag, const std::string& filename)
 
 	if (!filename.empty())
 	{
-		Load(tag, filename);
-		SetGroup(tag);
+		LoadMaterials(filename);
+		// set the group tag for material
 	}
 
 	else if (!tag.empty())
@@ -245,14 +242,7 @@ void Material::SetName(const std::string& name)
 {
 	m_name = name;
 }
-//======================================================================================================
-void Material::SetGroup(const std::string& tag)
-{
-	auto it = s_materialGroups.find(tag);
-	assert(it != s_materialGroups.end());
-	m_group = it->second;
-}
-//======================================================================================================
+
 bool Material::IsTextured() const
 {
 	return m_isTextured;
