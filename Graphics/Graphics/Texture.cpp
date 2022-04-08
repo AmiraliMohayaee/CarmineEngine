@@ -1,145 +1,141 @@
 #include "Texture.h"
-#include <assert.h>
-#include "Utility.h"
 
 
-std::map<std::string, Texture> Texture::s_textures;
-std::string Texture::s_rootFolder = "Assets/Textures/";
+// Globally initializing the texture map in static memory
+std::map<std::string, Texture>* Texture::s_textureMap = new std::map<std::string, Texture>;
 
-//======================================================================================================
-bool Texture::Load(const std::string& tag, const std::string& filename)
+std::string Texture::s_rootFolderTexture = "Assets/Textures/";
+
+
+Texture::Texture()
 {
-	assert(s_textures.find(tag) == s_textures.end());
+	m_ID = 0;
+}
 
-	//TODO - Make use of a simpler image loading library such as SOIL
-	//TODO - Find a way to load the image the right way up, 
-	//else we have to add conversion to flip the raw pixel data
-	SDL_Surface* textureData = IMG_Load((s_rootFolder + filename).c_str());
+Texture::~Texture()
+{
+}
 
-	if (!textureData)
+
+bool Texture::GetTexture(const std::string& textureID, Texture& texture)
+{
+	std::cout << "Getting Texture object: " << textureID << std::endl;
+	auto it = s_textureMap->find(textureID);
+
+	if (it == s_textureMap->end())
 	{
-		Utility::Log(Utility::Destination::WindowsMessageBox,
-			"Error loading texture file \"" + (s_rootFolder + filename) + "\"\n\n"
-			"Possible causes could be a corrupt or missing file. Another reason could be "
-			"that the filename and/or path are incorrectly spelt.", Utility::Severity::Failure);
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Could not find texture object in texture container: ", textureID);
 		return false;
 	}
 
-	//This is all the raw image data 
-	auto width = textureData->w;
-	auto height = textureData->h;
-	auto pixels = reinterpret_cast<Uint8*>(textureData->pixels);
-	auto depth = textureData->format->BytesPerPixel;
-	auto format = ((depth == 4) ? GL_RGBA : GL_RGB);
+	texture = it->second;
+	return true;
+}
 
+void Texture::Bind()
+{
+	glBindTexture(GL_TEXTURE_2D, m_ID);
+}
+
+bool Texture::Load(const std::string& filename, const std::string textureTag)
+{
+	// Checking if texture already exists in the map, so we don't load it twice
+	if (s_textureMap->find(textureTag) != s_textureMap->end())
+	{
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Texture already exists: ", textureTag);
+		return false;
+	}
+
+	//if (m_ID == -1)
+	//{
+	//	Debug::Log("Failed to generate Texture ID for ", textureTag);
+	//	return false;
+	//}
+	
+	SDL_Surface* textureData = nullptr;
+	textureData = IMG_Load((s_rootFolderTexture + filename).c_str());
+
+	if (!textureData)
+	{
+		// TODO: Change this to new Utility error log
+		//Debug::Log("Problem loading texture data: ", filename);
+		return false;
+	}
+
+
+	// Creating temporary texture to assign into the map
 	Texture texture;
-	texture.m_tag = tag;
 
+
+	// Generate Texture obj first before creating a surface
+	// and binding it
 	glGenTextures(1, &texture.m_ID);
+
 	glBindTexture(GL_TEXTURE_2D, texture.m_ID);
 
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		Uint8* pixels = (Uint8*)textureData->pixels;
+		GLsizei width = textureData->w;
+		GLsizei height = textureData->h;
+		Uint8 depth = textureData->format->BytesPerPixel;
+		GLint format = ((depth == 4) ? GL_RGBA : GL_RGB);
 
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
-	glGenerateMipmap(GL_TEXTURE_2D);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
+		// Additional environment texture setting that can be set in
+		// the future
+		//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+		// (target texture dimentions, mipmap level, image format(RGB/RGBA), width&height,
+		// image border, pixel data, pointer to pixel data
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixels);
+
+		glGenerateMipmap(GL_TEXTURE_2D);
+	
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	SDL_FreeSurface(textureData);
-	s_textures[tag] = texture;
+
+	std::cout << "Texture File Loaded successfully: " << textureTag << std::endl;
+	texture.m_tag = textureTag;
+
+	s_textureMap->insert(std::pair<std::string, Texture>(textureTag, texture));
+
 	return true;
 }
-//======================================================================================================
-void Texture::Unload(const std::string& tag)
+
+void Texture::UnBind()
 {
-	if (!tag.empty())
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Texture::Unload(const std::string& textureID)
+{
+	auto it = s_textureMap->find(textureID);
+
+	if (it != s_textureMap->end())
 	{
-		auto it = s_textures.find(tag);
-		assert(it != s_textures.end());
-		glDeleteTextures(1, &it->second.m_ID);
-		s_textures.erase(it);
+		glDeleteTextures(1, &(it->second.m_ID));
+		s_textureMap->erase(it);
+		std::cout << textureID + " removed" << std::endl;
 	}
 
 	else
 	{
-		for (auto& texture : s_textures)
-		{
-			glDeleteTextures(1, &texture.second.m_ID);
-		}
-
-		s_textures.clear();
+		// TODO: Change this to new Utility error log
+		//Debug::Log(textureID + " not found in map");
 	}
 }
-//======================================================================================================
-void Texture::SetRootFolder(const std::string& rootFolder)
-{
-	s_rootFolder = rootFolder;
-}
-//======================================================================================================
-Texture::Texture(const std::string& tag, const std::string& filename)
-{
-	m_ID = 0;
 
-	if (!filename.empty())
-	{
-		Load(tag, filename);
-		SetTexture(tag);
-	}
+void Texture::Unload()
+{
+	std::cout << "Clearing all loaded textures" << std::endl;
 
-	else if (!tag.empty())
-	{
-		SetTexture(tag);
-	}
-}
-//======================================================================================================
-const std::string& Texture::GetTag() const
-{
-	return m_tag;
-}
-//======================================================================================================
-void Texture::SetWrapping(WrapSetting wrapSetting)
-{
-	glBindTexture(GL_TEXTURE_2D, m_ID);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, static_cast<GLint>(wrapSetting));
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, static_cast<GLint>(wrapSetting));
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
-//======================================================================================================
-void Texture::SetTexture(const std::string& tag)
-{
-	auto it = s_textures.find(tag);
-	assert(it != s_textures.end());
-	*this = it->second;
-}
-//======================================================================================================
-void Texture::SetFilter(FilterType filterType, FilterSetting filterSetting)
-{
-	glBindTexture(GL_TEXTURE_2D, m_ID);
-	glTexParameteri(GL_TEXTURE_2D,
-		static_cast<GLenum>(filterType), static_cast<GLint>(filterSetting));
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
-//======================================================================================================
-void Texture::Bind() const
-{
-	assert(!m_tag.empty());
-	assert(m_ID > 0);
-	glBindTexture(GL_TEXTURE_2D, m_ID);
-}
-//======================================================================================================
-void Texture::Bind(TextureUnit textureUnit) const
-{
-	assert(!m_tag.empty());
-	assert(m_ID > 0);
-	glActiveTexture(static_cast<GLenum>(textureUnit));
-	glBindTexture(GL_TEXTURE_2D, m_ID);
-}
-//======================================================================================================
-void Texture::Unbind() const
-{
-	glBindTexture(GL_TEXTURE_2D, 0);
+	// Clears the entire container of all texture objects
+	s_textureMap->clear();
 }

@@ -9,7 +9,7 @@ App::App()
 	m_isProgramRunning = true;
 
 	// TODO: Add asserts inside the functions to make sure they're loaded before the materials are use
-	Material::Load("Defaults", "Materials.mat");
+	Material::LoadMaterials("Defaults", "Materials.mat");
 
 	m_camera = std::make_unique<FPSCamera>();
 	m_cube = std::make_unique<Cube>();
@@ -29,7 +29,7 @@ bool App::InitScreenAndShaders()
 
 	m_mainShader = std::make_unique<Shader>();
 
-	m_mainShader->Create("Default.vert", "Default.frag");
+	m_mainShader->Create("main.vert", "main.frag");
 
 	m_mainShader->BindAttribute("vertexIn");
 	m_mainShader->BindAttribute("colorIn");
@@ -65,10 +65,8 @@ void App::InitObjects()
 	// Initializing Viewing Grid and Camera
 	//////////////////////////////////////////
 
-	//Texture::Load("Crate_1_Diffuse.png", "CRATE");
+	Texture::Load("Crate_1_Diffuse.png", "CRATE");
 
-	// Loading in Font into Imgui directly from a file
-	ImGui::GetIO().Fonts->AddFontFromFileTTF("Assets/Fonts/KindlyRewind-BOon.ttf", 12);
 	
 	//m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
 	m_camera->SetSpeed(0.5f);
@@ -106,8 +104,6 @@ void App::InitObjects()
 void App::Draw()
 {
 	auto& mainShader = *m_mainShader.get();
-	mainShader.Use();
-
 
 	mainShader.Use();
 
@@ -131,10 +127,12 @@ void App::Update()
 
 		// Checking for inputs 
 		Input::Instance()->Update();
+
 		if (Input::Instance()->IsXClicked())
 		{
 			m_isProgramRunning = false;
 		}
+
 		if (Input::Instance()->KeyPressed() == true)
 		{
 			if (Input::Instance()->GetKeyPressed() == KEY_ESC)
@@ -225,7 +223,7 @@ void App::Update()
 			if (ImGui::Begin("Window"))
 			{
 				ImGui::Text("Hello World.");
-				ImGui::Checkbox("Exit Appllication", &exitApp);
+				//ImGui::Checkbox("Exit Appllication", &exitApp);
 				//ImGui::SliderFloat("Size", &m_camera->GetTransform().GetPosition().z, 0.3f, 2.0f);
 				ImGui::End();
 			}
@@ -240,7 +238,7 @@ void App::Update()
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();
 
-		m_isProgramRunning = !exitApp;
+		//m_isProgramRunning = !exitApp;
 	}
 }
 

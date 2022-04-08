@@ -43,8 +43,8 @@ void Quad::Create()
 	GLuint indices[] = { 0,  1,  3,
 						 3,  1,  2 };
 
-	
-	m_texture.SetTexture("CRATE");
+	// TODO - Remove hardcoded texture name
+	m_texture.GetTexture("CRATE", m_texture);
 
 	//m_material.SetMaterial("Chrome");
 

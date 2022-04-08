@@ -22,22 +22,24 @@ public:
 	virtual void Update() = 0;
 	virtual void SendToShader(const Shader& shader) {}
 
-	void IsLit(bool flag);
+public:
+
+	bool IsVisible();
+	bool IsAlive();
+	bool IsActive(); 
+	bool IsTexture();
+	bool IsLit();
+	
+	void IsVisible(bool flag);
 	void IsAlive(bool flag);
 	void IsActive(bool flag);
-	void IsVisible(bool flag);
 	void IsTextured(bool flag);
+	void IsLit(bool flag);
 
 public:
 
 	Transform& GetTransform();
-
-	void SetPriority(GLuint priority);
-	void SetTag(const std::string& tag);
-
-	virtual void Render(Shader& shader) = 0;
-	virtual void Update(GLfloat deltaTime) = 0;
-	virtual void SendToShader(Shader& shader) = 0;
+	void SetTransform(const Transform& transform);
 
 protected:
 
@@ -47,11 +49,6 @@ protected:
 	bool m_isVisible;
 	bool m_isTextured;
 
-	Object* m_parent;
-	std::string m_tag;
-	glm::vec4 m_color;
-	GLuint m_priority;
 	Transform m_transform;
-	glm::mat3 m_normalMatrix;
 
 };

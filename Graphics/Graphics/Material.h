@@ -13,8 +13,9 @@ class Material
 
 public:
 
-	static bool Load(const std::string& tag, const std::string& filename);
-	static void Unload(const std::string& tag = "");
+	//static bool LoadMaterials(const std::string& filename);
+	static bool LoadMaterials(const std::string& tag, const std::string& filename);
+	static bool Unloading(const std::string& tag);
 	static void SetRootFolder(const std::string& rootFolder);
 
 	Material(const std::string& tag = "", const std::string& filename = "");
@@ -58,6 +59,10 @@ public:
 private:
 
 	bool m_isTextured;
+
+	static std::string s_rootFolder;
+	static std::map<std::string, std::vector<Material>> s_materialGroups;
+
 	std::string m_tag;
 	std::string m_name;
 	std::vector<Material> m_group;

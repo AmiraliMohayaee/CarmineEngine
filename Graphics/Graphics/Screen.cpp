@@ -44,7 +44,7 @@ bool Screen::InitScreen()
 	/////////////////////////////////////////////////////////
 	std::ifstream settingsFile;
 	settingsFile.open("Assets/Scripts/settings.txt", std::ios_base::in);
-	
+
 
 	if (settingsFile.fail())
 	{
@@ -151,14 +151,19 @@ bool Screen::InitScreen()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, m_oGLMajorVersion);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, m_oGLMinorVersion);
 
+	auto flag = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+
+	if (m_isFullScreen)
+	{
+		flag |= SDL_WINDOW_MAXIMIZED;
+	}
+
 	// Creating the window
 	window = SDL_CreateWindow(m_applicationName.c_str(),
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
 		m_resolutionWidth, m_resolutionHeight,
-		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-
-	
+		flag);
 
 	if (!window)
 	{
