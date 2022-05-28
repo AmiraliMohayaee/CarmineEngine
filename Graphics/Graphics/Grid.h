@@ -14,10 +14,10 @@ public:
 	void SetupGridDimentions(int quadrants, int maxSize,
 		float red, float green, float blue, float alpha);
 
-	void Create();
-	void Destroy();
-	void Draw(const Shader& shader);
-	void Update() {}
+	virtual void Create();
+	virtual void Destroy();
+	virtual void Draw(const Shader& shader);
+	virtual void Update() {}
 
 private:
 

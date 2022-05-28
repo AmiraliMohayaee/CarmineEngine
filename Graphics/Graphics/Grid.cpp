@@ -114,13 +114,15 @@ void Grid::Create()
 {
 	// Setting up space for the buffer in accordance to the size
 	// of the grid we are looking to make
-	const GLint SIZE = 11;
+	const GLint SIZE = 10;
 	const GLint QUADRANTS = 4;
-	const GLint BYTES_PER_LINE_VERTEX = 6 * sizeof(GLint);
-	const GLint BYTES_PER_LINE_COLOR = 8 * sizeof(GLfloat);
+	const GLint BYTES_PER_LINE_VERTEX = 
+		static_cast<GLuint>(Buffer::XYZ) * sizeof(GLint);
+	const GLint BYTES_PER_LINE_COLOR = 
+		static_cast<GLuint>(Buffer::RGBA) * sizeof(GLfloat);
 
-	const int TOTAL_BYTES_VBO_VERTEX = SIZE * QUADRANTS * BYTES_PER_LINE_VERTEX;
-	const int TOTAL_BYTES_VBO_COLOR = SIZE * QUADRANTS * BYTES_PER_LINE_COLOR;
+	const int TOTAL_BYTES_VBO_VERTEX = (SIZE + 1) * QUADRANTS * BYTES_PER_LINE_VERTEX * 2;
+	const int TOTAL_BYTES_VBO_COLOR = (SIZE + 1) * QUADRANTS * BYTES_PER_LINE_COLOR * 2;
 
 	m_buffer.Create(SIZE * QUADRANTS * 2, false);
 	m_buffer.FillVBO(Buffer::VERTEX_BUFFER, nullptr, TOTAL_BYTES_VBO_VERTEX);
@@ -132,11 +134,11 @@ void Grid::Create()
 	m_color.b = 1.0f;
 	m_color.a = 1.0f;
 
-	GLuint m_offsetVertex = 0;
 	GLuint m_offsetColor = 0;
+	GLuint m_offsetVertex = 0;
 
 	//NEGATIVE X QUADRANT
-	for (GLint i = 0; i < SIZE; i++)
+	for (GLint i = 0; i <= SIZE; i++)
 	{
 		// gridline vertices - negative X
 		GLint vertices[] = { -SIZE + i, 0, SIZE,	// first vertex
@@ -150,12 +152,12 @@ void Grid::Create()
 		m_buffer.AppendVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), m_offsetVertex);
 		m_buffer.AppendVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors), m_offsetColor);
 
-		m_offsetVertex += BYTES_PER_LINE_VERTEX;
-		m_offsetColor += BYTES_PER_LINE_COLOR;
+		m_offsetVertex += BYTES_PER_LINE_VERTEX * 2;
+		m_offsetColor += BYTES_PER_LINE_COLOR * 2;
 	}
 
 	//POSITIVE X QUADRANT
-	for (GLint i = 1; i <= SIZE; i++)
+	for (GLint i = 1; i < SIZE; i++)
 	{
 		// gridline vertices - positive X
 		GLint vertices[] = { 0 + i, 0, SIZE,	// first vertex
@@ -168,12 +170,12 @@ void Grid::Create()
 		m_buffer.AppendVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), m_offsetVertex);
 		m_buffer.AppendVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors), m_offsetColor);
 
-		m_offsetVertex += BYTES_PER_LINE_VERTEX;
-		m_offsetColor += BYTES_PER_LINE_COLOR;
+		m_offsetVertex += BYTES_PER_LINE_VERTEX * 2;
+		m_offsetColor += BYTES_PER_LINE_COLOR * 2;
 	}
 
 	//NEGATIVE Z QUADRANT
-	for (GLint i = 0; i < SIZE; i++)
+	for (GLint i = 0; i <= SIZE; i++)
 	{
 		// gridline vertices - positive X
 		GLint vertices[] = { -SIZE, 0, -SIZE + i,	// first vertex
@@ -186,12 +188,12 @@ void Grid::Create()
 		m_buffer.AppendVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), m_offsetVertex);
 		m_buffer.AppendVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors), m_offsetColor);
 
-		m_offsetVertex += BYTES_PER_LINE_VERTEX;
-		m_offsetColor += BYTES_PER_LINE_COLOR;
+		m_offsetVertex += BYTES_PER_LINE_VERTEX * 2;
+		m_offsetColor += BYTES_PER_LINE_COLOR * 2;
 	}
 
 	//POSITIVE Z QUADRANT
-	for (int i = 1; i <= SIZE; i++)
+	for (int i = 1; i < SIZE; i++)
 	{
 		// gridline vertices - positive X
 		GLint vertices[] = { -SIZE, 0, 0 + i,	// first vertex
@@ -204,8 +206,8 @@ void Grid::Create()
 		m_buffer.AppendVBO(Buffer::VERTEX_BUFFER, vertices, sizeof(vertices), m_offsetVertex);
 		m_buffer.AppendVBO(Buffer::COLOR_BUFFER, colors, sizeof(colors), m_offsetColor);
 
-		m_offsetVertex += BYTES_PER_LINE_VERTEX;
-		m_offsetColor += BYTES_PER_LINE_COLOR;
+		m_offsetVertex += BYTES_PER_LINE_VERTEX * 2;
+		m_offsetColor += BYTES_PER_LINE_COLOR * 2;
 	}
 }
 
