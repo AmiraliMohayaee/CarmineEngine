@@ -12,6 +12,8 @@
 #include "Model.h"
 #include "FPSCamera.h"
 #include "Shader.h"
+#include "Audio.h"
+
 
 
 class App
@@ -35,6 +37,7 @@ private:
 	std::unique_ptr<Cube> m_cube;
 	std::unique_ptr<Grid> m_grid;
 	std::unique_ptr<Quad> m_quad;
+	std::unique_ptr<Audio> m_audio;
 	std::unique_ptr<Light> m_light;
 	std::unique_ptr<Model> m_model;
 	std::unique_ptr<FPSCamera> m_camera;

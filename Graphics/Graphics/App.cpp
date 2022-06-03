@@ -66,7 +66,6 @@ void App::InitObjects()
 	//////////////////////////////////////////
 
 	Texture::Load("Crate_1_Diffuse.png", "CRATE");
-
 	
 	//m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
 	m_camera->SetSpeed(0.5f);
@@ -89,16 +88,22 @@ void App::InitObjects()
 	//m_grid->SetupGridDimentions(4, 12, 1.0f, 1.0f, 1.0f, 1.0f);
 	//m_grid->CreateBuffers();
 
-	ImGui::GetIO().Fonts->AddFontFromFileTTF("Assets/Fonts/Quikhand.ttf", 24);
+	ImGui::GetIO().Fonts->AddFontFromFileTTF("Assets/Fonts/Arial.ttf", 24);
 	ImGui::GetIO().Fonts->Build();
 	
 	//m_model->Load("Teapot.obj");
 	//m_model->IsLit(false);
 	//m_model->IsTextured(false);
 	
+
+	//////////////////////////////////////////
+	// Initializing Audio and Sounds
+	//////////////////////////////////////////
+	Audio::Initialize();
 	
-	// Error Catching Code
-	//GLError::GraphicsErrorCatch();
+	m_audio->Load(Audio::Type::Music, "test", "audiotest.mp3");
+	m_audio = std::make_unique<Audio>(Audio::Type::Music, "test");
+
 }
 
 void App::Draw()
@@ -119,6 +124,8 @@ void App::Draw()
 
 void App::Update()
 {
+	Audio::Update();
+
 
 	while (m_isProgramRunning)
 	{
@@ -194,6 +201,8 @@ void App::Update()
 		bool loadScene = false;
 		bool saveScene = false;
 		bool exitApp = false;
+		bool playAudioTest = false;
+		bool stopAudioTest = false;
 	
 		if (ImGui::BeginMainMenuBar())
 		{
@@ -219,12 +228,30 @@ void App::Update()
 				ImGui::EndMenu();
 			}
 
+			if (ImGui::Begin("Audio"))
+			{
+				ImGui::Text("Audio Options");
+				ImGui::Checkbox("Play Audio Test", &playAudioTest);
+
+				if (playAudioTest)
+				{
+					m_audio->Play();
+				}
+
+				ImGui::Checkbox("Stop Audio Test", &stopAudioTest);
+
+				if (stopAudioTest)
+				{
+					m_audio->Stop();
+				}
+
+				ImGui::End();
+			}
 			
 			if (ImGui::Begin("Window"))
 			{
 				ImGui::Text("Hello World.");
 				ImGui::Checkbox("Exit Appllication", &exitApp);
-				//ImGui::SliderFloat("Size", &m_camera->GetTransform().GetPosition().z, 0.3f, 2.0f);
 				ImGui::End();
 			}
 
@@ -244,6 +271,7 @@ void App::Update()
 
 void App::Shutdown()
 {
+	Audio::Shutdown();
 	m_quad->Destroy();
 	m_cube->Destroy();
 	m_grid->Destroy();
