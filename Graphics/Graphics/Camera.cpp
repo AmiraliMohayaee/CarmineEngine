@@ -52,25 +52,29 @@ void Camera::CreatePerspView()
 	// Aquiring the aspect ration to pass alongside 
 	// fov, close and far clipping range for the 
 	// view frustum
-	auto aspectRatio = (static_cast<GLfloat>(Screen::Instance()->GetScreenWidth()) /
-		static_cast<GLfloat>(Screen::Instance()->GetScreenHeight()));
+
+	auto res = Screen::Instance()->GetResolution();
+
+	auto aspectRatio = (static_cast<GLfloat>(res.x) / static_cast<GLfloat>(res.y));
 
 	m_projectionMatrix = glm::perspective(glm::radians(m_fieldOfView), aspectRatio, NEAR_CLIP, FAR_CLIP);
 }
 
 void Camera::CreateOrthoView(Origin2D origin)
 {
-	int width = Screen::Instance()->GetScreenWidth();
-	int height = Screen::Instance()->GetScreenHeight();
+	//int width = Screen::Instance()->GetScreenWidth();
+	//int height = Screen::Instance()->GetScreenHeight();
+
+	auto res = Screen::Instance()->GetResolution();
 
 	if (origin == Origin2D::TOP_LEFT)
 	{
-		m_projectionMatrix = glm::ortho(0, width, height, 0);
+		m_projectionMatrix = glm::ortho(0, res.x, res.y, 0);
 	}
 
 	else
 	{
-		m_projectionMatrix = glm::ortho(0, width, 0, height);
+		m_projectionMatrix = glm::ortho(0, res.x, 0, res.y);
 	}
 }
 

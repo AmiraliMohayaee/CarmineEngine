@@ -129,6 +129,10 @@ void App::Update()
 
 	while (m_isProgramRunning)
 	{
+		auto res = Screen::Instance()->GetResolution();
+
+		glViewport(0, 0, res.x, res.y);
+
 		//====================================================================
 		// Clearing the buffer
 		Screen::Instance()->ClearBuffer();
@@ -176,6 +180,8 @@ void App::ManageUI()
 	bool exitApp = false;
 	bool playAudioTest = false;
 	bool stopAudioTest = false;
+	
+	static bool cameraSettingsOpen = false;
 
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -201,53 +207,76 @@ void App::ManageUI()
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::Begin("Audio"))
+		if (ImGui::BeginMenu("Settings"))
 		{
-			ImGui::Text("Audio Options");
-			ImGui::Checkbox("Play Audio Test", &playAudioTest);
-
-			if (playAudioTest)
+			if (ImGui::MenuItem("Camera", nullptr, &newScene))
 			{
-				m_audio->Play();
+				cameraSettingsOpen = true;
 			}
 
-			ImGui::Checkbox("Stop Audio Test", &stopAudioTest);
-
-			if (stopAudioTest)
-			{
-				m_audio->Stop();
-			}
-
-			ImGui::End();
+			ImGui::EndMenu();
 		}
 
-		if (ImGui::Begin("Application"))
-		{
-			ImGui::Text("Hello World.");
-			ImGui::Checkbox("Exit Appllication", &exitApp);
-			ImGui::End();
-		}
-
-		if (ImGui::Begin("Sliders"))
-		{
-			ImGui::Text("Use these sliders to move around the cemera");
-			static float camPos = 0.0f;
-			ImGui::SliderFloat("float", &camPos,
-				0.0f, 10.0f);
-
-		}
-
-		ImGui::TextDisabled("(?)");
+		/*ImGui::TextDisabled("(?)");
 		if (ImGui::IsItemHovered())
 		{
 			ImGui::BeginTooltip();
 			ImGui::PopTextWrapPos();
 			ImGui::EndTooltip();
-		}
+		}*/
 
 		ImGui::EndMainMenuBar();
 	}
 
+	
+
+	if (ImGui::Begin("Audio"))
+	{
+		ImGui::Text("Audio Options");
+		ImGui::Checkbox("Play Audio Test", &playAudioTest);
+
+		if (playAudioTest)
+		{
+			m_audio->Play();
+		}
+
+		ImGui::Checkbox("Stop Audio Test", &stopAudioTest);
+
+		if (stopAudioTest)
+		{
+			m_audio->Stop();
+		}
+
+		ImGui::End();
+	}
+
+	if (ImGui::Begin("Application"))
+	{
+		ImGui::Text("Hello World.");
+		ImGui::Checkbox("Exit Appllication", &exitApp);
+		ImGui::End();
+	}
+
+	if (cameraSettingsOpen)
+	{
+		if (ImGui::Begin("Camera settings", nullptr))
+		{
+			ImGui::Text("Use these sliders to control the camera");
+			static float camPos = 0.0f;
+			ImGui::SliderFloat("float", &camPos,
+				0.0f, 10.0f);
+			ImGui::End();
+		}
+	}
+
+	/*if (ImGui::Begin("Sliders"))
+	{
+		ImGui::Text("Use these sliders to move around the cemera");
+		static float camPos = 0.0f;
+		ImGui::SliderFloat("float", &camPos,
+			0.0f, 10.0f);
+		ImGui::End();
+	}*/
 
 	Screen::Instance()->RenderUI();
 	

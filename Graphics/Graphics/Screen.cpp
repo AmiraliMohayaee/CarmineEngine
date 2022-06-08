@@ -15,8 +15,8 @@ Screen::Screen()
 
 	m_applicationName = "";
 	m_glMode = "";
-	m_resolutionWidth = 0;
-	m_resolutionHeight = 0;
+	//m_resolutionWidth = 0;
+	//m_resolutionHeight = 0;
 	m_oGLMajorVersion = 0;
 	m_oGLMinorVersion = 0;
 	m_isFullScreen = 0;
@@ -69,13 +69,13 @@ bool Screen::InitScreen()
 		{
 			pos = tempString.find("=");
 			std::string tempwidth = tempString.substr(pos + 1, tempString.length());
-			m_resolutionWidth = std::stoi(tempwidth);
+			m_resolution.x = std::stoi(tempwidth);
 		}
 
 		if (tempString.find("ScreenHeight") < tempString.length())
 		{
 			pos = tempString.find("=");
-			m_resolutionHeight = std::stoi(tempString.substr(pos + 1, tempString.length()));
+			m_resolution.y = std::stoi(tempString.substr(pos + 1, tempString.length()));
 		}
 
 		if (tempString.find("FullScreen") < tempString.length())
@@ -156,7 +156,7 @@ bool Screen::InitScreen()
 	window = SDL_CreateWindow(m_applicationName.c_str(),
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		m_resolutionWidth, m_resolutionHeight,
+		m_resolution.x, m_resolution.y,
 		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 	if (!window)
@@ -229,6 +229,12 @@ void Screen::RenderUI()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
+const glm::ivec2& Screen::GetResolution()
+{
+	SDL_GetWindowSize(window, &m_resolution.x, &m_resolution.y);
+	return m_resolution;
+}
+
 void Screen::SwapBuffer()
 {
 	// swapping buffer each frame
@@ -250,15 +256,15 @@ void Screen::Shutdown()
 	SDL_Quit();
 }
 
-const int Screen::GetScreenWidth()
-{
-	return m_resolutionWidth;
-}
-
-const int Screen::GetScreenHeight()
-{
-	return m_resolutionHeight;
-}
+//const int Screen::GetScreenWidth()
+//{
+//	return m_resolutionWidth;
+//}
+//
+//const int Screen::GetScreenHeight()
+//{
+//	return m_resolutionHeight;
+//}
 
 /// <summary>
 /// Returns the total time passed in milliseconds

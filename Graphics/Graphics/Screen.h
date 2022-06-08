@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glm.hpp>
 #include "glad.h"
 #include <SDL.h>
 #include <iostream>
@@ -33,8 +34,10 @@ public:
 	void StartUI();
 	void RenderUI();
 	
-	const int GetScreenWidth();
-	const int GetScreenHeight();
+	const glm::ivec2& GetResolution();
+
+	//const int GetScreenWidth();
+	//const int GetScreenHeight();
 
 	int GetTotalTime();
 	int GetElapsedTime();
@@ -56,8 +59,11 @@ private:
 
 	int m_elapsedTime;
 
-	int m_resolutionWidth;
-	int m_resolutionHeight;
+	glm::ivec2 m_resolution{ 0, 0 };
+
+	//int m_resolutionWidth;
+	//int m_resolutionHeight;
+	
 	int m_oGLMajorVersion;
 	int m_oGLMinorVersion;
 	int m_isFullScreen;
