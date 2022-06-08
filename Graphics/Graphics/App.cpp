@@ -131,6 +131,7 @@ void App::Update()
 	{
 		auto res = Screen::Instance()->GetResolution();
 
+		//TODO - Put this away deep inside your engine (Screen/camera class?)
 		glViewport(0, 0, res.x, res.y);
 
 		//====================================================================
