@@ -88,7 +88,7 @@ void App::InitObjects()
 	//m_grid->SetupGridDimentions(4, 12, 1.0f, 1.0f, 1.0f, 1.0f);
 	//m_grid->CreateBuffers();
 
-	ImGui::GetIO().Fonts->AddFontFromFileTTF("Assets/Fonts/Arial.ttf", 24);
+	ImGui::GetIO().Fonts->AddFontFromFileTTF("Assets/Fonts/Arial.ttf", 18);
 	ImGui::GetIO().Fonts->Build();
 	
 	//m_model->Load("Teapot.obj");
@@ -124,148 +124,28 @@ void App::Draw()
 
 void App::Update()
 {
-	Audio::Update();
+
 
 
 	while (m_isProgramRunning)
 	{
+		//====================================================================
 		// Clearing the buffer
 		Screen::Instance()->ClearBuffer();
 
-		// Checking for inputs 
-		Input::Instance()->Update();
-
-		if (Input::Instance()->IsXClicked())
-		{
-			m_isProgramRunning = false;
-		}
-
-		if (Input::Instance()->KeyPressed() == true)
-		{
-			if (Input::Instance()->GetKeyPressed() == KEY_ESC)
-			{
-				m_isProgramRunning = false;
-			}
-		}
-
-		// Using mouse wheel to zoom in the camera
-		auto wheelMotion = Input::Instance()->GetMouseWheelMotion();
-		//wheelMotion *= 0.1f;
-
-		static auto cameraPosition = m_camera->GetTransform().GetPosition();
-		cameraPosition.z -= wheelMotion;
-		m_camera->GetTransform().SetPosition(cameraPosition);
-
-		//std::cout << camPos.z << std::endl;
-		//std::cout << wheelMotion << std::endl;
-
-		static GLfloat yaw = 0.0f;
-		static GLfloat pitch = 0.0f;
-
-		// Making an instance of InGui IO to disallow mouse click
-		// and movement when using UI elements
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-		if (!io.WantCaptureMouse)
-		{
-
-			if (Input::Instance()->IsLeftButtonDown())
-			{
-				yaw += Input::Instance()->GetMouseMotion().x;
-				pitch -= Input::Instance()->GetMouseMotion().y;
-			}
-
-		}
-
-
-		//m_cube->GetTransform().SetRotation(pitch, yaw, 0.0f);
-		m_grid->GetTransform().SetRotation(pitch, yaw, 0.0f);
-		
-		auto& mainShader = *m_mainShader.get();
-
-		//m_camera->Update();
-		m_camera->SendToShader(mainShader);
-
-		if (Input::Instance()->IsRightButtonDown())
-		{
-			m_camera->Reset();
-		}
+		ManageInput();
+		Audio::Update();
 
 		// Encapsulates draw calls from other game objects
 		Draw();
 		
-		//UI==================================================================
-		Screen::Instance()->StartUI();
-
-		bool newScene = false;
-		bool loadScene = false;
-		bool saveScene = false;
-		bool exitApp = false;
-		bool playAudioTest = false;
-		bool stopAudioTest = false;
-	
-		if (ImGui::BeginMainMenuBar())
-		{
-			if (ImGui::BeginMenu("File"))
-			{
-				ImGui::MenuItem("New scene", nullptr, &newScene);
-				ImGui::MenuItem("Load scene...", nullptr, &loadScene);
-				ImGui::MenuItem("Save scene", nullptr, &saveScene);
-				ImGui::MenuItem("Exit", nullptr, &exitApp);
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::BeginMenu("Add"))
-			{
-				ImGui::MenuItem("Shapes", nullptr, nullptr);
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::BeginMenu("Help"))
-			{
-				ImGui::MenuItem("Tutorial", nullptr, &newScene);
-				ImGui::MenuItem("About...", nullptr, &newScene);
-				ImGui::EndMenu();
-			}
-
-			if (ImGui::Begin("Audio"))
-			{
-				ImGui::Text("Audio Options");
-				ImGui::Checkbox("Play Audio Test", &playAudioTest);
-
-				if (playAudioTest)
-				{
-					m_audio->Play();
-				}
-
-				ImGui::Checkbox("Stop Audio Test", &stopAudioTest);
-
-				if (stopAudioTest)
-				{
-					m_audio->Stop();
-				}
-
-				ImGui::End();
-			}
-			
-			if (ImGui::Begin("Window"))
-			{
-				ImGui::Text("Hello World.");
-				ImGui::Checkbox("Exit Appllication", &exitApp);
-				ImGui::End();
-			}
-
-			ImGui::EndMainMenuBar();
-		}
-
-		
-		Screen::Instance()->RenderUI();
+		ManageUI();
 
 		//====================================================================
 		// Swapping the buffers
 		Screen::Instance()->SwapBuffer();
 
-		m_isProgramRunning = !exitApp;
+		
 	}
 }
 
@@ -283,12 +163,155 @@ void App::Shutdown()
 	Screen::Instance()->Shutdown();
 }
 
-void App::MenuInput()
-{
-
-}
-
 void App::ManageUI()
 {
+	//UI==================================================================
+	Screen::Instance()->StartUI();
 
+	const char* desc = NULL;
+
+	bool newScene = false;
+	bool loadScene = false;
+	bool saveScene = false;
+	bool exitApp = false;
+	bool playAudioTest = false;
+	bool stopAudioTest = false;
+
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			ImGui::MenuItem("New scene", nullptr, &newScene);
+			ImGui::MenuItem("Load scene...", nullptr, &loadScene);
+			ImGui::MenuItem("Save scene", nullptr, &saveScene);
+			ImGui::MenuItem("Exit", nullptr, &exitApp);
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Add"))
+		{
+			ImGui::MenuItem("Shapes", nullptr, nullptr);
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Help"))
+		{
+			ImGui::MenuItem("Tutorial", nullptr, &newScene);
+			ImGui::MenuItem("About...", nullptr, &newScene);
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::Begin("Audio"))
+		{
+			ImGui::Text("Audio Options");
+			ImGui::Checkbox("Play Audio Test", &playAudioTest);
+
+			if (playAudioTest)
+			{
+				m_audio->Play();
+			}
+
+			ImGui::Checkbox("Stop Audio Test", &stopAudioTest);
+
+			if (stopAudioTest)
+			{
+				m_audio->Stop();
+			}
+
+			ImGui::End();
+		}
+
+		if (ImGui::Begin("Application"))
+		{
+			ImGui::Text("Hello World.");
+			ImGui::Checkbox("Exit Appllication", &exitApp);
+			ImGui::End();
+		}
+
+		if (ImGui::Begin("Sliders"))
+		{
+			ImGui::Text("Use these sliders to move around the cemera");
+			static float camPos = 0.0f;
+			ImGui::SliderFloat("float", &camPos,
+				0.0f, 10.0f);
+
+		}
+
+		ImGui::TextDisabled("(?)");
+		if (ImGui::IsItemHovered())
+		{
+			ImGui::BeginTooltip();
+			ImGui::PopTextWrapPos();
+			ImGui::EndTooltip();
+		}
+
+		ImGui::EndMainMenuBar();
+	}
+
+
+	Screen::Instance()->RenderUI();
+	
+	
+	m_isProgramRunning = !exitApp;
+}
+
+void App::ManageInput()
+{
+	// Checking for inputs 
+	Input::Instance()->Update();
+
+	if (Input::Instance()->IsXClicked())
+	{
+		m_isProgramRunning = false;
+	}
+
+	if (Input::Instance()->KeyPressed() == true)
+	{
+		if (Input::Instance()->GetKeyPressed() == KEY_ESC)
+		{
+			m_isProgramRunning = false;
+		}
+	}
+
+	// Using mouse wheel to zoom in the camera
+	auto wheelMotion = Input::Instance()->GetMouseWheelMotion();
+	//wheelMotion *= 0.1f;
+
+	static auto cameraPosition = m_camera->GetTransform().GetPosition();
+	cameraPosition.z -= wheelMotion;
+	m_camera->GetTransform().SetPosition(cameraPosition);
+
+	//std::cout << camPos.z << std::endl;
+	//std::cout << wheelMotion << std::endl;
+
+	static GLfloat yaw = 0.0f;
+	static GLfloat pitch = 0.0f;
+
+	// Making an instance of InGui IO to disallow mouse click
+	// and movement when using UI elements
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+	if (!io.WantCaptureMouse)
+	{
+
+		if (Input::Instance()->IsLeftButtonDown())
+		{
+			yaw += Input::Instance()->GetMouseMotion().x;
+			pitch -= Input::Instance()->GetMouseMotion().y;
+		}
+
+	}
+
+
+	//m_cube->GetTransform().SetRotation(pitch, yaw, 0.0f);
+	m_grid->GetTransform().SetRotation(pitch, yaw, 0.0f);
+
+	auto& mainShader = *m_mainShader.get();
+
+	m_camera->SendToShader(mainShader);
+
+	if (Input::Instance()->IsRightButtonDown())
+	{
+		m_camera->Reset();
+	}
 }

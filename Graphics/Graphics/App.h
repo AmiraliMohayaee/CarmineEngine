@@ -28,7 +28,7 @@ public:
 	void Update();
 	void Shutdown();
 
-	void MenuInput();
+	void ManageInput();
 	void ManageUI();
 
 private:
