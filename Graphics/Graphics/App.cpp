@@ -143,6 +143,15 @@ void App::Update()
 
 		Draw();
 		ManageUI();
+		
+
+		glViewport(res.x * 0.85f, 0, res.x * 0.15f, res.y);
+		
+		//TODO - Put this away deep inside your engine (Screen/camera class?)
+		glViewport(0, 0, res.x * 0.85f, res.y);
+		
+		Screen::Instance()->ClearBuffer();
+
 		ManageInput();
 		Audio::Update();
 
