@@ -17,6 +17,8 @@ public:
 
 	void SetDimension(const glm::vec3& dimensions);
 	void SetDimension(GLfloat width, GLfloat height, GLfloat depth);
+
+	void SetColor(const glm::vec4& color);
 	void SetColor(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha = 1.0f);
 
 	virtual void Create();

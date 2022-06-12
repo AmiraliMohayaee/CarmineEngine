@@ -2,8 +2,8 @@
 
 in vec3 vertexIn;
 in vec4 colorIn;
-in vec2 textureIn;
 in vec3 normalIn;
+in vec2 textureIn;
 
 out vec3 vertexOut;
 out vec4 colorOut;

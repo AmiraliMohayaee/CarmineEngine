@@ -25,6 +25,11 @@ void Cube::SetDimension(const glm::vec3& dimensions)
 	m_dimension = dimensions;
 }
 
+void Cube::SetColor(const glm::vec4& color)
+{
+	SetColor(color.r, color.g, color.b, color.a);
+}
+
 void Cube::SetColor(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha)
 {
 	m_color.r = r;
@@ -213,7 +218,7 @@ void Cube::Draw(const Shader& shader)
 
 	m_buffer.Render(Buffer::TRIANGLES);
 
-	if (m_isTextured)
+	if (!m_isTextured)
 	{
 		m_texture.UnBind();
 	}

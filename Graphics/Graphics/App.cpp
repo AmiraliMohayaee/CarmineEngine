@@ -4,19 +4,20 @@
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+
 App::App()
 {
 	m_isProgramRunning = true;
 
-	// TODO: Add asserts inside the functions to make sure they're loaded before the materials are use
 	Material::LoadMaterials("Defaults", "Materials.mat");
 
 	m_camera = std::make_unique<FPSCamera>();
 	m_cube = std::make_unique<Cube>();
 	m_grid = std::make_unique<Grid>();
 	m_model = std::make_unique<Model>();
-	m_light = std::make_unique<Light>(0.0f, 3.0f, 0.0f);
+	m_light = std::make_unique<Light>(2.0f, 5.0f, 0.0f);
 	m_quad = std::make_unique<Quad>();
+
 }
 
 bool App::InitScreenAndShaders()
@@ -78,7 +79,7 @@ void App::InitObjects()
 	m_cube->IsLit(true);
 	m_cube->IsTextured(true);
 
-	//m_light->Create();
+	m_light->Create();
 
 	//m_quad->Create();
 	//m_quad->IsLit(true);
@@ -112,14 +113,16 @@ void App::Draw()
 
 	mainShader.Use();
 
-	//m_light->Draw(mainShader);
-	//m_light->SendToShader(mainShader);
+	m_light->Draw(mainShader);
+	m_light->SendToShader(mainShader);
 
 	//m_camera->Reset();
 	//m_camera->SendToShader(mainShader);
 
 	m_cube->Draw(mainShader);
+	m_cube->SendToShader(mainShader);
 	m_grid->Draw(mainShader);
+	m_grid->SendToShader(mainShader);
 }
 
 void App::Update()
@@ -132,19 +135,19 @@ void App::Update()
 		auto res = Screen::Instance()->GetResolution();
 
 		//TODO - Put this away deep inside your engine (Screen/camera class?)
-		glViewport(0, 0, res.x, res.y);
+		glViewport(0, 0, res.x * 0.85, res.y);
 
 		//====================================================================
 		// Clearing the buffer
 		Screen::Instance()->ClearBuffer();
 
+		Draw();
+		ManageUI();
 		ManageInput();
 		Audio::Update();
 
 		// Encapsulates draw calls from other game objects
-		Draw();
 		
-		ManageUI();
 
 		//====================================================================
 		// Swapping the buffers
@@ -173,16 +176,16 @@ void App::ManageUI()
 	//UI==================================================================
 	Screen::Instance()->StartUI();
 
-	const char* desc = NULL;
-
 	bool newScene = false;
 	bool loadScene = false;
 	bool saveScene = false;
 	bool exitApp = false;
-	bool playAudioTest = false;
-	bool stopAudioTest = false;
+	static bool playAudioTest = false;
+	static bool stopAudioTest = false;
 	
 	static bool cameraSettingsOpen = false;
+
+	m_sliderCamPos = m_camera->GetTransform().GetPosition();
 
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -263,9 +266,10 @@ void App::ManageUI()
 		if (ImGui::Begin("Camera settings", nullptr))
 		{
 			ImGui::Text("Use these sliders to control the camera");
-			static float camPos = 0.0f;
-			ImGui::SliderFloat("float", &camPos,
-				0.0f, 10.0f);
+			ImGui::SliderFloat("Camera: X", &m_sliderCamPos.x, 0, 8);
+			ImGui::SliderFloat("Camera: Y", &m_sliderCamPos.y, 0, 8);
+			ImGui::SliderFloat("Camera: Z", &m_sliderCamPos.z, 0, 8);
+			//m_camera->SetPosition(m_sliderCamPos);
 			ImGui::End();
 		}
 	}
@@ -309,6 +313,7 @@ void App::ManageInput()
 
 	static auto cameraPosition = m_camera->GetTransform().GetPosition();
 	cameraPosition.z -= wheelMotion;
+
 	m_camera->GetTransform().SetPosition(cameraPosition);
 
 	//std::cout << camPos.z << std::endl;
