@@ -17,6 +17,10 @@ App::App()
 	m_model = std::make_unique<Model>();
 	m_light = std::make_unique<Light>(0.0f, 3.0f, 0.0f);
 	m_quad = std::make_unique<Quad>();
+
+	m_aboutBox = std::make_unique<AboutBox>();
+	m_aboutBox->IsVisible(false);
+
 }
 
 bool App::InitScreenAndShaders()
@@ -108,25 +112,11 @@ void App::InitObjects()
 
 void App::Draw()
 {
-	auto& mainShader = *m_mainShader.get();
-
-	mainShader.Use();
-
-	//m_light->Draw(mainShader);
-	//m_light->SendToShader(mainShader);
-
-	//m_camera->Reset();
-	//m_camera->SendToShader(mainShader);
-
-	m_cube->Draw(mainShader);
-	m_grid->Draw(mainShader);
+	
 }
 
 void App::Update()
 {
-
-
-
 	while (m_isProgramRunning)
 	{
 		auto res = Screen::Instance()->GetResolution();
@@ -138,24 +128,31 @@ void App::Update()
 		// Clearing the buffer
 		Screen::Instance()->ClearBuffer();
 
-		Draw();
-		ManageUI();
-		
+		//Draw();
 
+		auto& mainShader = *m_mainShader.get();
+
+		mainShader.Use();
+
+		//m_light->Draw(mainShader);
+		//m_light->SendToShader(mainShader);
+
+		//m_camera->Reset();
+		//m_camera->SendToShader(mainShader);
+
+		m_cube->Draw(mainShader);
+		m_grid->Draw(mainShader);
+
+		ManageUI(mainShader);
+		
 		glViewport(res.x * 0.85f, 0, res.x * 0.15f, res.y);
 		
 		//TODO - Put this away deep inside your engine (Screen/camera class?)
 		glViewport(0, 0, res.x * 0.85f, res.y);
 		
-		Screen::Instance()->ClearBuffer();
 
 		ManageInput();
 		Audio::Update();
-
-		// Encapsulates draw calls from other game objects
-		Draw();
-		
-		ManageUI();
 
 		//====================================================================
 		// Swapping the buffers
@@ -179,7 +176,7 @@ void App::Shutdown()
 	Screen::Instance()->Shutdown();
 }
 
-void App::ManageUI()
+void App::ManageUI(const Shader& shader)
 {
 	//UI==================================================================
 	Screen::Instance()->StartUI();
@@ -194,6 +191,17 @@ void App::ManageUI()
 	bool stopAudioTest = false;
 	
 	static bool cameraSettingsOpen = false;
+
+	//About box===========================================================
+	
+	if (m_aboutBox->IsVisible())
+	{
+		m_aboutBox->Draw(shader);
+	}
+
+
+
+	//====================================================================
 
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -215,7 +223,12 @@ void App::ManageUI()
 		if (ImGui::BeginMenu("Help"))
 		{
 			ImGui::MenuItem("Tutorial", nullptr, &newScene);
-			ImGui::MenuItem("About...", nullptr, &newScene);
+			
+			if (ImGui::MenuItem("About...", nullptr, &newScene))
+			{
+				m_aboutBox->IsVisible(true);
+			}
+			
 			ImGui::EndMenu();
 		}
 

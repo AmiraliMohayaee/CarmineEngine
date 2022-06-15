@@ -146,11 +146,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AboutBox.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FPSCamera.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
@@ -179,11 +181,13 @@
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AboutBox.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Dialog.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FPSCamera.h" />
     <ClInclude Include="imgui\imconfig.h" />

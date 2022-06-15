@@ -58,6 +58,12 @@
     <Filter Include="Source Files\ImGui">
       <UniqueIdentifier>{8b12ff20-7f11-4862-bcd5-e33a59073300}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Objects\UI">
+      <UniqueIdentifier>{7abec2b8-fe65-4370-9a7e-6a4bc01d79f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\UI">
+      <UniqueIdentifier>{d1904195-eca2-4605-88f4-a14fea54a059}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -153,6 +159,12 @@
     <ClCompile Include="Audio.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Dialog.cpp">
+      <Filter>Source Files\Objects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Screen.h">
@@ -247,6 +259,12 @@
     </ClInclude>
     <ClInclude Include="Audio.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog.h">
+      <Filter>Header Files\Objects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AboutBox.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
