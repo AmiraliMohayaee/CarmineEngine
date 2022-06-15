@@ -66,7 +66,7 @@ void App::InitObjects()
 	// Initializing Viewing Grid and Camera
 	//////////////////////////////////////////
 
-	Texture::Load("Crate_1_Diffuse.png", "CRATE");
+	Texture::Load("Crate_1_Diffuse.png", "Crate");
 	
 	//m_camera->InitCamera(0.0f, 0.0f, 5.0f, 45.0f, 0.1f, 1000.0f);
 	m_camera->SetSpeed(0.5f);
