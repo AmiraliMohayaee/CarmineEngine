@@ -1,10 +1,10 @@
 #include "Model.h"
-#include "Shader.h"
 #include "Utility.h"
-#include <map>
 #include <fstream>
 #include <iostream>
+#include <map>
 
+#include "Shader.h"
 
 
 std::string Model::s_rootFolderModel = "Assets/Models/";
@@ -16,9 +16,8 @@ bool Model::Load(const std::string& filename)
 
     if (!file)
     {
-        Utility::Log(Utility::Destination::WindowsMessageBox,
-            "Error Loading model file \"" + (s_rootFolderModel + filename) + "\"",
-            Utility::Severity::Failure);
+        // TODO: change this to the new Utility class
+        //Debug::Log("Error loading model file \"" + (s_rootFolderModel + filename) + "\"");
         return false;
     }
 
@@ -222,9 +221,8 @@ bool Model::Load(const std::string& filename, const std::string& texture)
 
     if (!file)
     {
-        Utility::Log(Utility::Destination::WindowsMessageBox,
-        "Error Loading model file \"" + (s_rootFolderModel + filename) + "\"",
-            Utility::Severity::Failure);
+        // TODO: Change this to the new Utility error log
+        //Debug::Log("Error loading model file \"" + (s_rootFolderModel + filename) + "\"");
         return false;
     }
 
@@ -447,10 +445,10 @@ void Model::Render(const Shader& shader)
     if (m_isTextured)
     {
         // TODO: Figure out a way to bind different texture types
-        m_diffuseTexture.Bind();
         //m_ambientTexture.Bind();
-        // m_normalTexture.Bind();
-        // m_specularTexture.Bind();
+        m_diffuseTexture.Bind();
+       // m_specularTexture.Bind();
+       // m_normalTexture.Bind();
     }
 
     for (size_t i = 0; i < m_buffers.size(); i++)

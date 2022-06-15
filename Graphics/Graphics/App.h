@@ -15,12 +15,10 @@
 #include "Audio.h"
 
 
-static glm::vec3 m_sliderCamPos;
 
 class App
 {
 public:
-
 	App();
 	bool InitScreenAndShaders();
 
@@ -33,12 +31,9 @@ public:
 	void ManageInput();
 	void ManageUI();
 
-
 private:
-
 	bool m_isProgramRunning;
 
-	
 	std::unique_ptr<Cube> m_cube;
 	std::unique_ptr<Grid> m_grid;
 	std::unique_ptr<Quad> m_quad;
@@ -49,5 +44,4 @@ private:
 
 	std::unique_ptr<Shader> m_mainShader;
 	std::unique_ptr<Shader> m_lightShader;
-
 };

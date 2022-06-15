@@ -45,13 +45,13 @@ void main(void)
 		float lightIntensity = max(dot(lightDirection, normalOut), 0.0);  //make sure it never falls below 0!
 		vec3 diffuseLight = light.diffuse * material.diffuse * lightIntensity;
 
-//		//specular lighting
+		//specular lighting
 		vec3 viewDirection = normalize(cameraPosition - vertexOut);
 		vec3 reflection = reflect(-lightDirection, normalOut);
 		float specularTerm = pow(max(dot(viewDirection, reflection), 0.0), material.shininess);
 		vec3 specularLight = light.specular * material.specular * specularTerm;
 
-		// final lighting value
+		//final lighting value
 		vec3 finalLight = ambientLight + diffuseLight + specularLight;
 
 		if(isTextured)
