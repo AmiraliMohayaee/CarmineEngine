@@ -9,6 +9,7 @@ public:
 
 	struct CameraSettings
 	{
+		bool has3DView;
 		GLfloat cameraFOV{ 45.0f };
 		GLfloat frustumFarClip{ 1000.0f };
 		GLfloat frustumNearClip{ 0.001f };

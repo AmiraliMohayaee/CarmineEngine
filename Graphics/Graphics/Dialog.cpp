@@ -10,6 +10,13 @@ void Dialog::Spacing(int amount)
 
 }
 
+void Dialog::Partition(const std::string& title)
+{
+	ImGui::Text(title.c_str());
+	ImGui::Separator();
+	ImGui::Spacing();
+}
+
 void Dialog::SetDimension(const glm::uvec2& dimension)
 {
 	m_dimension = dimension;

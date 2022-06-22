@@ -10,6 +10,7 @@
 //Also an ABC
 class Dialog : public Object
 {
+public:
 
 	// TODO Change the generic flags to equate to IMGUI types later
 	enum WindowOpen
@@ -18,10 +19,10 @@ class Dialog : public Object
 		OPEN = false,
 	};
 
-	enum Collapseable
+	enum Style
 	{
-		COLLAPSABLE,
-		NON_COLLAPSABLE,
+		NoCollapse = ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse,
+		NoResize = ImGuiWindowFlags_::ImGuiWindowFlags_NoResize
 	};
 
 	enum Movable
@@ -42,6 +43,7 @@ class Dialog : public Object
 public:
 
 	void Spacing(int amount);
+	void Partition(const std::string& title);
 	void SetDimension(const glm::uvec2& dimension);
 
 protected:
