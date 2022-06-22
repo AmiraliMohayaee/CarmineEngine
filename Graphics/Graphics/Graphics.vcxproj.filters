@@ -264,7 +264,7 @@
       <Filter>Header Files\Objects\UI</Filter>
     </ClInclude>
     <ClInclude Include="AboutBox.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Objects\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

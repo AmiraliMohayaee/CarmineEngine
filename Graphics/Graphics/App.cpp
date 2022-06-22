@@ -194,6 +194,11 @@ void App::ManageUI(const Shader& shader)
 
 	//About box===========================================================
 	
+	//for (auto const& x : m_dialogs)
+	//{
+
+	//}
+
 	if (m_aboutBox->IsVisible())
 	{
 		m_aboutBox->Draw(shader);

@@ -17,7 +17,9 @@
 
 class App
 {
+
 public:
+
 	App();
 	bool InitScreenAndShaders();
 
@@ -31,6 +33,7 @@ public:
 	void ManageUI(const Shader& shader);
 
 private:
+
 	bool m_isProgramRunning;
 
 	std::unique_ptr<Cube> m_cube;
@@ -41,8 +44,12 @@ private:
 	std::unique_ptr<Model> m_model;
 	std::unique_ptr<FPSCamera> m_camera;
 	
+	// TODO: Add the UI elements through container
+	//std::unique_ptr<std::map<std::string, Dialog>> m_dialogs;
 	std::unique_ptr<AboutBox> m_aboutBox;
 
 	std::unique_ptr<Shader> m_mainShader;
 	std::unique_ptr<Shader> m_lightShader;
+
+
 };
