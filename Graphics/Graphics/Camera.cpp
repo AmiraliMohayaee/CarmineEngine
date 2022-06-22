@@ -4,22 +4,6 @@
 #include "Screen.h"
 #include <gtc\matrix_transform.hpp>
 
-
-Camera::Camera()
-{
-	m_position = glm::vec3(0.0f);
-	m_up = glm::vec3(0.0f, 1.0f, 0.0f);
-	m_lookAt = glm::vec3(0.0f, 0.0f, -1.0f);
-
-	m_viewMatrix = glm::mat4(1.0f);
-	m_projectionMatrix = glm::mat4(1.0f);
-
-	m_yaw = 0.0f;
-	m_pitch = 0.0f;
-	m_speed = 0.0f;
-	m_fieldOfView = 45.0f;
-}
-
 const glm::vec3& Camera::GetPosition() const
 {
 	return m_position;
@@ -33,6 +17,12 @@ void Camera::SetSpeed(GLfloat speed)
 void Camera::SetFieldOfView(GLfloat fieldOfView)
 {
 	m_fieldOfView = fieldOfView;
+}
+
+void Camera::SetClippingDistance(GLfloat nearClip, GLfloat farClip)
+{
+	m_nearClip = nearClip;
+	m_farClip = farClip;
 }
 
 void Camera::SetPosition(const glm::vec3& position)
@@ -57,7 +47,7 @@ void Camera::CreatePerspView()
 
 	auto aspectRatio = (static_cast<GLfloat>(res.x) / static_cast<GLfloat>(res.y));
 
-	m_projectionMatrix = glm::perspective(glm::radians(m_fieldOfView), aspectRatio, NEAR_CLIP, FAR_CLIP);
+	m_projectionMatrix = glm::perspective(glm::radians(m_fieldOfView), aspectRatio, m_nearClip, m_farClip);
 }
 
 void Camera::CreateOrthoView(Origin2D origin)

@@ -4,9 +4,6 @@
 #include <glm.hpp>
 #include "Object.h"
 
-const GLfloat FAR_CLIP = 1000.0f;
-const GLfloat NEAR_CLIP = 0.001f;
-
 class Camera : public Object
 {
 
@@ -18,13 +15,14 @@ public:
 		BOTTOM_LEFT
 	};
 
-	Camera();
+	Camera() {}
 	virtual ~Camera() {}
 
 	const glm::vec3& GetPosition() const;
 
 	void SetSpeed(GLfloat speed);
 	void SetFieldOfView(GLfloat fieldOfView);
+	void SetClippingDistance(GLfloat nearClip, GLfloat farClip);
 
 	void SetPosition(const glm::vec3& position);
 	void SetPosition(GLfloat x, GLfloat y, GLfloat z);
@@ -44,16 +42,19 @@ protected:
 
 	// Angles for pitch and yaw on camera
 	// rotation
-	GLfloat m_yaw;
-	GLfloat m_pitch;
-	GLfloat m_speed;
-	GLfloat m_fieldOfView;
+	GLfloat m_yaw{ 0.0f };
+	GLfloat m_pitch{ 0.0f };
+	GLfloat m_speed{ 0.0f };
 
-	glm::vec3 m_up;
-	glm::vec3 m_lookAt;
-	glm::vec3 m_position;
+	GLfloat m_farClip{ 1000.0f };
+	GLfloat m_nearClip{ 0.001f };
+	GLfloat m_fieldOfView{ 45.0f };
 
-	glm::mat4 m_viewMatrix;
-	glm::mat4 m_projectionMatrix;
+	glm::vec3 m_position{ glm::vec3(0.0f) };
+	glm::vec3 m_up{ glm::vec3(0.0f, 1.0f, 0.0f) };
+	glm::vec3 m_lookAt{ glm::vec3(0.0f, 0.0f, -1.0f) };
+
+	glm::mat4 m_viewMatrix{ glm::mat4(1.0f) };
+	glm::mat4 m_projectionMatrix{ glm::mat4(1.0f) };
 
 };

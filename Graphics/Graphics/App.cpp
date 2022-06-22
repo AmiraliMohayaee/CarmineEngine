@@ -20,7 +20,11 @@ App::App()
 
 	m_aboutBox = std::make_unique<AboutBox>();
 	m_aboutBox->IsVisible(false);
+	m_aboutBox->SetDimension(glm::uvec2(300, 150));
 
+	m_settings = std::make_unique<Settings>();
+	m_settings->IsVisible(false);
+	m_settings->SetDimension(glm::uvec2(500, 700));
 }
 
 bool App::InitScreenAndShaders()
@@ -192,19 +196,20 @@ void App::ManageUI(const Shader& shader)
 	
 	static bool cameraSettingsOpen = false;
 
-	//About box===========================================================
-	
-	//for (auto const& x : m_dialogs)
-	//{
-
-	//}
-
 	if (m_aboutBox->IsVisible())
 	{
 		m_aboutBox->Draw(shader);
 	}
 
+	if (m_settings->IsVisible())
+	{
+		m_settings->Draw(shader);
+		auto cameraSettings = m_settings->GetCameraSettings();
 
+		m_camera->SetFieldOfView(cameraSettings.cameraFOV);
+		m_camera->SetClippingDistance(cameraSettings.frustumNearClip, cameraSettings.frustumFarClip);
+		m_camera->CreatePerspView();
+	}
 
 	//====================================================================
 
@@ -234,18 +239,21 @@ void App::ManageUI(const Shader& shader)
 				m_aboutBox->IsVisible(true);
 			}
 			
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Settings"))
-		{
-			if (ImGui::MenuItem("Camera", nullptr, &newScene))
+			if (ImGui::MenuItem("Settings...", nullptr, &newScene))
 			{
-				cameraSettingsOpen = true;
+				m_settings->IsVisible(true);
+				//cameraSettingsOpen = true;
 			}
 
 			ImGui::EndMenu();
 		}
+
+		/*if (ImGui::BeginMenu("Settings"))
+		{
+			
+
+			ImGui::EndMenu();
+		}*/
 
 		/*ImGui::TextDisabled("(?)");
 		if (ImGui::IsItemHovered())
@@ -287,7 +295,7 @@ void App::ManageUI(const Shader& shader)
 		ImGui::End();
 	}
 
-	if (cameraSettingsOpen)
+	/*if (cameraSettingsOpen)
 	{
 		if (ImGui::Begin("Camera settings", nullptr))
 		{
@@ -297,7 +305,7 @@ void App::ManageUI(const Shader& shader)
 				0.0f, 10.0f);
 			ImGui::End();
 		}
-	}
+	}*/
 
 	/*if (ImGui::Begin("Sliders"))
 	{

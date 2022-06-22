@@ -14,7 +14,7 @@
 #include "Shader.h"
 #include "Audio.h"
 #include "AboutBox.h"
-
+#include "Settings.h"
 
 class App
 {
@@ -48,6 +48,7 @@ private:
 	// TODO: Add the UI elements through container
 	//std::unique_ptr<std::map<std::string, Dialog>> m_dialogs;
 	std::unique_ptr<AboutBox> m_aboutBox;
+	std::unique_ptr<Settings> m_settings;
 
 	std::unique_ptr<Shader> m_mainShader;
 	std::unique_ptr<Shader> m_lightShader;

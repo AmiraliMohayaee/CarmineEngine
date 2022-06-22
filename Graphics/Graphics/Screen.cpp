@@ -157,7 +157,7 @@ bool Screen::InitScreen()
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
 		m_resolution.x, m_resolution.y,
-		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+		SDL_WINDOW_OPENGL | SDL_WINDOW_MAXIMIZED);
 
 	if (!window)
 	{

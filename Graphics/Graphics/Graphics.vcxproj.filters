@@ -165,6 +165,9 @@
     <ClCompile Include="AboutBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files\Objects\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Screen.h">
@@ -264,6 +267,9 @@
       <Filter>Header Files\Objects\UI</Filter>
     </ClInclude>
     <ClInclude Include="AboutBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
       <Filter>Header Files\Objects\UI</Filter>
     </ClInclude>
   </ItemGroup>

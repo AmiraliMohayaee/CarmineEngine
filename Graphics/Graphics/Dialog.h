@@ -1,6 +1,8 @@
 #pragma once
 #include "Object.h"
 
+#include "glad.h"
+#include <glm.hpp>
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl.h"
 #include "imgui/imgui_impl_opengl3.h"
@@ -40,10 +42,10 @@ class Dialog : public Object
 public:
 
 	void Spacing(int amount);
+	void SetDimension(const glm::uvec2& dimension);
 
+protected:
 
-private:
-
-
+	glm::uvec2 m_dimension;
 
 };

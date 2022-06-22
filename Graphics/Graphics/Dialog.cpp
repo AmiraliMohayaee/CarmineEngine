@@ -9,3 +9,8 @@ void Dialog::Spacing(int amount)
 	}
 
 }
+
+void Dialog::SetDimension(const glm::uvec2& dimension)
+{
+	m_dimension = dimension;
+}

@@ -12,14 +12,12 @@ void AboutBox::Destroy()
 
 void AboutBox::Draw(const Shader& shader)
 {
-	bool flag = false;;
-
-	auto windowSize = ImVec2(300, 150);
-
-	if (ImGui::Begin("About", &flag, ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse 
-		| ImGuiWindowFlags_::ImGuiWindowFlags_NoResize))
+	if (ImGui::Begin("About", 
+		nullptr, 
+		ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | 
+		ImGuiWindowFlags_::ImGuiWindowFlags_NoResize))
 	{
-		ImGui::SetWindowSize("About", windowSize);
+		ImGui::SetWindowSize("About", ImVec2(m_dimension.x, m_dimension.y));
 		
 		auto size = ImVec2(100, 25);
 		ImGui::Text("This is an application.");
@@ -35,7 +33,6 @@ void AboutBox::Draw(const Shader& shader)
 
 		ImGui::End();
 	}
-
 }
 
 void AboutBox::Update()
