@@ -14,7 +14,7 @@ void AboutBox::Draw(const Shader& shader)
 {
 	if (ImGui::Begin("About", 
 		nullptr, 
-		ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | 
+		ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_::ImGuiWindowFlags_NoResize))
 	{
 		ImGui::SetWindowSize("About", ImVec2(m_dimension.x, m_dimension.y));
@@ -31,8 +31,9 @@ void AboutBox::Draw(const Shader& shader)
 			m_isVisible = false;
 		}
 
-		ImGui::End();
 	}
+
+	ImGui::End();
 }
 
 void AboutBox::Update()

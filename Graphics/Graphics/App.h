@@ -45,10 +45,7 @@ private:
 	std::unique_ptr<Model> m_model;
 	std::unique_ptr<FPSCamera> m_camera;
 	
-	// TODO: Add the UI elements through container
-	//std::unique_ptr<std::map<std::string, Dialog>> m_dialogs;
-	std::unique_ptr<AboutBox> m_aboutBox;
-	std::unique_ptr<Settings> m_settings;
+	std::map<std::string, std::unique_ptr<Dialog>> m_dialogs;
 
 	std::unique_ptr<Shader> m_mainShader;
 	std::unique_ptr<Shader> m_lightShader;

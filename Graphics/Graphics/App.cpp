@@ -18,13 +18,13 @@ App::App()
 	m_light = std::make_unique<Light>(0.0f, 3.0f, 0.0f);
 	m_quad = std::make_unique<Quad>();
 
-	m_aboutBox = std::make_unique<AboutBox>();
-	m_aboutBox->IsVisible(false);
-	m_aboutBox->SetDimension(glm::uvec2(300, 150));
+	m_dialogs["AboutBox"] = std::make_unique<AboutBox>();
+	m_dialogs["AboutBox"]->IsVisible(false);
+	m_dialogs["AboutBox"]->SetDimension(glm::uvec2(300, 150));
 
-	m_settings = std::make_unique<Settings>();
-	m_settings->IsVisible(false);
-	m_settings->SetDimension(glm::uvec2(500, 700));
+	m_dialogs["Settings"] = std::make_unique<Settings>();
+	m_dialogs["Settings"]->IsVisible(false);
+	m_dialogs["Settings"]->SetDimension(glm::uvec2(500, 700));
 }
 
 bool App::InitScreenAndShaders()
@@ -196,16 +196,17 @@ void App::ManageUI(const Shader& shader)
 	
 	static bool cameraSettingsOpen = false;
 
-	if (m_aboutBox->IsVisible())
+	for (const auto& dialog : m_dialogs)
 	{
-		m_aboutBox->Draw(shader);
+		if (dialog.second->IsVisible())
+		{
+			dialog.second->Draw(shader);
+		}
 	}
 
-	if (m_settings->IsVisible())
+	if (m_dialogs["Settings"]->IsVisible())
 	{
-		m_settings->Draw(shader);
-		auto cameraSettings = m_settings->GetCameraSettings();
-
+		auto cameraSettings = dynamic_cast<Settings*>(m_dialogs["Settings"].get())->GetCameraSettings();
 		m_camera->SetFieldOfView(cameraSettings.cameraFOV);
 		m_camera->SetClippingDistance(cameraSettings.frustumNearClip, cameraSettings.frustumFarClip);
 		m_camera->CreatePerspView();
@@ -236,12 +237,12 @@ void App::ManageUI(const Shader& shader)
 			
 			if (ImGui::MenuItem("About...", nullptr, &newScene))
 			{
-				m_aboutBox->IsVisible(true);
+				m_dialogs["AboutBox"]->IsVisible(true);
 			}
 			
 			if (ImGui::MenuItem("Settings...", nullptr, &newScene))
 			{
-				m_settings->IsVisible(true);
+				m_dialogs["Settings"]->IsVisible(true);
 				//cameraSettingsOpen = true;
 			}
 
@@ -266,8 +267,6 @@ void App::ManageUI(const Shader& shader)
 		ImGui::EndMainMenuBar();
 	}
 
-	
-
 	if (ImGui::Begin("Audio"))
 	{
 		ImGui::Text("Audio Options");
@@ -285,15 +284,16 @@ void App::ManageUI(const Shader& shader)
 			m_audio->Stop();
 		}
 
-		ImGui::End();
 	}
 
 	if (ImGui::Begin("Application"))
 	{
 		ImGui::Text("Hello World.");
 		ImGui::Checkbox("Exit Appllication", &exitApp);
-		ImGui::End();
 	}
+	
+	ImGui::End();
+	ImGui::End();
 
 	/*if (cameraSettingsOpen)
 	{
