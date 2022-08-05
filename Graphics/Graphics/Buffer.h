@@ -35,6 +35,7 @@ public:
 		XYZ = 3,
 		RGB = 3,
 		RGBA = 4,
+		XYZW = 4,
 	};
 
 

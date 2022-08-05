@@ -64,6 +64,15 @@
     <Filter Include="Source Files\Objects\UI">
       <UniqueIdentifier>{d1904195-eca2-4605-88f4-a14fea54a059}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\States">
+      <UniqueIdentifier>{76ecb1ce-76bc-43c3-88d3-e3c2497ec6ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\States">
+      <UniqueIdentifier>{c52bb216-b48c-413c-a6de-48131ebe3022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components\Physics">
+      <UniqueIdentifier>{5e8bb14e-7d4b-41a5-bcc4-dcd0bc111875}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -77,9 +86,6 @@
     </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>Source Files\glad</Filter>
-    </ClCompile>
-    <ClCompile Include="App.cpp">
-      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files\Components</Filter>
@@ -153,19 +159,22 @@
     <ClCompile Include="Utility.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Editor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Audio.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Dialog.cpp">
       <Filter>Source Files\Objects\UI</Filter>
     </ClCompile>
-    <ClCompile Include="AboutBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Settings.cpp">
+      <Filter>Source Files\Objects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Source Files\States</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutBox.cpp">
       <Filter>Source Files\Objects\UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -182,9 +191,6 @@
     <ClInclude Include="khrplatform.h">
       <Filter>Header Files\glad</Filter>
     </ClInclude>
-    <ClInclude Include="App.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -192,12 +198,6 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="RigidBody.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
@@ -257,9 +257,6 @@
     <ClInclude Include="Utility.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Editor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Audio.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -271,6 +268,18 @@
     </ClInclude>
     <ClInclude Include="AboutBox.h">
       <Filter>Header Files\Objects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="App.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>Header Files\States</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>Header Files\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files\Components\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -287,7 +296,7 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="State.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Components</Filter>
     </None>
   </ItemGroup>
 </Project>
