@@ -298,5 +298,17 @@
     <None Include="State.h">
       <Filter>Header Files\Components</Filter>
     </None>
+    <None Include="Assets\Shaders\Light.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\Light.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\text.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\text.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

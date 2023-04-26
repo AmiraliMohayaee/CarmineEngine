@@ -220,8 +220,12 @@
   <ItemGroup>
     <None Include="Assets\Shaders\Default.frag" />
     <None Include="Assets\Shaders\Default.vert" />
+    <None Include="Assets\Shaders\Light.frag" />
+    <None Include="Assets\Shaders\Light.vert" />
     <None Include="Assets\Shaders\main.frag" />
     <None Include="Assets\Shaders\main.vert" />
+    <None Include="Assets\Shaders\text.frag" />
+    <None Include="Assets\Shaders\text.vert" />
     <None Include="State.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

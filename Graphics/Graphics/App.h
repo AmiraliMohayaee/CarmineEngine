@@ -33,6 +33,7 @@ public:
 	void ManageInput();
 	void ManageUI(const Shader& shader);
 
+
 private:
 
 	bool m_isProgramRunning;

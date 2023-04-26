@@ -10,6 +10,7 @@ public:
 	State() {}
 	virtual ~State() = 0 {}
 
+	virtual void Initialize() = 0;
 	virtual void InputHandle() = 0;
 	virtual State* Update() = 0;
 	virtual void Draw() = 0;
@@ -18,7 +19,5 @@ public:
 private:
 
 	std::vector<State*> m_states;
-
-	bool m_isRunning;
 
 };
